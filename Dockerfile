@@ -1,7 +1,6 @@
 FROM alpine:3.11.2 as builder
 
-ENV ANSIBLE_VERSION=2.9.2
-ARG ANSIBLE_VERSION
+ARG ANSIBLE_VERSION=2.9.4
 
 RUN apk --update --no-cache add \
 	gcc \
@@ -23,12 +22,7 @@ RUN apk --update --no-cache add --virtual \
 	openssl-dev \
 	build-base 
 
-RUN set -eux \
-	&& pip3 install --upgrade \
-	pip \
-	cffi \
-	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
-	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
+COPY .requirements.txt /.requirements.txt 
 
 RUN set -eux \
 	&& pip3 install --no-cache-dir ansible==${ANSIBLE_VERSION} \
@@ -36,37 +30,7 @@ RUN set -eux \
 	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
 
 RUN set -eux \
-	&& pip3 install --no-cache-dir ansible-lint \
-	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
-	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
-
-RUN set -eux \
-	&& pip3 install --no-cache-dir "pywinrm[credssp]>=0.2.2" \
-	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
-	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
-
-RUN set -eux \
-	&& pip3 install --no-cache-dir requests-credssp \
-	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
-	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
-
-RUN set -eux \
-	&& pip3 install --no-cache-dir dnspython \
-	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
-	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
-
-RUN set -eux \
-	&& pip3 install --no-cache-dir jmespath \
-	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
-	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
-
-RUN set -eux \
-	&& pip3 install --no-cache-dir netaddr \
-	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
-	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
-
-RUN set -eux \
-	&& pip3 install --no-cache-dir mitogen \
+	&& pip3 install --upgrade -r /.requirements.txt \
 	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
 	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
 
@@ -76,10 +40,9 @@ ENV \
 	USER=ansible \
 	GROUP=ansible \
 	UID=1000 \
-	GID=1000 \
-	ANSIBLE_VERSION=2.9.2
+	GID=1000
 
-ARG ANSIBLE_VERSION
+ARG ANSIBLE_VERSION=2.9.4
 
 # https://github.com/opencontainers/image-spec/blob/master/annotations.md
 LABEL "maintainer"="Simon Baerlocher <s.baerlocher@sbaerlocher.ch>" \
@@ -134,13 +97,7 @@ RUN set -eux \
 	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
 
 RUN mkdir -p /etc/ansible \
-	&& echo 'localhost' > /etc/ansible/hosts \
-	&& echo -e """\
-	\n\
-	Host *\n\
-	StrictHostKeyChecking no\n\
-	UserKnownHostsFile=/dev/null\n\
-	""" >> /etc/ssh/ssh_config
+	&& echo 'localhost'  > /etc/ansible/hosts
 
 USER ${USER}
 

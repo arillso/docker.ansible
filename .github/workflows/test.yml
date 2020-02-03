@@ -1,9 +1,20 @@
-name: test
+name: Testing Container
 on: [push]
 jobs:
-  build:
+  testing:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version:
+          "2.9.4"
+          "2.8.8"
+          "2.7.16"
+
     steps:
       - uses: actions/checkout@master
-      - name: Build the Docker image
-        run: docker build .
+      - name: Build Docker image
+        run: docker build  --build-arg ANSIBLE_VERSION=${{ matrix.version }} --pull -t test .
+      - name: Test Docker image
+        run: docker run test
+      - name: Inspect Docker image
+        run: docker image inspect test

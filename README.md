@@ -22,7 +22,6 @@ Tiny Alpine.based container version of Ansible.
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
-
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ## License

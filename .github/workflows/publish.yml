@@ -1,0 +1,38 @@
+name: Publish
+
+on: [push]
+
+jobs:
+  test_action:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version:
+          "2.9.4"
+          "2.8.8"
+          "2.7.16"
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Publish docker hub
+        uses: tinact/docker.image@1.0.0
+        with:
+          image_name: arillso/ansible
+          image_tag: ${{ matrix.version }}
+          dockerfile: .
+          build_args: ANSIBLE_VERSION=${{ matrix.version }}
+          registry: registry.hub.docker.com
+          registry_username: sbaerlocher
+          registry_password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Publish github pkg
+        uses: tinact/docker.image@1.0.0
+        with:
+          image_name: ansible
+          image_tag: ${{ matrix.version }}
+          build_args: ANSIBLE_VERSION=${{ matrix.version }}
+          dockerfile: .
+          registry: docker.pkg.github.com/arillso/docker.ansible
+          registry_username: sbaerlocher
+          registry_password: ${{ secrets.GITHUB_TOKEN }}
