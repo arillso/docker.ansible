@@ -4,12 +4,9 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    types:
-      - closed
 
 jobs:
-  test_action:
+  publish:
     runs-on: ubuntu-latest
     strategy:
       matrix:
