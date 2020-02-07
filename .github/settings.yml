@@ -8,9 +8,6 @@ repository:
   # A short description of the repository that will show up on GitHub
   description: Tiny Alpine-based container version of Ansible.
 
-  # A URL with more information about the repository
-  # homepage: https://sbaerlocher.github.io/ansible.windows
-
   # Either `true` to make the repository private, or `false` to make it public.
   private: false
 

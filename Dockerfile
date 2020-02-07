@@ -44,7 +44,6 @@ ENV \
 
 ARG ANSIBLE_VERSION=2.9.4
 
-# https://github.com/opencontainers/image-spec/blob/master/annotations.md
 LABEL "maintainer"="Simon Baerlocher <s.baerlocher@sbaerlocher.ch>" \
 	"org.opencontainers.image.authors"="Simon Baerlocher <s.baerlocher@sbaerlocher.ch>" \
 	"org.opencontainers.image.vendor"="arillso" \
