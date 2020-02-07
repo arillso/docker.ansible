@@ -5,6 +5,11 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## master
 
+### Changed
+
+- Changed publish job name
+- Changed action trigger event
+
 ### Added
 
 - Initial release
