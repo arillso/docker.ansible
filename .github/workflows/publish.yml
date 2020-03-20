@@ -14,8 +14,8 @@ jobs:
     strategy:
       matrix:
         version:
-          - '2.9.4'
-          - '2.8.8'
+          - '2.9.6'
+          - '2.8.10'
           - '2.7.16'
 
     steps:
