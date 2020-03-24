@@ -1,8 +1,8 @@
 pip==20.0.2
-cffi==1.13.2
+cffi==1.14.0
 pywinrm[credssp]==0.4.1
 requests-credssp==1.1.1
 dnspython==1.16.0
-jmespath==0.9.4
+jmespath==0.9.5
 netaddr==0.7.19
 mitogen==0.2.9

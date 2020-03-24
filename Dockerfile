@@ -1,4 +1,4 @@
-FROM alpine:3.11.2 as builder
+FROM alpine:3.11.3 as builder
 
 ARG ANSIBLE_VERSION=2.9.4
 
@@ -22,7 +22,7 @@ RUN apk --update --no-cache add --virtual \
 	openssl-dev \
 	build-base 
 
-COPY .requirements.txt /.requirements.txt 
+COPY requirements.txt /requirements.txt 
 
 RUN set -eux \
 	&& pip3 install --no-cache-dir ansible==${ANSIBLE_VERSION} \
@@ -30,11 +30,11 @@ RUN set -eux \
 	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
 
 RUN set -eux \
-	&& pip3 install --upgrade -r /.requirements.txt \
+	&& pip3 install --upgrade -r /requirements.txt \
 	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
 	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
 
-FROM alpine:3.11.2 as production
+FROM alpine:3.11.3 as production
 
 ENV \
 	USER=ansible \
