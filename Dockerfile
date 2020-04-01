@@ -1,4 +1,4 @@
-FROM alpine:3.11.3 as builder
+FROM alpine:3.11.5 as builder
 
 ARG ANSIBLE_VERSION=2.9.4
 
@@ -34,7 +34,7 @@ RUN set -eux \
 	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
 	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
 
-FROM alpine:3.11.3 as production
+FROM alpine:3.11.5 as production
 
 ENV \
 	USER=ansible \
