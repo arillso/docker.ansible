@@ -1,6 +1,6 @@
 # Container: Ansible
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-) [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=popout-square)](licence) [![Docker Build Status](https://img.shields.io/docker/build/arillso/ansible)](gub) [![Docker Repository on Quay](https://quay.io/repository/arillso/ansible/status 'Docker Repository on Quay')](https://quay.io/repository/arillso/ansible)
+[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-) [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=popout-square)](licence)
 
 ## Description
 
@@ -22,6 +22,7 @@ Tiny Alpine.based container version of Ansible.
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ## License
