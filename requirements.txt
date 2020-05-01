@@ -1,4 +1,4 @@
-pip==20.0.2
+pip==20.1
 cffi==1.14.0
 pywinrm[credssp]==0.4.1
 requests-credssp==1.1.1
