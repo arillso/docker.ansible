@@ -82,6 +82,7 @@ RUN set -eux \
 	jq \
 	openssh-client \
 	python3 \
+	sshpass \
 	&& ln -sf /usr/bin/python3 /usr/bin/python \
 	&& ln -sf ansible /usr/bin/ansible-config \
 	&& ln -sf ansible /usr/bin/ansible-console \
