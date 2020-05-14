@@ -3,6 +3,7 @@ cffi==1.14.0
 pywinrm[credssp]==0.4.1
 requests-credssp==1.1.1
 dnspython==1.16.0
-jmespath==0.9.5
+dnspython3==1.15.0
+jmespath==0.10.0
 netaddr==0.7.19
 mitogen==0.2.9
