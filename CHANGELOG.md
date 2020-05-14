@@ -9,6 +9,10 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Update to the latest Ansible versions
 
+### Added
+
+- Add python package dnspython3
+
 ## master 01.05.2020
 
 ### Changed
