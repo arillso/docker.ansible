@@ -8,6 +8,11 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 - Bump pip from 20.1 to 20.1.1
+- Bump alpine from 3.11.6 to 3.12.0
+
+### Added
+
+- Adding py3-pip dependency
 
 ## master 14.05.2020
 

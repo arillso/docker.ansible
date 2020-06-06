@@ -1,4 +1,4 @@
-FROM alpine:3.11.6 as builder
+FROM alpine:3.12.0 as builder
 
 ARG ANSIBLE_VERSION=2.9.4
 
@@ -20,7 +20,8 @@ RUN apk --update --no-cache add --virtual \
 	python3-dev \
 	libffi-dev \
 	openssl-dev \
-	build-base 
+	build-base \
+	py3-pip
 
 COPY requirements.txt /requirements.txt 
 
@@ -34,7 +35,7 @@ RUN set -eux \
 	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
 	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
 
-FROM alpine:3.11.6 as production
+FROM alpine:3.12.0 as production
 
 ENV \
 	USER=ansible \
