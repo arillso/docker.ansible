@@ -20,7 +20,8 @@ RUN apk --update --no-cache add --virtual \
 	python3-dev \
 	libffi-dev \
 	openssl-dev \
-	build-base 
+	build-base \
+	py3-pip
 
 COPY requirements.txt /requirements.txt 
 
