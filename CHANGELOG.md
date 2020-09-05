@@ -3,6 +3,20 @@
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
+## master 05.09.2020
+
+### Changed
+
+- Bump cffi from 1.14.0 to 1.14.2
+- Bump requests-credssp from 1.1.1 to 1.2.0
+- Bump pip from 20.1.1 to 20.2.2
+- Bump dnspython from 1.16.0 to 2.0.0
+- Bump netaddr from 0.7.20 to 0.8.0
+
+### Fixed
+
+- Fixed the problem that the rsync package is not present in the container.
+
 ## master 13.07.2020
 
 ### Changed
