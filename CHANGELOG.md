@@ -3,6 +3,17 @@
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
+## master 06.09.2020
+
+### Changed
+
+- Bump ansible from 2.9.9 to 2.9.13
+- Bump ansible from 2.8.12 to 2.8.15
+
+### Add
+
+- Add the dependabot.yml file for the dependabot.
+
 ## master 05.09.2020
 
 ### Changed
