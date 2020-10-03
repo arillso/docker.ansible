@@ -8,6 +8,7 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 - Bump pip from 20.2.2 to 20.2.3
+- Bump cffi from 1.14.2 to 1.14.3
 
 ## master 06.09.2020
 
