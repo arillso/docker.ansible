@@ -5,6 +5,10 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## master 03.10.2020
 
+### Add
+
+- Add Ansible Version 2.10.0
+
 ### Changed
 
 - Bump pip from 20.2.2 to 20.2.3
