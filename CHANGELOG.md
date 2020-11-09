@@ -8,6 +8,10 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 - Bump pip from 20.2.3 to 20.2.4
+- Bump alpine from 3.12.0 to 3.12.1
+- Bump ansible from 2.8.15 to 2.8.17
+- Bump ansible from 2.9.13 to 2.9.15
+- Bump ansible from 2.10.0 to 2.10.3
 
 ## master 03.10.2020
 
