@@ -1,3 +1,4 @@
+wheel==0.36.2
 pip==20.2.4
 cffi==1.14.3
 pywinrm[credssp]==0.4.1
