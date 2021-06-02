@@ -1,4 +1,4 @@
-FROM alpine:3.12.1 as builder
+FROM alpine:3.13.5 as builder
 
 ARG ANSIBLE_VERSION=2.9.4
 
@@ -12,7 +12,7 @@ RUN apk --update --no-cache add \
 	ca-certificates \
 	git \
 	openssh-client \
-	rsync 
+	rsync
 
 RUN apk --update --no-cache add --virtual \
 	.build-deps \
@@ -21,21 +21,23 @@ RUN apk --update --no-cache add --virtual \
 	libffi-dev \
 	openssl-dev \
 	build-base \
-	py3-pip
+	py3-pip \
+	rust \
+	cargo
 
 COPY requirements.txt /requirements.txt 
-
-RUN set -eux \
-	&& pip3 install --no-cache-dir ansible==${ANSIBLE_VERSION} \
-	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
-	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
 
 RUN set -eux \
 	&& pip3 install --upgrade -r /requirements.txt \
 	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
 	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
 
-FROM alpine:3.12.1 as production
+RUN set -eux \
+	&& pip3 install --no-cache-dir ansible==${ANSIBLE_VERSION} \
+	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
+	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
+
+FROM alpine:3.13.5 as production
 
 ENV \
 	USER=ansible \

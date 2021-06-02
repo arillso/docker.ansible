@@ -1,9 +1,9 @@
+wheel==0.36.2
 pip==20.2.4
 cffi==1.14.3
 pywinrm[credssp]==0.4.1
 requests-credssp==1.2.0
 dnspython==2.0.0
-dnspython3==1.15.0
 jmespath==0.10.0
 netaddr==0.8.0
 mitogen==0.2.9
