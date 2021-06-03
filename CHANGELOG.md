@@ -3,7 +3,7 @@
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
-## master
+## master 03.06.2021
 
 ### Add
 
@@ -11,11 +11,15 @@ Add rust and cargo package
 
 ### Changed
 
-Bump alpine from 3.12.1 to 3.13.5
-Bump cffi from 1.14.3 to 1.14.5
-Bump dnspython from 2.0.0 to 2.1.0
-Bump pip from 20.2.4 to 21.1.2
-Bump pywinrm[credssp] from 0.4.1 to 0.4.2
+- Bump alpine from 3.12.1 to 3.13.5
+- Bump ansible from 2.10.3 to 2.10.7
+- Bump ansible from 2.8.8.17 to 2.8.20
+- Bump ansible from 2.9.15 to 2.9.22
+- Bump cffi from 1.14.3 to 1.14.5
+- Bump dnspython from 2.0.0 to 2.1.0
+- Bump pip from 20.2.4 to 21.1.2
+- Bump pip from 20.2.4 to 21.1.2
+- Bump pywinrm[credssp] from 0.4.1 to 0.4.2
 
 ## master 09.11.2020
 
