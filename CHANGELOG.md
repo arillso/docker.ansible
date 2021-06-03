@@ -13,6 +13,7 @@ Add rust and cargo package
 
 Bump alpine from 3.12.1 to 3.13.5
 Bump dnspython from 2.0.0 to 2.1.0
+Bump cffi from 1.14.3 to 1.14.5
 
 ## master 09.11.2020
 

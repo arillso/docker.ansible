@@ -11,10 +11,10 @@ jobs:
     strategy:
       matrix:
         version:
-          - '2.10.3'
-          - '2.9.15'
-          - '2.8.17'
-          - '2.7.18'
+          - "2.10.3"
+          - "2.9.15"
+          - "2.8.17"
+          - "2.7.18"
 
     steps:
       - uses: actions/checkout@v1
@@ -47,13 +47,13 @@ jobs:
 
     steps:
       - name: Docker image semver latest
-        uses: tinact/docker.image-latest@1.0.0
+        uses: tinact/docker.image-latest@1.0.2
         id: version
         with:
           image_name: arillso/ansible
 
       - name: Docker image retag docker hub
-        uses: tinact/docker.image-retag@1.0.1
+        uses: tinact/docker.image-retag@1.0.3
         with:
           image_name: arillso/ansible
           image_old_tag: ${{ steps.version.outputs.latest }}
@@ -62,7 +62,7 @@ jobs:
           registry_password: ${{ secrets.DOCKER_TOKEN }}
 
       - name: Docker image retag github pkg
-        uses: tinact/docker.image-retag@1.0.1
+        uses: tinact/docker.image-retag@1.0.3
         with:
           image_name: ansible
           image_old_tag: ${{ steps.version.outputs.latest }}
