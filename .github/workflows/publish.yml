@@ -47,7 +47,7 @@ jobs:
 
     steps:
       - name: Docker image semver latest
-        uses: tinact/docker.image-latest@1.0.2
+        uses: tinact/docker.image-latest@1.0.3
         id: version
         with:
           image_name: arillso/ansible
