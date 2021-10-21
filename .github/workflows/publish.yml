@@ -39,7 +39,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          build_args: ANSIBLE_VERSION=${{ matrix.version }}
+          build-args: ANSIBLE_VERSION=${{ matrix.version }}
           push: true
           tags: |
             ghcr.io/arillso/ansible:${{ matrix.version }}
