@@ -1,4 +1,4 @@
-FROM alpine:3.13.5 as builder
+FROM alpine:3.14.2 as builder
 
 ARG ANSIBLE_VERSION=2.11.6
 
@@ -37,7 +37,7 @@ RUN set -eux \
 	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
 	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
 
-FROM alpine:3.13.5 as production
+FROM alpine:3.14.2 as production
 
 ENV \
 	USER=ansible \
@@ -58,7 +58,7 @@ LABEL "maintainer"="Simon Baerlocher <s.baerlocher@sbaerlocher.ch>" \
 	"org.opencontainers.image.title"="Ansible ${ANSIBLE_VERSION}" \
 	"org.opencontainers.image.description"="Ansible ${ANSIBLE_VERSION}"
 
-COPY --from=builder /usr/lib/python3.8/site-packages/ /usr/lib/python3.8/site-packages/
+COPY --from=builder /usr/lib/python3.9/site-packages/ /usr/lib/python3.9/site-packages/
 COPY --from=builder /usr/bin/ansible /usr/bin/ansible
 COPY --from=builder /usr/bin/ansible-connection /usr/bin/ansible-connection
 
