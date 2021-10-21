@@ -70,6 +70,6 @@ jobs:
         with:
           image_name: ansible
           image_old_tag: ${{ steps.version.outputs.latest }}
-          registry: ghcr.io/arillso/ansible
+          registry: ghcr.io/arillso
           registry_username: sbaerlocher
           registry_password: ${{ secrets.GITHUB_TOKEN }}
