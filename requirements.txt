@@ -1,6 +1,6 @@
 wheel==0.37.0
 pip==21.3
-cffi==1.14.5
+cffi==1.15.0
 pywinrm[credssp]==0.4.2
 requests-credssp==1.2.0
 dnspython==2.1.0
