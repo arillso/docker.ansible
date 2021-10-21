@@ -1,6 +1,6 @@
 FROM alpine:3.13.5 as builder
 
-ARG ANSIBLE_VERSION=2.9.4
+ARG ANSIBLE_VERSION=2.11.6
 
 RUN apk --update --no-cache add \
 	gcc \
@@ -45,7 +45,7 @@ ENV \
 	UID=1000 \
 	GID=1000
 
-ARG ANSIBLE_VERSION=2.9.4
+ARG ANSIBLE_VERSION=2.11.6
 
 LABEL "maintainer"="Simon Baerlocher <s.baerlocher@sbaerlocher.ch>" \
 	"org.opencontainers.image.authors"="Simon Baerlocher <s.baerlocher@sbaerlocher.ch>" \
