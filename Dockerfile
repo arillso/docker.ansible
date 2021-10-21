@@ -33,7 +33,7 @@ RUN set -eux \
 	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
 
 RUN set -eux \
-	&& pip3 install --no-cache-dir ansible==${ANSIBLE_VERSION} \
+	&& pip3 install --no-cache-dir ansible-core==${ANSIBLE_VERSION} \
 	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
 	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
 
