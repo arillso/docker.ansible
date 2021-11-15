@@ -1,6 +1,6 @@
 FROM alpine:3.14.3 as builder
 
-ARG ANSIBLE_VERSION=2.11.6
+ARG ANSIBLE_VERSION=2.12.0
 
 RUN apk --update --no-cache add \
 	gcc \
@@ -46,7 +46,7 @@ ENV \
 	UID=1000 \
 	GID=1000
 
-ARG ANSIBLE_VERSION=2.11.6
+ARG ANSIBLE_VERSION=2.12.0
 
 LABEL "maintainer"="Simon Baerlocher <s.baerlocher@sbaerlocher.ch>" \
 	"org.opencontainers.image.authors"="Simon Baerlocher <s.baerlocher@sbaerlocher.ch>" \
@@ -88,6 +88,10 @@ RUN set -eux \
 	python3 \
 	sshpass \
 	rsync \
+	&& apk add --no-cache \	
+	helm \
+	kubectl \
+	--repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing \
 	&& ln -sf /usr/bin/python3 /usr/bin/python \
 	&& ln -sf ansible /usr/bin/ansible-config \
 	&& ln -sf ansible /usr/bin/ansible-console \
@@ -105,5 +109,7 @@ RUN mkdir -p /etc/ansible \
 	&& echo 'localhost'  > /etc/ansible/hosts
 
 USER ${USER}
+
+ENV ANSIBLE_FORCE_COLOR=True
 
 CMD [ "/usr/bin/ansible-playbook", "--version" ]

@@ -7,10 +7,11 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-Bump requests-credssp from 1.2.0 to 1.3.0
-Bump pip from 21.3 to 21.3.1
-Bump mitogen from 0.2.9 to 0.3.0
-Bump alpine from 3.14.2 to 3.14.3
+- Bump ansible from 2.11.6 to 2.12.0
+- Bump requests-credssp from 1.2.0 to 1.3.0
+- Bump pip from 21.3 to 21.3.1
+- Bump mitogen from 0.2.9 to 0.3.0
+- Bump alpine from 3.14.2 to 3.14.3
 
 ## master 03.06.2021
 
