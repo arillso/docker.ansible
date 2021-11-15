@@ -22,6 +22,7 @@ RUN apk --update --no-cache add --virtual \
 	openssl-dev \
 	build-base \
 	py3-pip \
+	py3-wheel \
 	rust \
 	cargo
 
