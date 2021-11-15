@@ -88,8 +88,10 @@ RUN set -eux \
 	python3 \
 	sshpass \
 	rsync \
+	&& apk add --no-cache \	
 	helm \
 	kubectl \
+	--repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing \
 	&& ln -sf /usr/bin/python3 /usr/bin/python \
 	&& ln -sf ansible /usr/bin/ansible-config \
 	&& ln -sf ansible /usr/bin/ansible-console \
