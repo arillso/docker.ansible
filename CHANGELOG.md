@@ -3,6 +3,13 @@
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
+## master 18.11.2021
+
+### Add
+
+- Add python package openshift
+- Add python package pyhelm
+
 ## master 15.11.2021
 
 ### Changed
@@ -17,7 +24,7 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Add
 
-Add rust and cargo package
+- Add rust and cargo package
 
 ### Changed
 
