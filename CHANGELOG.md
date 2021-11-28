@@ -3,6 +3,14 @@
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
+## master 28.11.2021
+
+### Add
+
+- Add python package lxml
+- Add python package docker
+- Add python package jmespath
+
 ## master 18.11.2021
 
 ### Add
