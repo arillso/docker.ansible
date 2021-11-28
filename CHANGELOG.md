@@ -5,6 +5,10 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## master 28.11.2021
 
+### Changed
+
+- Bump alpine from 3.14.3 to 3.15.0
+
 ### Add
 
 - Add python package lxml
