@@ -26,7 +26,7 @@ RUN apk --update --no-cache add --virtual \
 	rust \
 	cargo \
 	libxml2 \
-	libxslt
+	libxslt-dev
 
 COPY requirements.txt /requirements.txt 
 
