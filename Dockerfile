@@ -12,7 +12,9 @@ RUN apk --update --no-cache add \
 	ca-certificates \
 	git \
 	openssh-client \
-	rsync
+	rsync \
+	libxml2 \
+	libxslt
 
 RUN apk --update --no-cache add --virtual \
 	.build-deps \
@@ -88,6 +90,8 @@ RUN set -eux \
 	python3 \
 	sshpass \
 	rsync \
+	libxml2 \
+	libxslt \
 	&& apk add --no-cache \	
 	helm \
 	kubectl \
