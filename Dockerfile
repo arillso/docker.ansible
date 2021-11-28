@@ -12,9 +12,7 @@ RUN apk --update --no-cache add \
 	ca-certificates \
 	git \
 	openssh-client \
-	rsync \
-	libxml2 \
-	libxslt
+	rsync
 
 RUN apk --update --no-cache add --virtual \
 	.build-deps \
@@ -26,7 +24,9 @@ RUN apk --update --no-cache add --virtual \
 	py3-pip \
 	py3-wheel \
 	rust \
-	cargo
+	cargo \
+	libxml2 \
+	libxslt
 
 COPY requirements.txt /requirements.txt 
 
