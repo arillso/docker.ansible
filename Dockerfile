@@ -1,4 +1,4 @@
-FROM alpine:3.14.3 as builder
+FROM alpine:3.15.0 as builder
 
 ARG ANSIBLE_VERSION=2.12.0
 
@@ -24,7 +24,9 @@ RUN apk --update --no-cache add --virtual \
 	py3-pip \
 	py3-wheel \
 	rust \
-	cargo
+	cargo \
+	libxml2 \
+	libxslt-dev
 
 COPY requirements.txt /requirements.txt 
 
@@ -38,7 +40,7 @@ RUN set -eux \
 	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
 	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
 
-FROM alpine:3.14.3 as production
+FROM alpine:3.15.0 as production
 
 ENV \
 	USER=ansible \
@@ -88,6 +90,8 @@ RUN set -eux \
 	python3 \
 	sshpass \
 	rsync \
+	libxml2 \
+	libxslt-dev \
 	&& apk add --no-cache \	
 	helm \
 	kubectl \
