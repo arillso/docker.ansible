@@ -3,6 +3,12 @@
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
+## master 13.12.2021
+
+### Changed
+
+- Bump lxml from 4.6.4 to 4.6.5
+
 ## master 28.11.2021
 
 ### Changed
