@@ -3,6 +3,16 @@
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
+## master 04.02.2022
+
+### Changed
+
+- Bump lxml from 4.6.5 to 4.7.1
+- Bump wheel from 0.37.0 to 0.37.1
+- Bump mitogen from 0.3.0 to 0.3.2
+- Bump dnspython from 2.1.0 to 2.2.0
+- Bump pip from 21.3.1 to 22.0.3
+
 ## master 13.12.2021
 
 ### Changed
