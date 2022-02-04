@@ -7,6 +7,7 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+- Bump ansible from 2.12.0 to 2.12.2
 - Bump lxml from 4.6.5 to 4.7.1
 - Bump wheel from 0.37.0 to 0.37.1
 - Bump mitogen from 0.3.0 to 0.3.2
