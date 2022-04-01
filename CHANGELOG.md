@@ -3,6 +3,23 @@
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
+## master 01.04.2022
+
+### Changed
+
+- Bump ansible from 2.12.2 to 2.12.4
+- Bump dnspython from 2.2.0 to 2.2.1
+- Bump jmespath from 0.10.0 to 1.0.0
+- Bump lxml from 4.7.1 to 4.8.0
+- Bump openshift from 0.12.1 to 0.13.1
+- Bump pip from 22.0.3 to 22.0.4
+- Bump requests-credssp from 1.3.0 to 2.0.0
+
+### Add
+
+- Add python-dateutil 2.8.2
+- Add pytz 2022.1
+
 ## master 04.02.2022
 
 ### Changed
