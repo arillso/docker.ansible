@@ -7,6 +7,7 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+- Bump alpine from 3.15.0 to 3.15.3
 - Bump ansible from 2.12.2 to 2.12.4
 - Bump dnspython from 2.2.0 to 2.2.1
 - Bump jmespath from 0.10.0 to 1.0.0
