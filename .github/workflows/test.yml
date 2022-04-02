@@ -6,7 +6,7 @@ jobs:
     strategy:
       matrix:
         version:
-          - "2.12.2"
+          - "2.12.4"
 
     steps:
       - uses: actions/checkout@master
