@@ -28,7 +28,7 @@ RUN apk --update --no-cache add --virtual \
 	libxml2 \
 	libxslt-dev
 
-COPY requirements.txt /requirements.txt 
+COPY requirements.txt /requirements.txt
 
 RUN set -eux \
 	&& pip3 install --upgrade -r /requirements.txt \
@@ -87,12 +87,13 @@ RUN set -eux \
 	gnupg \
 	jq \
 	openssh-client \
+	openssl \
 	python3 \
 	sshpass \
 	rsync \
 	libxml2 \
 	libxslt-dev \
-	&& apk add --no-cache \	
+	&& apk add --no-cache \
 	helm \
 	kubectl \
 	--repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing \
