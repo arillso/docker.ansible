@@ -3,6 +3,16 @@
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
+## master 07.05.2022
+
+### Add
+
+- Add kustomize 4.5.4
+
+### Changed
+
+- Bump pywinrm[credssp] from 0.4.2 to 0.4.3
+
 ## master 08.04.2022
 
 ### Add
