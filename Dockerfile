@@ -1,6 +1,9 @@
 FROM alpine:3.15.4 as builder
 
 ARG ANSIBLE_VERSION=2.12.0
+ARG KUSTOMIZE_VERSION=4.5.4
+
+WORKDIR /home
 
 RUN apk --update --no-cache add \
 	gcc \
@@ -40,6 +43,10 @@ RUN set -eux \
 	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
 	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
 
+RUN set -eux \
+	&& curl -fL https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v${KUSTOMIZE_VERSION}/kustomize_v${KUSTOMIZE_VERSION}_linux_amd64.tar.gz | tar xz \
+	&& chmod +x kustomize
+
 FROM alpine:3.15.4 as production
 
 ENV \
@@ -64,6 +71,7 @@ LABEL "maintainer"="Simon Baerlocher <s.baerlocher@sbaerlocher.ch>" \
 COPY --from=builder /usr/lib/python3.9/site-packages/ /usr/lib/python3.9/site-packages/
 COPY --from=builder /usr/bin/ansible /usr/bin/ansible
 COPY --from=builder /usr/bin/ansible-connection /usr/bin/ansible-connection
+COPY --from=builder /home/kustomize /usr/local/bin/kustomize
 
 RUN set -eux \
 	&& addgroup -g ${GID} ${GROUP} \
