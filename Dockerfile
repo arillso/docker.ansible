@@ -15,7 +15,8 @@ RUN apk --update --no-cache add \
 	ca-certificates \
 	git \
 	openssh-client \
-	rsync
+	rsync \
+	curl
 
 RUN apk --update --no-cache add --virtual \
 	.build-deps \
