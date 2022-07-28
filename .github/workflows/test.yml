@@ -24,6 +24,9 @@ jobs:
           images: |
             ghcr.io/arillso/ansible
             arillso/ansible
+          tags: |
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
+            type=raw,value=${{ matrix.version }}
 
       - name: Build and push
         uses: docker/build-push-action@v2
