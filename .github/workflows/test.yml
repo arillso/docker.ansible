@@ -36,9 +36,3 @@ jobs:
           push: false
           tags: |
             ${{ steps.meta.outputs.tags }}
-
-      - name: Test Docker image
-        run: docker run arillso/ansible:${{ matrix.version }}-test
-
-      - name: Inspect Docker image
-        run: docker image inspect arillso/ansible:${{ matrix.version }}-test
