@@ -26,7 +26,7 @@ jobs:
             arillso/ansible
           tags: |
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
-            type=raw,value=${{ matrix.version }}
+            type=raw,value=${{ matrix.version }}-test
 
       - name: Build and push
         uses: docker/build-push-action@v2
@@ -36,5 +36,3 @@ jobs:
           push: false
           tags: |
             ${{ steps.meta.outputs.tags }}
-            ghcr.io/arillso/ansible:${{ matrix.version }}
-            arillso/ansible:${{ matrix.version }}

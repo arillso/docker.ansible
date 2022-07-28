@@ -1,4 +1,4 @@
-FROM alpine:3.15.4 as builder
+FROM alpine:3.16.1 as builder
 
 ARG ANSIBLE_VERSION=2.12.0
 ARG KUSTOMIZE_VERSION=4.5.4
@@ -48,7 +48,7 @@ RUN set -eux \
 	&& curl -fL https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v${KUSTOMIZE_VERSION}/kustomize_v${KUSTOMIZE_VERSION}_linux_amd64.tar.gz | tar xz \
 	&& chmod +x kustomize
 
-FROM alpine:3.15.4 as production
+FROM alpine:3.16.1 as production
 
 ENV \
 	USER=ansible \
@@ -69,7 +69,7 @@ LABEL "maintainer"="Simon Baerlocher <s.baerlocher@sbaerlocher.ch>" \
 	"org.opencontainers.image.title"="Ansible ${ANSIBLE_VERSION}" \
 	"org.opencontainers.image.description"="Ansible ${ANSIBLE_VERSION}"
 
-COPY --from=builder /usr/lib/python3.9/site-packages/ /usr/lib/python3.9/site-packages/
+COPY --from=builder /usr/lib/python3.10/site-packages/ /usr/lib/python3.10/site-packages/
 COPY --from=builder /usr/bin/ansible /usr/bin/ansible
 COPY --from=builder /usr/bin/ansible-connection /usr/bin/ansible-connection
 COPY --from=builder /home/kustomize /usr/local/bin/kustomize

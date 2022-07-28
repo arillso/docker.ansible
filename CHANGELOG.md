@@ -11,6 +11,7 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 - Bump jmespath from 1.0.0 to 1.0.1
 - Bump cffi from 1.15.0 to 1.15.1
 - Bump lxml from 4.8.0 to 4.9.1
+- Bump alpine from 3.15.4 to 3.16.1
 
 ## master 07.05.2022
 
