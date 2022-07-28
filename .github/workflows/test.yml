@@ -38,3 +38,9 @@ jobs:
             ${{ steps.meta.outputs.tags }}
             ghcr.io/arillso/ansible:${{ matrix.version }}
             arillso/ansible:${{ matrix.version }}
+
+      - name: Test Docker image
+        run: docker run arillso/ansible:${{ matrix.version }}
+
+      - name: Inspect Docker image
+        run: docker image inspect arillso/ansible:${{ matrix.version }}
