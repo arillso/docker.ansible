@@ -7,11 +7,12 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-- Bump mitogen from 0.3.2 to 0.3.3
-- Bump jmespath from 1.0.0 to 1.0.1
-- Bump cffi from 1.15.0 to 1.15.1
-- Bump lxml from 4.8.0 to 4.9.1
 - Bump alpine from 3.15.4 to 3.16.1
+- Bump cffi from 1.15.0 to 1.15.1
+- Bump jmespath from 1.0.0 to 1.0.1
+- Bump lxml from 4.8.0 to 4.9.1
+- Bump mitogen from 0.3.2 to 0.3.3
+- Bump pip from 22.0.4 to 22.2.1
 
 ## master 07.05.2022
 
