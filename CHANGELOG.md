@@ -3,6 +3,16 @@
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
+
+## master 01.09.2022
+
+### Changed
+
+- fix(deps): bump pip from 22.2.1 to 22.2.2
+- fix(deps): bump alpine from 3.16.1 to 3.16.2
+- fix(deps): bump pytz from 2022.1 to 2022.2.1
+- fix(deps): bump docker from 5.0.3 to 6.0.0
+
 ## master 01.09.2022
 
 ### Changed
