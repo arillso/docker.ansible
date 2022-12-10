@@ -13,6 +13,7 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 - fix(deps): bump pip from 22.2.2 to 22.3.1 
 - fix(deps): bump pytz from 2022.2.1 to 2022.6
 - fix(deps): bump wheel from 0.37.1 to 0.38.4
+- fix(deps): bump docker/setup-buildx-action from 1 to 2
 
 ## master 01.09.2022
 
