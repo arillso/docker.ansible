@@ -7,6 +7,7 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+- fix(deps): bump docker/login-action from 1 to 2
 - fix(deps): bump alpine from 3.16.2 to 3.17.0
 - fix(deps): bump ansible from 2.12.4 to 2.14.1
 - fix(deps): bump docker from 6.0.0 to 6.0.1
