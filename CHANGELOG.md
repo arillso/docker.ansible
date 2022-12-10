@@ -10,6 +10,7 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 - fix(deps): bump alpine from 3.16.2 to 3.17.0
 - fix(deps): bump ansible from 2.12.4 to 2.14.1
 - fix(deps): bump docker from 6.0.0 to 6.0.1
+- fix(deps): bump docker/build-push-action from 2 to 3
 - fix(deps): bump pip from 22.2.2 to 22.3.1 
 - fix(deps): bump pytz from 2022.2.1 to 2022.6
 - fix(deps): bump wheel from 0.37.1 to 0.38.4
