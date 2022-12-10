@@ -8,6 +8,8 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 - fix(deps): bump pytz from 2022.2.1 to 2022.6
+- fix(deps): bump alpine from 3.16.2 to 3.17.0
+- fix(deps): bump ansible from 2.12.4 to 2.14.1
 
 ## master 01.09.2022
 
