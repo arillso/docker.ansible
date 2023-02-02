@@ -72,6 +72,7 @@ LABEL "maintainer"="Simon Baerlocher <s.baerlocher@sbaerlocher.ch>" \
 COPY --from=builder /usr/lib/python3.10/site-packages/ /usr/lib/python3.10/site-packages/
 COPY --from=builder /usr/bin/ansible /usr/bin/ansible
 COPY --from=builder /usr/bin/ansible-connection /usr/bin/ansible-connection
+COPY --from=builder /usr/bin/ansible-galaxy /usr/bin/ansible-galaxy
 COPY --from=builder /home/kustomize /usr/local/bin/kustomize
 
 RUN set -eux \
@@ -110,7 +111,6 @@ RUN set -eux \
 	&& ln -sf ansible /usr/bin/ansible-config \
 	&& ln -sf ansible /usr/bin/ansible-console \
 	&& ln -sf ansible /usr/bin/ansible-doc \
-	&& ln -sf ansible /usr/bin/ansible-galaxy \
 	&& ln -sf ansible /usr/bin/ansible-inventory \
 	&& ln -sf ansible /usr/bin/ansible-playbook \
 	&& ln -sf ansible /usr/bin/ansible-pull \
