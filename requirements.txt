@@ -1,5 +1,5 @@
 wheel==0.38.4
-pip==22.3.1
+pip==23.0
 cffi==1.15.1
 pywinrm[credssp]==0.4.3
 requests-credssp==2.0.0
@@ -9,8 +9,8 @@ netaddr==0.8.0
 mitogen==0.3.3
 openshift==0.13.1
 pyhelm==2.14.5
-lxml==4.9.1
+lxml==4.9.2
 docker==6.0.1
 jmespath==1.0.1
 python-dateutil==2.8.2
-pytz==2022.6
+pytz==2022.7.1

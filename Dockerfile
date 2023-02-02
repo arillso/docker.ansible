@@ -1,4 +1,4 @@
-FROM alpine:3.17.0 as builder
+FROM alpine:3.17.1 as builder
 
 ARG ANSIBLE_VERSION=2.12.0
 ARG KUSTOMIZE_VERSION=4.5.4
@@ -48,7 +48,7 @@ RUN set -eux \
 	&& curl -fL https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v${KUSTOMIZE_VERSION}/kustomize_v${KUSTOMIZE_VERSION}_linux_amd64.tar.gz | tar xz \
 	&& chmod +x kustomize
 
-FROM alpine:3.17.0 as production
+FROM alpine:3.17.1 as production
 
 ENV \
 	USER=ansible \
@@ -72,6 +72,8 @@ LABEL "maintainer"="Simon Baerlocher <s.baerlocher@sbaerlocher.ch>" \
 COPY --from=builder /usr/lib/python3.10/site-packages/ /usr/lib/python3.10/site-packages/
 COPY --from=builder /usr/bin/ansible /usr/bin/ansible
 COPY --from=builder /usr/bin/ansible-connection /usr/bin/ansible-connection
+COPY --from=builder /usr/bin/ansible-playbook /usr/bin/ansible-playbook
+COPY --from=builder /usr/bin/ansible-galaxy /usr/bin/ansible-galaxy
 COPY --from=builder /home/kustomize /usr/local/bin/kustomize
 
 RUN set -eux \
@@ -110,9 +112,7 @@ RUN set -eux \
 	&& ln -sf ansible /usr/bin/ansible-config \
 	&& ln -sf ansible /usr/bin/ansible-console \
 	&& ln -sf ansible /usr/bin/ansible-doc \
-	&& ln -sf ansible /usr/bin/ansible-galaxy \
 	&& ln -sf ansible /usr/bin/ansible-inventory \
-	&& ln -sf ansible /usr/bin/ansible-playbook \
 	&& ln -sf ansible /usr/bin/ansible-pull \
 	&& ln -sf ansible /usr/bin/ansible-test \
 	&& ln -sf ansible /usr/bin/ansible-vault \
