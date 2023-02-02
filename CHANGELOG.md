@@ -9,6 +9,7 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
 - fix(deps): bump lxml from 4.9.1 to 4.9.2
 - fix(deps): bump alpine from 3.17.0 to 3.17.1
+- fix(deps): bump pip from 22.3.1 to 23.0
 
 ## master 10.12.2022
 
