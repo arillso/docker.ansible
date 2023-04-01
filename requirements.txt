@@ -13,4 +13,4 @@ lxml==4.9.2
 docker==6.0.1
 jmespath==1.0.1
 python-dateutil==2.8.2
-pytz==2022.7.1
+pytz==2023.3
