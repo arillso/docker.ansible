@@ -1,6 +1,5 @@
 # Use a base Alpine Linux image
-# Stage 1: Build Python dependencies
-FROM python:3.11.6-alpine3.18 as builder
+FROM alpine:3.18.4 as builder
 
 # Define build arguments for tool versions
 ARG ANSIBLE_VERSION=2.15.4
@@ -124,7 +123,7 @@ COPY --from=builder /usr/bin/kubectl /usr/bin/kubectl
 # Create the ansible user and set up directories
 RUN set -eux \
 	&& addgroup -g ${GID} ${GROUP} \
-	&& adduser -h /ansible -s /bin/bash -G ${GROUP} -D -u ${UID} ${USER} \
+	&& adduser -h /home/ansible -s /bin/bash -G ${GROUP} -D -u ${UID} ${USER} \
 	\
 	&& mkdir /home/ansible/.gnupg \
 	&& chown ansible:ansible /home/ansible/.gnupg \
