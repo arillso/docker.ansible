@@ -8,6 +8,7 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 - fix(deps): bump alpine from 3.17.1 to 3.18.4
+- fix(deps): bump ansible from 2.14.1 to 2.15.4
 
 ## master 02.02.2023
 
