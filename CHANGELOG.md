@@ -3,6 +3,13 @@
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
+## master 08.10.2023
+
+### Changed
+
+- fix(deps): bump alpine from 3.17.1 to 3.18.4
+- fix(deps): bump ansible from 2.14.1 to 2.15.4
+
 ## master 02.02.2023
 
 ### Changed
