@@ -69,7 +69,7 @@ LABEL "maintainer"="Simon Baerlocher <s.baerlocher@sbaerlocher.ch>" \
 	"org.opencontainers.image.title"="Ansible ${ANSIBLE_VERSION}" \
 	"org.opencontainers.image.description"="Ansible ${ANSIBLE_VERSION}"
 
-COPY --from=builder /usr/lib/python3.10/site-packages/ /usr/lib/python3.10/site-packages/
+COPY --from=builder /usr/lib/python3.11/site-packages/ /usr/lib/python3.11/site-packages/
 COPY --from=builder /usr/bin/ansible /usr/bin/ansible
 COPY --from=builder /usr/bin/ansible-connection /usr/bin/ansible-connection
 COPY --from=builder /usr/bin/ansible-playbook /usr/bin/ansible-playbook
