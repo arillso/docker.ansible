@@ -1,5 +1,6 @@
 # Use a base Alpine Linux image
-FROM alpine:3.18.4 as builder
+# Stage 1: Build Python dependencies
+FROM python:3.11.6-alpine3.18 as builder
 
 # Define build arguments for tool versions
 ARG ANSIBLE_VERSION=2.15.4
@@ -42,7 +43,7 @@ RUN apk --update --no-cache add --virtual \
 # Copy requirements file and install Python packages
 COPY requirements.txt /requirements.txt
 RUN set -eux \
-	&& GRPC_PYTHON_DISABLE_LIBC_COMPATIBILITY=1 pip3 install --upgrade -r /requirements.txt \
+	&& pip3 install --upgrade -r /requirements.txt \
 	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
 	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
 
@@ -160,6 +161,7 @@ RUN set -eux \
 	&& ln -sf ansible /usr/bin/ansible-vault \
 	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
 	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
+
 RUN mkdir -p /etc/ansible \
 	&& echo 'localhost'  > /etc/ansible/hosts
 
