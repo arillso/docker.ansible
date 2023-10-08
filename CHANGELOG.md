@@ -11,6 +11,7 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 - fix(deps): bump ansible from 2.14.1 to 2.15.4
 - fix(deps): bump pip from 23.0 to 23.2.1
 - fix(deps): bump pytz from 2022.7.1 to 2023.3.post1
+- fix(deps): bump wheel from 0.38.4 to 0.41.2
 
 ## master 02.02.2023
 

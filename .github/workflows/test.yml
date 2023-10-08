@@ -9,13 +9,15 @@ jobs:
           - "2.15.4"
 
     steps:
-      - uses: actions/checkout@v3
+
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       - name: Docker meta
         id: meta
@@ -34,5 +36,6 @@ jobs:
           context: .
           build-args: ANSIBLE_VERSION=${{ matrix.version }}
           push: false
+          platforms: linux/amd64,linux/arm64
           tags: |
             ${{ steps.meta.outputs.tags }}
