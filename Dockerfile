@@ -42,7 +42,7 @@ RUN apk --update --no-cache add --virtual \
 # Copy requirements file and install Python packages
 COPY requirements.txt /requirements.txt
 RUN set -eux \
-	&& pip3 install --upgrade -r /requirements.txt \
+	&& GRPC_PYTHON_DISABLE_LIBC_COMPATIBILITY=1 pip3 install --upgrade -r /requirements.txt \
 	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
 	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
 
@@ -123,7 +123,7 @@ COPY --from=builder /usr/bin/kubectl /usr/bin/kubectl
 # Create the ansible user and set up directories
 RUN set -eux \
 	&& addgroup -g ${GID} ${GROUP} \
-	&& adduser -h /home/ansible -s /bin/bash -G ${GROUP} -D -u ${UID} ${USER} \
+	&& adduser -h /ansible -s /bin/bash -G ${GROUP} -D -u ${UID} ${USER} \
 	\
 	&& mkdir /home/ansible/.gnupg \
 	&& chown ansible:ansible /home/ansible/.gnupg \
@@ -160,7 +160,6 @@ RUN set -eux \
 	&& ln -sf ansible /usr/bin/ansible-vault \
 	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
 	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
-
 RUN mkdir -p /etc/ansible \
 	&& echo 'localhost'  > /etc/ansible/hosts
 
