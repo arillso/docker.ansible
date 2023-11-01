@@ -3,6 +3,12 @@
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 
+## master 01.11.2023
+
+### Changed
+
+- fix(deps): bump docker/login-action from 2 to 3
+
 ## master 08.10.2023
 
 ### Changed
