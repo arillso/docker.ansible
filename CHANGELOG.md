@@ -17,6 +17,7 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 - fix(deps): bump mitogen from 0.3.3 to 0.3.4
 - fix(deps): bump cffi from 1.15.1 to 1.16.0
 - fix(deps): bump docker from 6.0.1 to 6.1.3
+- fix(deps): bump pip from 23.2.1 to 23.3.1
 
 ## master 08.10.2023
 
