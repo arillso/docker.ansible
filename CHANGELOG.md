@@ -12,6 +12,7 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 - fix(deps): bump docker/build-push-action from 4 to 5
 - fix(deps): bump netaddr from 0.8.0 to 0.9.0
 - fix(deps): bump lxml from 4.9.2 to 4.9.3
+- fix(deps): bump dnspython from 2.3.0 to 2.4.2
 
 ## master 08.10.2023
 
