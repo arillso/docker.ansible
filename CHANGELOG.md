@@ -8,6 +8,7 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 - fix(deps): bump docker/login-action from 2 to 3
+- fix(deps): bump docker/metadata-action from 4 to 5
 
 ## master 08.10.2023
 
