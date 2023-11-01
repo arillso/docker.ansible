@@ -10,6 +10,7 @@ and [human-readable changelog](https://keepachangelog.com/en/1.0.0/).
 - fix(deps): bump docker/login-action from 2 to 3
 - fix(deps): bump docker/metadata-action from 4 to 5
 - fix(deps): bump docker/build-push-action from 4 to 5
+- fix(deps): bump netaddr from 0.8.0 to 0.9.0
 
 ## master 08.10.2023
 
