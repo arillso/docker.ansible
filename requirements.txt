@@ -6,7 +6,7 @@ requests-credssp==2.0.0
 dnspython==2.4.2
 jmespath==1.0.1
 netaddr==0.9.0
-mitogen==0.3.3
+mitogen==0.3.4
 openshift==0.13.1
 lxml==4.9.3
 docker==6.0.1
