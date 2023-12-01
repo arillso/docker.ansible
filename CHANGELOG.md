@@ -251,15 +251,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - from `2.9.9` to `2.9.13`.
   - from `2.8.12` to `2.8.15`.
 
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [Unreleased]
-
 ## [2020-09-05]
 
 ### Changed
