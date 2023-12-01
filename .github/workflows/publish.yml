@@ -3,7 +3,7 @@ name: Publish
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   publish:
@@ -14,7 +14,6 @@ jobs:
           - "2.15.5"
 
     steps:
-
       - name: Checkout
         uses: actions/checkout@v4
 
