@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated dependencies:
 - `netaddr` from `0.9.0` to `0.10.0`.
+- `docker` from `6.1.3` to `7.0.0`.
 
 ## [2023-12-01]
 
