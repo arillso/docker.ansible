@@ -8,19 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Updated dependencies:
-- `netaddr` from `0.9.0` to `0.10.0`.
-- `docker` from `6.1.3` to `7.0.0`.
-- `crowdstrike-falconpy` from `1.3.4` to `1.4.0`.
-- `pip` from `23.3.1` to `23.3.2`.
+  - `netaddr` from `0.9.0` to `0.10.0`.
+  - `docker` from `6.1.3` to `7.0.0`.
+  - `crowdstrike-falconpy` from `1.3.4` to `1.4.0`.
+  - `pip` from `23.3.1` to `23.3.2`.
+  - `lxml` from `4.9.3` to `5.0.0`.
 
 ## [2023-12-01]
 
 ### Changed
 
 - Updated dependencies:
-- `crowdstrike-falconpy` from `1.3.3` to `1.3.4`.
-- `wheel` from `0.41.3` to `0.42.0`.
-- `alpine` from `3.18.4` to `3.18.5`.
+  - `crowdstrike-falconpy` from `1.3.3` to `1.3.4`.
+  - `wheel` from `0.41.3` to `0.42.0`.
+  - `alpine` from `3.18.4` to `3.18.5`.
 
 ## [2023-11-28]
 
