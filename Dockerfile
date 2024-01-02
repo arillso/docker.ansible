@@ -1,5 +1,5 @@
 # Use a base Alpine Linux image
-FROM alpine:3.18.5 as builder
+FROM alpine:3.19.0 as builder
 
 # Define build arguments for tool versions
 ARG ANSIBLE_VERSION=2.15.4
@@ -42,13 +42,13 @@ RUN apk --update --no-cache add --virtual \
 # Copy requirements file and install Python packages
 COPY requirements.txt /requirements.txt
 RUN set -eux \
-	&& pip3 install --upgrade -r /requirements.txt \
+	&& pip3 install --upgrade --break-system-packages -r /requirements.txt \
 	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
 	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
 
 # Install Ansible and cleanup Python cache
 RUN set -eux \
-	&& pip3 install --no-cache-dir ansible-core==${ANSIBLE_VERSION} \
+	&& pip3 install --break-system-packages --no-cache-dir ansible-core==${ANSIBLE_VERSION} \
 	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
 	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
 
@@ -87,7 +87,7 @@ RUN . /envfile && echo $ARCH && \
 	rm kustomize_${KUSTOMIZE_VERSION}_linux_${ARCH}.tar.gz
 
 # Create a new stage for the production image
-FROM alpine:3.18.5 as production
+FROM alpine:3.19.0 as production
 
 # Define environment variables
 ENV \

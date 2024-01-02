@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `crowdstrike-falconpy` from `1.3.4` to `1.4.0`.
   - `pip` from `23.3.1` to `23.3.2`.
   - `lxml` from `4.9.3` to `5.0.0`.
+- Updated Alpine base image from `3.18.5` to `3.19.0`.
+- Added `--break-system-packages` option in pip installation to allow installing packages in externally managed environments.
+- Updated Ansible version from `2.15.5` to `2.16.2`.
 
 ## [2023-12-01]
 
