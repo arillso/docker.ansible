@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated dependencies:
   - `alpine` from `3.18.5` to `3.19.0`.
   - `lxml` from `5.0.0` to `5.1.0`.
+  - `netaddr` from `0.10.0` to `0.10.1`.
 
 ## [2024-01-02]
 
