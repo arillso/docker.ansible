@@ -3,7 +3,7 @@ pip==23.3.2
 cffi==1.16.0
 pywinrm[credssp]==0.4.3
 requests-credssp==2.0.0
-dnspython==2.4.2
+dnspython==2.5.0
 jmespath==1.0.1
 netaddr==0.10.1
 mitogen==0.3.4
