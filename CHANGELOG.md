@@ -8,10 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Updated dependencies:
-  - `alpine` from `3.18.5` to `3.19.0`.
+  - `dnspython` from `2.4.2` to `2.5.0`.
   - `lxml` from `5.0.0` to `5.1.0`.
   - `netaddr` from `0.10.0` to `0.10.1`.
-  - `dnspython` from `2.4.2` to `2.5.0`.
+  - `pytz` from `2023.3.post1` to `2023.4`.
+- Updated Alpine base image from `3.18.5` to `3.19.0`.
 
 ## [2024-01-02]
 
