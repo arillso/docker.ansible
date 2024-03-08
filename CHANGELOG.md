@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `pytz` from `2023.4` to `2024.1`.
   - `netaddr` from `0.10.1` to `1.2.1`.
   - `pip` from `23.3.2` to `24.0`.
+  - `python-dateutil` from `2.8.2` to `2.9.0.post0`.
 
 ## [2024-02-01]
 
