@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated dependencies:
   - `dnspython` from `2.5.0` to `2.6.1`.
   - `crowdstrike-falconpy` from `1.4.0` to `1.4.0`.
+  - `pytz` from `2023.4` to `2024.1`.
   - `netaddr` from `0.10.1` to `1.2.1`.
 
 ## [2024-02-01]
