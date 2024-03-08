@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated dependencies:
   - `crowdstrike-falconpy` from `1.4.0` to `1.4.0`.
+  - `pytz` from `2023.4` to `2024.1`.
 
 ## [2024-02-01]
 
