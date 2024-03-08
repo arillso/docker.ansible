@@ -5,7 +5,7 @@ pywinrm[credssp]==0.4.3
 requests-credssp==2.0.0
 dnspython==2.5.0
 jmespath==1.0.1
-netaddr==0.10.1
+netaddr==1.2.1
 mitogen==0.3.4
 openshift==0.13.2
 lxml==5.1.0
