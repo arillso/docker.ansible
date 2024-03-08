@@ -5,7 +5,7 @@ pywinrm[credssp]==0.4.3
 requests-credssp==2.0.0
 dnspython==2.6.1
 jmespath==1.0.1
-netaddr==0.10.1
+netaddr==1.2.1
 mitogen==0.3.4
 openshift==0.13.2
 lxml==5.1.0
@@ -13,4 +13,4 @@ docker==7.0.0
 jmespath==1.0.1
 python-dateutil==2.8.2
 pytz==2023.4
-crowdstrike-falconpy==1.4.0
+crowdstrike-falconpy==1.4.1
