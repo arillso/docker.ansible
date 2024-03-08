@@ -1,5 +1,5 @@
 wheel==0.42.0
-pip==23.3.2
+pip==24.0
 cffi==1.16.0
 pywinrm[credssp]==0.4.3
 requests-credssp==2.0.0
