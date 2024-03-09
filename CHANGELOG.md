@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `netaddr` from `0.10.1` to `1.2.1`.
   - `pip` from `23.3.2` to `24.0`.
   - `python-dateutil` from `2.8.2` to `2.9.0.post0`.
+- Updated Ansible version from `2.16.2` to `2.16.4`.
 
 ## [2024-02-01]
 

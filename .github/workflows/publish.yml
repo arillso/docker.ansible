@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         version:
-          - "2.16.2"
+          - "2.16.4"
 
     steps:
       - name: Checkout
@@ -31,7 +31,7 @@ jobs:
             ghcr.io/arillso/ansible
             arillso/ansible
           tags: |
-            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
             type=raw,value=${{ matrix.version }}
 
       - name: Login to DockerHub
