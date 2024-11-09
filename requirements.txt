@@ -11,6 +11,7 @@ openshift==0.13.2
 lxml==5.1.0
 docker==7.0.0
 jmespath==1.0.1
+passlib==1.7.4
 python-dateutil==2.9.0.post0
 pytz==2024.1
 crowdstrike-falconpy==1.4.1
