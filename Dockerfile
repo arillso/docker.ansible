@@ -1,5 +1,5 @@
 # Use a base Alpine Linux image
-FROM alpine:3.19.1 as builder
+FROM alpine:3.21.3 as builder
 
 # Define build arguments for tool versions
 ARG ANSIBLE_VERSION=2.15.4
@@ -87,7 +87,7 @@ RUN . /envfile && echo $ARCH && \
 	rm kustomize_${KUSTOMIZE_VERSION}_linux_${ARCH}.tar.gz
 
 # Create a new stage for the production image
-FROM alpine:3.19.1 as production
+FROM alpine:3.21.3 as production
 
 # Define environment variables
 ENV \
