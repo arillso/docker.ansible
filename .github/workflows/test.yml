@@ -1,51 +1,63 @@
 name: Testing Container
 on:
-  push:
-    paths:
-      - ".github/workflows/test.yml"
-      - "requirements.txt"
-      - "Dockerfile"
-  pull_request:
-    paths:
-      - ".github/workflows/test.yml"
-      - "requirements.txt"
-      - "Dockerfile"
+    push:
+        paths:
+            - ".github/workflows/test.yml"
+            - "requirements.txt"
+            - "Dockerfile"
+    pull_request:
+        paths:
+            - ".github/workflows/test.yml"
+            - "requirements.txt"
+            - "Dockerfile"
+
+permissions:
+    contents: read
 
 jobs:
-  testing:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        version:
-          - "2.16.4"
+    publish:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+            - name: Extract version from requirements.txt
+              id: get_version
+              run: |
+                  version=$(grep '^ansible-core==' requirements.txt | cut -d'=' -f3)
+                  echo "version=$version" >> "$GITHUB_OUTPUT"
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+            - name: Set up QEMU
+              uses: docker/setup-qemu-action@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
 
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            ghcr.io/arillso/ansible
-            arillso/ansible
-          tags: |
-            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
-            type=raw,value=${{ matrix.version }}-test
+            - name: Docker meta
+              id: meta
+              uses: docker/metadata-action@v5
+              with:
+                  images: |
+                      ghcr.io/arillso/ansible
+                      arillso/ansible
+                  tags: |
+                      type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+                      type=raw,value=${{ steps.get_version.outputs.version }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          build-args: ANSIBLE_VERSION=${{ matrix.version }}
-          push: false
-          platforms: linux/amd64,linux/arm64
-          tags: |
-            ${{ steps.meta.outputs.tags }}
+            - name: Build and push
+              uses: docker/build-push-action@v5
+              with:
+                  context: .
+                  build-args: ANSIBLE_VERSION=${{ steps.get_version.outputs.version }}
+                  push: false
+                  load: true
+                  tags: |
+                      ${{ steps.meta.outputs.tags }}
+
+            - name: Run Container Structure Tests
+              run: |
+                  docker run --rm \
+                    -v "$GITHUB_WORKSPACE/tests/structure-test.yml:/structure-test.yaml" \
+                    -v /var/run/docker.sock:/var/run/docker.sock \
+                    gcr.io/gcp-runtimes/container-structure-test:latest \
+                    test --image=arillso/ansible:${{ steps.get_version.outputs.version }} --config=/structure-test.yaml
