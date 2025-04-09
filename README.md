@@ -1,38 +1,78 @@
 # Container: Ansible
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-) [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=popout-square)](licence)
+[![License: MIT](https://img.shields.io/github/license/arillso/docker.ansible?style=popout-square)](LICENSE)
 
-## Description
+## Overview
 
-Tiny Alpine.based container version of Ansible.
+This is a lightweight, Alpine Linux–based container that provides an isolated environment for running Ansible. It uses a
+Python virtual environment along with [pipx](https://github.com/pipxproject/pipx) to manage dependencies. This setup
+makes the container ideal for CI/CD pipelines and portable Ansible deployments.
 
-## Contributors ✨
+## Usage
 
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tr>
-    <td align="center"><a href="https://sbaerlocher.ch"><img src="https://avatars1.githubusercontent.com/u/4160387?v=4" width="100px;" alt="Simon Baerlocher"/><br /><sub><b>Simon Baerlocher</b></sub></a><br /><a href="https://github.com/arillso/docker.ansible/commits?author=sbaerlocher" title="Code">💻</a> <a href="#ideas-sbaerlocher" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/arillso/docker.ansible/commits?author=sbaerlocher" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/mleutenegger"><img src="https://avatars2.githubusercontent.com/u/1339379?v=4" width="100px;" alt="Matthias Leutenegger"/><br /><sub><b>Matthias Leutenegger</b></sub></a><br /><a href="#review-mleutenegger" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/arillso/docker.ansible/commits?author=mleutenegger" title="Code">💻</a> <a href="#ideas-mleutenegger" title="Ideas, Planning, & Feedback">🤔</a></td>
-    <td align="center"><a href="http://www.itigo.ch"><img src="https://avatars0.githubusercontent.com/u/1763127?v=4" width="100px;" alt="Pascal Mages"/><br /><sub><b>Pascal Mages</b></sub></a><br /><a href="#review-FreeMinded" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/arillso/docker.ansible/commits?author=FreeMinded" title="Documentation">📖</a></td>
-    <td align="center"><a href="https://github.com/ndum"><img src="https://avatars1.githubusercontent.com/u/18392323?v=4" width="100px;" alt="Nicolas"/><br /><sub><b>Nicolas</b></sub></a><br /><a href="#review-ndum" title="Reviewed Pull Requests">👀</a></td>
-  </tr>
-</table>
+To check the installed Ansible version, simply run:
 
-<!-- markdownlint-enable -->
-<!-- prettier-ignore-end -->
+```bash
+docker run --rm arillso/ansible ansible-playbook --version
+```
 
-<!-- ALL-CONTRIBUTORS-LIST:END -->
+## Build from Source
+
+If you prefer to build the container image yourself, you can do so using the provided Makefile. This command
+automatically extracts the necessary information from the `requirements.txt` file.
+
+To build the image locally, run:
+
+```bash
+make ansible-build
+```
+
+This command will:
+
+- Read the Ansible dependency information from `requirements.txt`
+- Build the container image based on the Dockerfile provided
+- Tag the image as `ansible:latest`
+
+## Availability
+
+The image is available on multiple registries:
+
+- **GitHub Container Registry:**
+
+  ```bash
+  docker pull ghcr.io/arillso/ansible
+  ```
+
+- **Docker Hub:**
+
+  ```bash
+  docker pull arillso/ansible
+  ```
+
+## Contributing
+
+Contributions are welcome! Here’s how you can get involved:
+
+- **Report Issues:** If you find any bugs or have suggestions for improvements, please open an issue on
+  [GitHub Issues](https://github.com/arillso/docker.ansible/issues).
+- **Submit Pull Requests:** Feel free to fork the repository, make your changes, and submit a pull request. Please
+  ensure your changes adhere to our coding standards.
+- **Documentation:** If you have ideas for additional documentation or enhancements, please share them in an issue or
+  via a pull request.
+- **Stay Updated:** Follow the repository to keep up with new releases and updates.
+
+For more detailed guidelines, please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file if available.
+
+## Further Information
+
+- **Changelog:** A detailed version history can be found in the [CHANGELOG.md](CHANGELOG.md).
+- **Source Code:** The complete project is hosted on [GitHub](https://github.com/arillso/docker.ansible).
+- **Documentation:** Additional instructions and documentation are available in the repository.
 
 ## License
 
-<!-- markdownlint-disable -->
-
-This project is under the MIT License. See the [LICENSE](licence) file for the full license text.
-
-<!-- markdownlint-enable -->
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for full details.
 
 ## Copyright
 
-(c) 2020, Arillso
+© 2020 – 2025, Arillso

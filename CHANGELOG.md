@@ -1,7 +1,9 @@
 # Changelog
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to
+[Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+<!-- markdownlint-disable MD024 -->
 
 ## [2024-03-09]
 
@@ -38,7 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `pip` from `23.3.1` to `23.3.2`.
   - `lxml` from `4.9.3` to `5.0.0`.
 - Updated Alpine base image from `3.18.5` to `3.19.0`.
-- Added `--break-system-packages` option in pip installation to allow installing packages in externally managed environments.
+- Added `--break-system-packages` option in pip installation to allow installing packages in externally managed
+  environments.
 - Updated Ansible version from `2.15.5` to `2.16.2`.
 
 ## [2023-12-01]

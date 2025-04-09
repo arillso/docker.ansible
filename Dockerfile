@@ -1,171 +1,136 @@
-# Use a base Alpine Linux image
-FROM alpine:3.19.1 as builder
+# syntax=docker/dockerfile:1
 
-# Define build arguments for tool versions
-ARG ANSIBLE_VERSION=2.15.4
-ARG HELM_VERSION=3.13.0
-ARG KUBECTL_VERSION=1.28.2
-ARG KUSTOMIZE_VERSION=v5.1.1
+##############################################
+# Builder Stage: Build dependencies and create venv
+##############################################
+FROM alpine:3.21.3 AS builder
 
-# Set the working directory
+ARG BUILD_DATE        # Build date for metadata
+ARG ANSIBLE_VERSION   # Ansible version to use
+
+# OCI metadata labels
+LABEL org.opencontainers.image.created="${BUILD_DATE}" \
+	org.opencontainers.image.authors="Simon Baerlocher <s.baerlocher@sbaerlocher.ch>" \
+	org.opencontainers.image.vendor="arillso" \
+	org.opencontainers.image.licenses="MIT" \
+	org.opencontainers.image.url="https://github.com/arillso/docker.ansible" \
+	org.opencontainers.image.documentation="https://github.com/arillso/docker.ansible" \
+	org.opencontainers.image.source="https://github.com/arillso/docker.ansible" \
+	org.opencontainers.image.ref.name="Ansible ${ANSIBLE_VERSION}" \
+	org.opencontainers.image.title="Ansible ${ANSIBLE_VERSION}" \
+	org.opencontainers.image.description="Ansible ${ANSIBLE_VERSION} container image"
+
+# Set pipx environment variables
+ENV PIPX_HOME=/pipx \
+	PIPX_BIN_DIR=/pipx/bin \
+	PATH=/pipx/bin:$PATH
+
 WORKDIR /home
 
-# Install common dependencies for building and runtime
-RUN apk --update --no-cache add \
-	gcc \
-	libffi-dev \
-	make \
-	musl-dev \
-	python3 \
-	bc \
-	ca-certificates \
-	git \
-	openssh-client \
-	rsync \
-	curl
-
-# Install development dependencies in a separate virtual package
-RUN apk --update --no-cache add --virtual \
-	.build-deps \
-	sshpass \
-	python3-dev \
-	libffi-dev \
-	openssl-dev \
-	build-base \
-	py3-pip \
-	py3-wheel \
-	rust \
-	cargo \
-	libxml2 \
-	libxslt-dev
-
-# Copy requirements file and install Python packages
+# Copy dependency definitions
 COPY requirements.txt /requirements.txt
-RUN set -eux \
-	&& pip3 install --upgrade --break-system-packages -r /requirements.txt \
-	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
-	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
 
-# Install Ansible and cleanup Python cache
-RUN set -eux \
-	&& pip3 install --break-system-packages --no-cache-dir ansible-core==${ANSIBLE_VERSION} \
-	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
-	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
+# Update package index and install build dependencies (with fixed versions)
+RUN apk update && \
+	apk add --no-cache \
+	python3=3.12.9-r0 \
+	py3-pip=24.3.1-r0 \
+	pipx=1.7.1-r0 \
+	gcc=14.2.0-r4 \
+	libffi-dev=3.4.7-r0 \
+	python3-dev=3.12.9-r0 \
+	make=4.4.1-r2 \
+	musl-dev=1.2.5-r9 \
+	ca-certificates=20241121-r1 \
+	git=2.47.2-r0 \
+	openssh-client-common=9.9_p2-r0 \
+	openssh-client-default=9.9_p2-r0 \
+	rsync=3.4.0-r0 \
+	curl=8.12.1-r1 \
+	build-base=0.5-r3
 
-# Determine the architecture and set an environment variable
-RUN case `uname -m` in \
-	x86_64) ARCH=amd64; ;; \
-	armv7l) ARCH=arm; ;; \
-	aarch64) ARCH=arm64; ;; \
-	ppc64le) ARCH=ppc64le; ;; \
-	s390x) ARCH=s390x; ;; \
-	*) echo "unsupported arch, exit ..."; exit 1; ;; \
-	esac && \
-	echo "export ARCH=$ARCH" > /envfile && \
-	cat /envfile
+# Create Python virtual environment, install dependencies, and link executables
+RUN python3 -m venv /pipx/venvs/ansible && \
+	/pipx/venvs/ansible/bin/pip install --upgrade pip --no-cache-dir && \
+	/pipx/venvs/ansible/bin/pip install --no-cache-dir -r /requirements.txt && \
+	mkdir -p /pipx/bin && \
+	for file in /pipx/venvs/ansible/bin/*; do \
+	ln -sf "$file" "/pipx/bin/$(basename "$file")"; \
+	done && \
+	rm -rf /var/cache/apk/* /tmp/*
 
-# Install Helm
-RUN . /envfile && echo $ARCH && \
-	apk add --update --no-cache curl ca-certificates bash git && \
-	curl -sL https://get.helm.sh/helm-v${HELM_VERSION}-linux-${ARCH}.tar.gz | tar -xvz && \
-	mv linux-${ARCH}/helm /usr/bin/helm && \
-	chmod +x /usr/bin/helm && \
-	rm -rf linux-${ARCH}
+##############################################
+# Production Stage: Final runtime image
+##############################################
+FROM alpine:3.21.3 AS production
 
-# Install kubectl
-RUN . /envfile && echo $ARCH && \
-	curl -sLO https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/${ARCH}/kubectl && \
-	mv kubectl /usr/bin/kubectl && \
-	chmod +x /usr/bin/kubectl
+ARG BUILD_DATE        # Build date for metadata
+ARG ANSIBLE_VERSION   # Ansible version to use
 
-# Install Kustomize
-RUN . /envfile && echo $ARCH && \
-	curl -sLO https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_${ARCH}.tar.gz && \
-	tar xvzf kustomize_${KUSTOMIZE_VERSION}_linux_${ARCH}.tar.gz && \
-	mv kustomize /usr/bin/kustomize && \
-	chmod +x /usr/bin/kustomize && \
-	rm kustomize_${KUSTOMIZE_VERSION}_linux_${ARCH}.tar.gz
+# OCI metadata labels
+LABEL org.opencontainers.image.created="${BUILD_DATE}" \
+	org.opencontainers.image.authors="Simon Baerlocher <s.baerlocher@sbaerlocher.ch>" \
+	org.opencontainers.image.vendor="arillso" \
+	org.opencontainers.image.licenses="MIT" \
+	org.opencontainers.image.url="https://github.com/arillso/docker.ansible" \
+	org.opencontainers.image.documentation="https://github.com/arillso/docker.ansible" \
+	org.opencontainers.image.source="https://github.com/arillso/docker.ansible" \
+	org.opencontainers.image.ref.name="Ansible ${ANSIBLE_VERSION}" \
+	org.opencontainers.image.title="Ansible ${ANSIBLE_VERSION}" \
+	org.opencontainers.image.description="Ansible ${ANSIBLE_VERSION} container image"
 
-# Create a new stage for the production image
-FROM alpine:3.19.1 as production
-
-# Define environment variables
-ENV \
+# Set runtime environment variables and user parameters
+ENV PIPX_HOME=/pipx \
+	PIPX_BIN_DIR=/pipx/bin \
+	PATH=/pipx/bin:$PATH \
 	USER=ansible \
 	GROUP=ansible \
 	UID=1000 \
 	GID=1000
 
-# Set Ansible version as an argument
-ARG ANSIBLE_VERSION=2.15.4
+WORKDIR /home/ansible
 
-# Set labels for the image
-LABEL "maintainer"="Simon Baerlocher <s.baerlocher@sbaerlocher.ch>" \
-	"org.opencontainers.image.authors"="Simon Baerlocher <s.baerlocher@sbaerlocher.ch>" \
-	"org.opencontainers.image.vendor"="arillso" \
-	"org.opencontainers.image.licenses"="MIT" \
-	"org.opencontainers.image.url"="https://github.com/arillso/docker.ansible" \
-	"org.opencontainers.image.documentation"="https://github.com/arillso/docker.ansible" \
-	"org.opencontainers.image.source"="https://github.com/arillso/docker.ansible" \
-	"org.opencontainers.image.ref.name"="Ansible ${ANSIBLE_VERSION}" \
-	"org.opencontainers.image.title"="Ansible ${ANSIBLE_VERSION}" \
-	"org.opencontainers.image.description"="Ansible ${ANSIBLE_VERSION}"
+# Add community repository, update APK index, and install runtime dependencies with fixed versions
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.21/community" >> /etc/apk/repositories && \
+	apk update && \
+	apk add --no-cache \
+	python3=3.12.9-r0 \
+	kubectl=1.31.5-r2 \
+	jq=1.7.1-r0 \
+	helm=3.16.3-r4 \
+	kustomize=5.5.0-r4 \
+	bash=5.2.37-r0 \
+	git=2.47.2-r0 \
+	gnupg=2.4.7-r0 \
+	openssh-client-common=9.9_p2-r0 \
+	openssh-client-default=9.9_p2-r0 \
+	openssh-keygen=9.9_p2-r0 \
+	openssl=3.3.3-r0 \
+	sshpass=1.10-r0 \
+	rsync=3.4.0-r0 && \
+	addgroup -g ${GID} ${GROUP} && \
+	adduser -h /home/ansible -s /bin/bash -G ${GROUP} -D -u ${UID} ${USER} && \
+	ln -sf /usr/bin/python3 /usr/bin/python && \
+	mkdir -p /home/ansible/.gnupg /home/ansible/.ssh /data && \
+	chown -R ${USER}:${GROUP} /home/ansible /data && \
+	chmod 0700 /home/ansible/.gnupg /home/ansible/.ssh && \
+	chmod 0755 /data && \
+	rm -rf /var/cache/apk/* /tmp/*
 
-# Copy necessary files and binaries from the builder stage
-COPY --from=builder /usr/lib/python3.11/site-packages/ /usr/lib/python3.11/site-packages/
-COPY --from=builder /usr/bin/ansible /usr/bin/ansible
-COPY --from=builder /usr/bin/ansible-connection /usr/bin/ansible-connection
-COPY --from=builder /usr/bin/ansible-galaxy /usr/bin/ansible-galaxy
-COPY --from=builder /usr/bin/ansible-inventory /usr/bin/ansible-inventory
-COPY --from=builder /usr/bin/ansible-playbook /usr/bin/ansible-playbook
-COPY --from=builder /usr/bin/kubectl /usr/bin/kubectl
-COPY --from=builder /usr/bin/kustomize /usr/bin/kustomize
+# Copy pipx environment from builder stage
+COPY --from=builder /pipx /pipx
 
-# Create the ansible user and set up directories
-RUN set -eux \
-	&& addgroup -g ${GID} ${GROUP} \
-	&& adduser -h /home/ansible -s /bin/bash -G ${GROUP} -D -u ${UID} ${USER} \
-	\
-	&& mkdir /home/ansible/.gnupg \
-	&& chown ansible:ansible /home/ansible/.gnupg \
-	&& chmod 0700 /home/ansible/.gnupg \
-	\
-	&& mkdir /home/ansible/.ssh \
-	&& chown ansible:ansible /home/ansible/.ssh \
-	&& chmod 0700 /home/ansible/.ssh \
-	\
-	&& mkdir /data \
-	&& chown ansible:ansible /data \
-	&& chmod 0755 /data \
-	\
-	&& apk add --no-cache \
-	bash \
-	git \
-	gnupg \
-	jq \
-	openssh-client \
-	openssl \
-	python3 \
-	sshpass \
-	rsync \
-	libxml2 \
-	libxslt-dev \
-	--repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-	&& ln -sf /usr/bin/python3 /usr/bin/python \
-	&& ln -sf ansible /usr/bin/ansible-config \
-	&& ln -sf ansible /usr/bin/ansible-console \
-	&& ln -sf ansible /usr/bin/ansible-doc \
-	&& ln -sf ansible /usr/bin/ansible-pull \
-	&& ln -sf ansible /usr/bin/ansible-test \
-	&& ln -sf ansible /usr/bin/ansible-vault \
-	&& find /usr/lib/ -name '__pycache__' -print0 | xargs -0 -n1 rm -rf \
-	&& find /usr/lib/ -name '*.pyc' -print0 | xargs -0 -n1 rm -rf
+# Create default Ansible configuration
+RUN mkdir -p /etc/ansible && \
+	echo 'localhost' > /etc/ansible/hosts && \
+	rm -rf /tmp/*
 
-RUN mkdir -p /etc/ansible \
-	&& echo 'localhost'  > /etc/ansible/hosts
-
+# Switch to non-root user for runtime
 USER ${USER}
-
 ENV ANSIBLE_FORCE_COLOR=True
 
-CMD [ "/usr/bin/ansible-playbook", "--version" ]
+# Default command to show ansible-playbook version
+CMD ["ansible-playbook", "--version"]
+
+# Healthcheck to verify Ansible functionality
+HEALTHCHECK --interval=30s --timeout=10s CMD ansible --version || exit 1
