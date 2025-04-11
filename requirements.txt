@@ -1,5 +1,5 @@
 ansible-core==2.18.4
-cffi==1.16.0
+cffi==1.17.1
 crowdstrike-falconpy==1.4.1
 dnspython==2.6.1
 docker==7.1.0
