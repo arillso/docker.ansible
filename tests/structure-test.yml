@@ -1,0 +1,152 @@
+schemaVersion: "2.0.0"
+
+commandTests:
+    # Kubernetes Tools
+    - name: "Check kubectl Version"
+      command: "kubectl"
+      args: ["version", "--client"]
+      expectedOutput:
+          - "Client Version"
+
+    - name: "Check Helm Version"
+      command: "helm"
+      args: ["version", "--short"]
+      expectedOutput:
+          - "v3.16"
+
+    - name: "Check kustomize Version"
+      command: "kustomize"
+      args: ["version"]
+      expectedOutput:
+          - "5.5.0"
+
+    # Shell Tools & Utilities
+    - name: "Check Bash Version"
+      command: "bash"
+      args: ["--version"]
+      expectedOutput:
+          - "GNU bash"
+
+    - name: "Check jq Version"
+      command: "jq"
+      args: ["--version"]
+      expectedOutput:
+          - "jq-1.7"
+
+    - name: "Check sshpass Availability"
+      command: "which"
+      args: ["sshpass"]
+      expectedOutput:
+          - "/usr/bin/sshpass"
+
+    - name: "Check OpenSSL Version"
+      command: "openssl"
+      args: ["version"]
+      expectedOutput:
+          - "OpenSSL 3.3.3"
+
+    - name: "Check Git Version"
+      command: "git"
+      args: ["--version"]
+      expectedOutput:
+          - "git version"
+
+    # Python Symlink Test
+    - name: "Check python Symlink"
+      command: "readlink"
+      args: ["-f", "/usr/bin/python"]
+      expectedOutput:
+          - "/usr/bin/python3"
+
+    # Ansible Tools
+    - name: "Check ansible-playbook Version"
+      command: "ansible-playbook"
+      args: ["--version"]
+      expectedOutput:
+          - "ansible-playbook"
+
+    - name: "Check ansible Version"
+      command: "ansible"
+      args: ["--version"]
+      expectedOutput:
+          - "ansible"
+
+    # User and UID Tests
+    - name: "Check if container is running as user 'ansible'"
+      command: "whoami"
+      expectedOutput:
+          - "ansible"
+
+    - name: "Check if UID is 1000"
+      command: "id"
+      args: ["-u"]
+      expectedOutput:
+          - "1000"
+
+    # PATH Test
+    - name: "Check if PATH contains /pipx/bin"
+      command: "printenv"
+      args: ["PATH"]
+      expectedOutput:
+          - ".*\\/pipx\\/bin.*"
+
+    # Example for Setup/Teardown
+    - name: "Create temporary file and verify content"
+      setup:
+          - ["touch", "/tmp/testfile"]
+          - ["sh", "-c", "echo hello world > /tmp/testfile"]
+      command: "cat"
+      args: ["/tmp/testfile"]
+      expectedOutput:
+          - "hello world"
+      teardown:
+          - ["rm", "-f", "/tmp/testfile"]
+
+fileExistenceTests:
+    - name: "Check if /etc/ansible/hosts exists"
+      path: "/etc/ansible/hosts"
+      shouldExist: true
+
+    - name: "Check if /pipx/bin exists"
+      path: "/pipx/bin"
+      shouldExist: true
+
+    - name: "Check /data Directory"
+      path: "/data"
+      shouldExist: true
+      permissions: "drwxr-xr-x"
+
+    - name: "Check .gnupg Directory"
+      path: "/home/ansible/.gnupg"
+      shouldExist: true
+      permissions: "drwx------"
+
+    - name: "Check .ssh Directory"
+      path: "/home/ansible/.ssh"
+      shouldExist: true
+      permissions: "drwx------"
+
+    - name: "Check Alpine release file exists"
+      path: "/etc/alpine-release"
+      shouldExist: true
+
+fileContentTests:
+    - name: "Verify Alpine version"
+      path: "/etc/alpine-release"
+      expectedContents:
+          - "3.21.3"
+
+metadataTest:
+    labels:
+        - key: "org.opencontainers.image.vendor"
+          value: "arillso"
+        - key: "org.opencontainers.image.licenses"
+          value: "MIT"
+    envVars:
+        - key: "USER"
+          value: "ansible"
+        - key: "UID"
+          value: "1000"
+    cmd: ["ansible-playbook", "--version"]
+    workdir: "/home/ansible"
+    user: "ansible"
