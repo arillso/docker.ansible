@@ -1,7 +1,7 @@
 ansible-core==2.18.4
 cffi==1.16.0
 crowdstrike-falconpy==1.4.1
-dnspython==2.6.1
+dnspython==2.7.0
 docker==7.1.0
 jmespath==1.0.1
 jmespath==1.0.1
