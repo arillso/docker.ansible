@@ -33,7 +33,7 @@ COPY requirements.txt /requirements.txt
 # Update package index and install build dependencies (with fixed versions)
 RUN apk update && \
 	apk add --no-cache \
-	python3=3.12.9-r0 \
+	python3=3.12.10-r0 \
 	py3-pip=24.3.1-r0 \
 	pipx=1.7.1-r0 \
 	gcc=14.2.0-r4 \
@@ -94,7 +94,7 @@ WORKDIR /home/ansible
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.21/community" >> /etc/apk/repositories && \
 	apk update && \
 	apk add --no-cache \
-	python3=3.12.9-r0 \
+	python3=3.12.10-r0 \
 	kubectl=1.31.5-r2 \
 	jq=1.7.1-r0 \
 	helm=3.16.3-r4 \
