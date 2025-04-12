@@ -38,7 +38,7 @@ RUN apk update && \
 	pipx=1.7.1-r0 \
 	gcc=14.2.0-r4 \
 	libffi-dev=3.4.7-r0 \
-	python3-dev=3.12.9-r0 \
+	python3-dev=3.12.10-r0 \
 	make=4.4.1-r2 \
 	musl-dev=1.2.5-r9 \
 	ca-certificates=20241121-r1 \
