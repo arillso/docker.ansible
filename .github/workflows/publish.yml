@@ -56,7 +56,9 @@ jobs:
               uses: docker/build-push-action@v6
               with:
                   context: .
-                  build-args: ANSIBLE_VERSION=${{ steps.get_version.outputs.version }}
+                  build-args: |
+                      ANSIBLE_VERSION=${{ steps.get_version.outputs.version }}
+                      VCS_REF=${{ github.sha }}
                   push: true
                   platforms: linux/amd64,linux/arm64
                   tags: |

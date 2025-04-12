@@ -5,10 +5,12 @@
 ##############################################
 FROM alpine:3.21.3 AS builder
 
-ARG BUILD_DATE        # Build date for metadata
-ARG ANSIBLE_VERSION   # Ansible version to use
+# Build-time arguments
+ARG BUILD_DATE       # Build date for metadata
+ARG ANSIBLE_VERSION  # Ansible version to use
+ARG VCS_REF=""       # Source Control Revision (e.g. commit SHA)
 
-# OCI metadata labels
+# OCI metadata labels (including additional BuildKit labels)
 LABEL org.opencontainers.image.created="${BUILD_DATE}" \
 	org.opencontainers.image.authors="Simon Baerlocher <s.baerlocher@sbaerlocher.ch>" \
 	org.opencontainers.image.vendor="arillso" \
@@ -18,7 +20,17 @@ LABEL org.opencontainers.image.created="${BUILD_DATE}" \
 	org.opencontainers.image.source="https://github.com/arillso/docker.ansible" \
 	org.opencontainers.image.ref.name="Ansible ${ANSIBLE_VERSION}" \
 	org.opencontainers.image.title="Ansible ${ANSIBLE_VERSION}" \
-	org.opencontainers.image.description="Ansible ${ANSIBLE_VERSION} container image"
+	org.opencontainers.image.description="Ansible ${ANSIBLE_VERSION} container image" \
+	org.opencontainers.image.version="${ANSIBLE_VERSION}" \
+	org.opencontainers.image.revision="${VCS_REF}"
+
+# Note:
+# For multi-arch images, you can adjust the description in the image manifest.
+# Example annotation for multi-arch support:
+# "annotations": {
+#   "org.opencontainers.image.description": "My multi-arch image"
+# }
+# This can be configured during build time via CLI or CI/CD tools.
 
 # Set pipx environment variables
 ENV PIPX_HOME=/pipx \
@@ -49,7 +61,7 @@ RUN apk update && \
 	curl=8.12.1-r1 \
 	build-base=0.5-r3
 
-# Create Python virtual environment, install dependencies, and link executables
+# Create Python virtual environment, install dependencies and link executables
 RUN python3 -m venv /pipx/venvs/ansible && \
 	/pipx/venvs/ansible/bin/pip install --upgrade pip --no-cache-dir && \
 	/pipx/venvs/ansible/bin/pip install --no-cache-dir -r /requirements.txt && \
@@ -64,10 +76,12 @@ RUN python3 -m venv /pipx/venvs/ansible && \
 ##############################################
 FROM alpine:3.21.3 AS production
 
-ARG BUILD_DATE        # Build date for metadata
-ARG ANSIBLE_VERSION   # Ansible version to use
+# Build-time arguments
+ARG BUILD_DATE       # Build date for metadata
+ARG ANSIBLE_VERSION  # Ansible version to use
+ARG VCS_REF=""       # Source Control Revision
 
-# OCI metadata labels
+# OCI metadata labels (including multi-arch and additional BuildKit labels)
 LABEL org.opencontainers.image.created="${BUILD_DATE}" \
 	org.opencontainers.image.authors="Simon Baerlocher <s.baerlocher@sbaerlocher.ch>" \
 	org.opencontainers.image.vendor="arillso" \
@@ -77,7 +91,12 @@ LABEL org.opencontainers.image.created="${BUILD_DATE}" \
 	org.opencontainers.image.source="https://github.com/arillso/docker.ansible" \
 	org.opencontainers.image.ref.name="Ansible ${ANSIBLE_VERSION}" \
 	org.opencontainers.image.title="Ansible ${ANSIBLE_VERSION}" \
-	org.opencontainers.image.description="Ansible ${ANSIBLE_VERSION} container image"
+	org.opencontainers.image.description="Ansible ${ANSIBLE_VERSION} container image" \
+	org.opencontainers.image.version="${ANSIBLE_VERSION}" \
+	org.opencontainers.image.revision="${VCS_REF}"
+
+LABEL org.opencontainers.image.architecture="${TARGETPLATFORM}"
+
 
 # Set runtime environment variables and user parameters
 ENV PIPX_HOME=/pipx \
@@ -90,7 +109,7 @@ ENV PIPX_HOME=/pipx \
 
 WORKDIR /home/ansible
 
-# Add community repository, update APK index, and install runtime dependencies with fixed versions
+# Add the community repository, update APK index, and install runtime dependencies (with fixed versions)
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.21/community" >> /etc/apk/repositories && \
 	apk update && \
 	apk add --no-cache \
@@ -129,7 +148,7 @@ RUN mkdir -p /etc/ansible && \
 USER ${USER}
 ENV ANSIBLE_FORCE_COLOR=True
 
-# Default command to show ansible-playbook version
+# Default command: display ansible-playbook version
 CMD ["ansible-playbook", "--version"]
 
 # Healthcheck to verify Ansible functionality
