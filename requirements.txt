@@ -13,6 +13,6 @@ passlib==1.7.4
 pip==24.3.1
 python-dateutil==2.9.0.post0
 pytz==2025.2
-pywinrm[credssp]==0.4.3
+pywinrm[credssp]==0.5.0
 requests-credssp==2.0.0
 wheel==0.45.1
