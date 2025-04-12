@@ -12,7 +12,7 @@ openshift==0.13.2
 passlib==1.7.4
 pip==24.0
 python-dateutil==2.9.0.post0
-pytz==2024.1
+pytz==2024.2
 pywinrm[credssp]==0.4.3
 requests-credssp==2.0.0
 wheel==0.45.1
