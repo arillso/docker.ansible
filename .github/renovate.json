@@ -1,6 +1,6 @@
 {
         "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-        "extends": ["config:recommended", "config:presets:recommended"],
+        "extends": ["config:recommended", "config:best-practices"],
         "timezone": "Europe/Zurich",
         "schedule": ["before 5am on friday"],
         "prHourlyLimit": 2,
