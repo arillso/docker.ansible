@@ -1,20 +1,52 @@
 {
         "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-        "prCreation": "immediate",
-        "extends": ["config:best-practices"],
+        "extends": ["config:recommended", "config:presets:recommended"],
+        "timezone": "Europe/Zurich",
+        "schedule": ["before 5am on friday"],
+        "prHourlyLimit": 2,
+        "prConcurrentLimit": 10,
         "dependencyDashboard": true,
-        "schedule": ["on friday"],
-        "platformAutomerge": false,
-        "rangeStrategy": "update-lockfile",
-        "rebaseLabel": "renovate::rebase",
-        "rebaseWhen": "never",
-        "skipInstalls": true,
-        "updatePinnedDependencies": false,
-        "ignoreScripts": false,
+        "labels": ["dependencies"],
+        "updatePinnedDependencies": true,
         "lockFileMaintenance": {
                 "enabled": true,
-                "schedule": ["before 4am on monday"]
+                "schedule": ["before 5am on friday"]
         },
+        "packageRules": [
+                {
+                        "description": "Weekly updates for pip dependencies",
+                        "matchManagers": ["pip_requirements", "pip_setup"],
+                        "matchUpdateTypes": ["major", "minor", "patch"],
+                        "prConcurrentLimit": 10,
+                        "reviewers": ["sbaerlocher"],
+                        "assignees": ["sbaerlocher"]
+                },
+                {
+                        "description": "Weekly Docker image updates",
+                        "matchManagers": ["dockerfile"],
+                        "matchUpdateTypes": ["major", "minor", "patch"],
+                        "prConcurrentLimit": 10,
+                        "reviewers": ["sbaerlocher"],
+                        "assignees": ["sbaerlocher"]
+                },
+                {
+                        "description": "Weekly GitHub Actions updates",
+                        "matchManagers": ["github-actions"],
+                        "matchUpdateTypes": ["major", "minor", "patch"],
+                        "prConcurrentLimit": 10,
+                        "reviewers": ["sbaerlocher"],
+                        "assignees": ["sbaerlocher"]
+                },
+                {
+                        "description": "Weekly updates for Alpine packages in Dockerfile (custom regex)",
+                        "matchManagers": ["custom.regex"],
+                        "matchDatasources": ["repology"],
+                        "matchPackageNames": ["/^alpine_3_21\\//"],
+                        "prConcurrentLimit": 10,
+                        "reviewers": ["sbaerlocher"],
+                        "assignees": ["sbaerlocher"]
+                }
+        ],
         "customManagers": [
                 {
                         "customType": "regex",
