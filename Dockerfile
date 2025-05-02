@@ -80,6 +80,7 @@ FROM alpine:3.21.3@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff45
 ARG BUILD_DATE       # Build date for metadata
 ARG ANSIBLE_VERSION  # Ansible version to use
 ARG VCS_REF=""       # Source Control Revision
+ARG TARGETPLATFORM   # Target platform for the build
 
 # OCI metadata labels (including multi-arch and additional BuildKit labels)
 LABEL org.opencontainers.image.created="${BUILD_DATE}" \
