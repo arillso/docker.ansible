@@ -1,0 +1,9 @@
+---
+- name: Syntax Check Test Playbook
+  hosts: localhost # DevSkim: ignore DS162092
+  connection: local
+  gather_facts: false
+  tasks:
+      - name: "Echo Test"
+        ansible.builtin.debug:
+            msg: "Test successful"

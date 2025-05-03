@@ -1,0 +1,47 @@
+---
+services:
+    postgres:
+        image: postgres:latest
+        environment:
+            POSTGRES_PASSWORD: testpass
+            POSTGRES_USER: testuser
+            POSTGRES_DB: testdb
+        networks:
+            - ansible-test-net
+        healthcheck:
+            test: ["CMD", "pg_isready", "-U", "testuser"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
+
+    nginx:
+        image: nginx:alpine
+        networks:
+            - ansible-test-net
+        healthcheck:
+            test:
+                [
+                    "CMD",
+                    "wget",
+                    "-O",
+                    "/dev/null",
+                    "http://localhost # DevSkim: ignore DS162092",
+                ]
+            interval: 5s
+            timeout: 5s
+            retries: 5
+
+    redis:
+        image: redis:alpine
+        networks:
+            - ansible-test-net
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
+
+networks:
+    ansible-test-net:
+        external: true
+        name: ansible-test-network

@@ -1,52 +1,105 @@
 {
         "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-        "extends": ["config:recommended", "config:best-practices"],
+        "extends": [
+                "config:best-practices",
+                ":dependencyDashboard",
+                ":maintainLockFilesWeekly",
+                ":automergePatch",
+                ":semanticCommits"
+        ],
         "timezone": "Europe/Zurich",
-        "schedule": ["before 5am on friday"],
-        "prHourlyLimit": 2,
-        "prConcurrentLimit": 10,
-        "dependencyDashboard": true,
+        "schedule": ["before 5am on Friday"],
+        "prHourlyLimit": 3,
+        "prConcurrentLimit": 8,
         "labels": ["dependencies"],
         "updatePinnedDependencies": true,
-        "lockFileMaintenance": {
-                "enabled": true,
-                "schedule": ["before 5am on friday"]
-        },
+        "pruneBranchAfterAutomerge": true,
+        "rangeStrategy": "pin",
+        "assignees": ["sbaerlocher"],
+        "reviewers": ["sbaerlocher"],
+        "dependencyDashboardTitle": "📦 Dependency Dashboard",
+        "rebaseWhen": "auto",
+        "branchPrefix": "renovate/",
+        "commitMessageAction": "chore",
         "packageRules": [
                 {
-                        "description": "Weekly updates for pip dependencies",
-                        "matchManagers": ["pip_requirements", "pip_setup"],
-                        "matchUpdateTypes": ["major", "minor", "patch"],
-                        "prConcurrentLimit": 10,
-                        "reviewers": ["sbaerlocher"],
-                        "assignees": ["sbaerlocher"]
+                        "description": "Security updates - Automerge",
+                        "matchCategories": ["security"],
+                        "labels": ["dependencies", "security"],
+                        "prPriority": 2,
+                        "automerge": true
                 },
                 {
-                        "description": "Weekly Docker image updates",
-                        "matchManagers": ["dockerfile"],
-                        "matchUpdateTypes": ["major", "minor", "patch"],
-                        "prConcurrentLimit": 10,
-                        "reviewers": ["sbaerlocher"],
-                        "assignees": ["sbaerlocher"]
-                },
-                {
-                        "description": "Weekly GitHub Actions updates",
+                        "description": "GitHub Actions updates",
                         "matchManagers": ["github-actions"],
-                        "matchUpdateTypes": ["major", "minor", "patch"],
-                        "prConcurrentLimit": 10,
-                        "reviewers": ["sbaerlocher"],
-                        "assignees": ["sbaerlocher"]
+                        "groupName": "GitHub Actions",
+                        "prConcurrentLimit": 10
                 },
                 {
-                        "description": "Weekly updates for Alpine packages in Dockerfile (custom regex)",
+                        "description": "Docker image updates",
+                        "matchManagers": ["dockerfile"],
+                        "groupName": "Docker Images",
+                        "prConcurrentLimit": 10
+                },
+                {
+                        "description": "Alpine packages (repology)",
                         "matchManagers": ["custom.regex"],
                         "matchDatasources": ["repology"],
                         "matchPackageNames": ["/^alpine_3_21\\//"],
-                        "prConcurrentLimit": 10,
-                        "reviewers": ["sbaerlocher"],
-                        "assignees": ["sbaerlocher"]
+                        "groupName": "Alpine Packages",
+                        "prConcurrentLimit": 10
+                },
+                {
+                        "description": "Non-breaking updates (patch & minor)",
+                        "matchUpdateTypes": ["patch", "minor"],
+                        "groupName": "Non-breaking Updates",
+                        "minimumReleaseAge": "3 days",
+                        "prPriority": 0
+                },
+                {
+                        "description": "Major updates (breaking changes)",
+                        "matchUpdateTypes": ["major"],
+                        "labels": ["dependencies", "breaking"],
+                        "minimumReleaseAge": "7 days",
+                        "automerge": false
+                },
+                {
+                        "description": "Alpine base image",
+                        "matchDatasources": ["docker"],
+                        "groupName": "alpine",
+                        "matchPackageNames": ["/alpine/"]
+                },
+                {
+                        "description": "Container structure test image",
+                        "matchDatasources": ["docker"],
+                        "groupName": "container-structure-test",
+                        "matchPackageNames": [
+                                "/gcr.io/gcp-runtimes/container-structure-test/"
+                        ]
+                },
+                {
+                        "description": "Python dependencies (non-major)",
+                        "matchDatasources": ["pip"],
+                        "matchUpdateTypes": ["minor", "patch"],
+                        "groupName": "python dependencies (non-major)"
+                },
+                {
+                        "description": "Ansible core updates",
+                        "matchDatasources": ["pip"],
+                        "groupName": "ansible-core",
+                        "matchPackageNames": ["/ansible-core/"]
+                },
+                {
+                        "description": "Makefile Docker images",
+                        "matchManagers": ["custom.regex"],
+                        "matchDatasources": ["docker"],
+                        "groupName": "Makefile Docker images"
                 }
         ],
+        "vulnerabilityAlerts": {
+                "enabled": true,
+                "labels": ["dependencies", "security"]
+        },
         "customManagers": [
                 {
                         "customType": "regex",
@@ -57,6 +110,60 @@
                         "versioningTemplate": "loose",
                         "datasourceTemplate": "repology",
                         "packageNameTemplate": "alpine_3_21/{{depName}}"
+                },
+                {
+                        "customType": "regex",
+                        "fileMatch": ["^Makefile$"],
+                        "matchStrings": [
+                                "NODE_IMAGE_VERSION=(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+)-alpine[0-9\\.]+"
+                        ],
+                        "datasourceTemplate": "docker",
+                        "depNameTemplate": "node",
+                        "versioningTemplate": "node"
+                },
+                {
+                        "customType": "regex",
+                        "fileMatch": ["^Makefile$"],
+                        "matchStrings": [
+                                "BUSYBOX_IMAGE_VERSION=(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+)"
+                        ],
+                        "datasourceTemplate": "docker",
+                        "depNameTemplate": "busybox",
+                        "versioningTemplate": "semver"
+                },
+                {
+                        "customType": "regex",
+                        "fileMatch": ["^Makefile$"],
+                        "matchStrings": [
+                                "MEGALINTER_IMAGE_VERSION=(?<currentValue>v[0-9]+\\.[0-9]+\\.[0-9]+)"
+                        ],
+                        "datasourceTemplate": "docker",
+                        "depNameTemplate": "oxsecurity/megalinter",
+                        "versioningTemplate": "semver"
+                },
+                {
+                        "customType": "regex",
+                        "fileMatch": ["^Makefile$"],
+                        "matchStrings": [
+                                "HADOLINT_IMAGE_VERSION=(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+)"
+                        ],
+                        "datasourceTemplate": "docker",
+                        "depNameTemplate": "hadolint/hadolint",
+                        "versioningTemplate": "semver"
+                },
+                {
+                        "customType": "regex",
+                        "fileMatch": ["^Makefile$"],
+                        "matchStrings": [
+                                "STRUCTURE_TEST_IMAGE_VERSION=(?<currentValue>v[0-9]+\\.[0-9]+\\.[0-9]+)"
+                        ],
+                        "datasourceTemplate": "docker",
+                        "depNameTemplate": "gcr.io/gcp-runtimes/container-structure-test",
+                        "versioningTemplate": "semver"
                 }
-        ]
+        ],
+        "dockerfile": { "fileMatch": ["^Dockerfile$"] },
+        "github-actions": {
+                "fileMatch": ["\\.github/workflows/[^/]+\\.ya?ml$"]
+        }
 }

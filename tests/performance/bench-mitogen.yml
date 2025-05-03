@@ -1,0 +1,11 @@
+---
+- name: Mitogen Acceleration Performance Benchmark
+  hosts: localhost # DevSkim: ignore DS162092
+  gather_facts: false
+  strategy: mitogen_linear
+  tasks:
+      - name: "Loop for 1000 debug messages with Mitogen"
+        ansible.builtin.debug:
+            msg: "Iteration {{ item }}"
+        loop: "{{ range(1, 1000) | list }}"
+        no_log: true

@@ -1,3 +1,4 @@
+---
 schemaVersion: "2.0.0"
 
 commandTests:
@@ -102,7 +103,54 @@ commandTests:
       teardown:
           - ["rm", "-f", "/tmp/testfile"]
 
+    - name: "Helm Template Functionality"
+      setup:
+          - - sh
+            - -c
+            - mkdir -p /tmp/helm-test/templates
+          - - sh
+            - -c
+            - |
+                echo 'apiVersion: v1
+                kind: ConfigMap
+                metadata:
+                  name: {{ .Release.Name }}-config' > /tmp/helm-test/templates/configmap.yaml
+          - - sh
+            - -c
+            - |
+                echo 'name: test-chart
+                version: 1.0.0
+                appVersion: 1.0.0' > /tmp/helm-test/Chart.yaml
+
+      command: "helm"
+      args: ["template", "release-name", "/tmp/helm-test"]
+      expectedOutput:
+          - "apiVersion: v1"
+          - "kind: ConfigMap"
+          - "name: release-name-config"
+      teardown:
+          - ["rm", "-rf", "/tmp/helm-test"]
+
 fileExistenceTests:
+    - name: "Check Python Dependencies"
+      path: "/pipx/venvs/ansible/lib/python3.12/site-packages"
+      shouldExist: true
+
+    - name: "Check Security-Related Files"
+      path: "/etc/ssl/certs/ca-certificates.crt"
+      shouldExist: true
+
+    - name: "Ansible Configuration Directory"
+      path: "/etc/ansible"
+      shouldExist: true
+      permissions: "drwxr-xr-x"
+      uid: 0
+      gid: 0
+
+    - name: "Check for Missing Typical Root Files"
+      path: "/root/.bash_history"
+      shouldExist: false
+
     - name: "Check if /etc/ansible/hosts exists"
       path: "/etc/ansible/hosts"
       shouldExist: true
@@ -135,6 +183,15 @@ fileContentTests:
       path: "/etc/alpine-release"
       expectedContents:
           - "3.21.3"
+    - name: "Check SSH Client Configuration"
+      path: "/etc/ssh/ssh_config"
+      excludedContents:
+          - "UseRoaming yes"
+
+    - name: "Check Ansible Hosts File"
+      path: "/etc/ansible/hosts"
+      expectedContents:
+          - "localhost" # DevSkim: ignore DS162092
 
 metadataTest:
     labels:
@@ -147,6 +204,8 @@ metadataTest:
           value: "ansible"
         - key: "UID"
           value: "1000"
+        - key: "ANSIBLE_FORCE_COLOR"
+          value: "True"
     cmd: ["ansible-playbook", "--version"]
     workdir: "/home/ansible"
     user: "ansible"

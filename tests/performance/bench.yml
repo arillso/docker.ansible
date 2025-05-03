@@ -1,0 +1,10 @@
+---
+- name: Standard Performance Benchmark
+  hosts: localhost # DevSkim: ignore DS162092
+  gather_facts: false
+  tasks:
+      - name: "Loop for 1000 debug messages"
+        ansible.builtin.debug:
+            msg: "Iteration {{ item }}"
+        loop: "{{ range(1, 1000) | list }}"
+        no_log: true
