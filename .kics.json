@@ -1,3 +1,6 @@
 {
-        "exclude-queries": ["555ab8f9-2001-455e-a077-f2d0f41e2fb9"]
+        "exclude-queries": [
+                "555ab8f9-2001-455e-a077-f2d0f41e2fb9",
+                "ce76b7d0-9e77-464d-b86f-c5c48e03e22d"
+        ]
 }

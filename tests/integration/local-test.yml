@@ -1,0 +1,18 @@
+---
+- name: Integration Test
+  hosts: localhost # DevSkim: ignore DS162092
+  connection: local
+  gather_facts: false
+  tasks:
+      - name: "Verify Ansible is working"
+        ansible.builtin.debug:
+            msg: "Ansible is working correctly with local connection"
+
+      - name: "Check local environment"
+        ansible.builtin.command: "pwd"
+        register: pwd_result
+        changed_when: false
+
+      - name: "Show working directory"
+        ansible.builtin.debug:
+            var: pwd_result.stdout
