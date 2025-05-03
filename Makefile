@@ -86,13 +86,14 @@ performance-test: ansible-build ## Run performance benchmarks for the container
 integration-test: ansible-build ## Run integration tests with other Docker services
 	@echo "Starting integration tests..."
 	@docker network create ansible-test-network || true
-	@docker compose -f tests/integration/docker-compose.yml up -d
+	@export POSTGRES_PASSWORD=test_secure_password && \
+	docker compose -f tests/integration/docker-compose.yml up -d
 	@docker run --rm --network ansible-test-network \
 		-v $(PROJECT_DIR)/tests/integration:/tests \
 		-v $(PROJECT_DIR)/test-results:/results \
 		ansible:latest bash /tests/run-integration-tests.sh
-	@docker compose -f tests/integration/docker-compose.yml down
-	@docker network rm ansible-test-network || true
+#	@docker compose -f tests/integration/docker-compose.yml down
+#	@docker network rm ansible-test-network || true
 	@echo "Integration tests completed."
 
 unit-test: ansible-build ## Run unit tests with Python

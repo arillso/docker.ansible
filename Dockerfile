@@ -103,7 +103,8 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.21/community" >> /etc/apk/repo
 	helm=3.16.3-r4 \
 	kustomize=5.5.0-r4 \
 	gnupg=2.4.7-r0 \
-	openssl=3.3.3-r0 && \
+	openssl=3.3.3-r0 \
+	curl=8.12.1-r1 && \
 	# User setup
 	addgroup -g ${GID} ${GROUP} && \
 	adduser -h /home/ansible -s /bin/bash -G ${GROUP} -D -u ${UID} ${USER} && \

@@ -15,7 +15,7 @@ TEST_VOLUME="ansible-upgrade-test-vol"
 docker volume create $TEST_VOLUME || true
 
 # Start container with the volume mounted to /tmp/packages
-CONTAINER_ID=$(docker run -d -v $TEST_VOLUME:/tmp/packages $IMAGE_NAME tail -f /dev/null)
+CONTAINER_ID=$(docker run -d -v "$TEST_VOLUME:/tmp/packages" "$IMAGE_NAME" tail -f /dev/null)
 
 # 2. Check if container is running
 echo "Container $CONTAINER_ID is running"
@@ -42,6 +42,6 @@ docker exec "$CONTAINER_ID" bash -c "ansible localhost -c local -m ping" # DevSk
 echo "Cleaning up..."
 docker stop "$CONTAINER_ID"
 docker rm "$CONTAINER_ID"
-docker volume rm $TEST_VOLUME
+docker volume rm "$TEST_VOLUME"
 
 echo "Upgrade test completed successfully!"
