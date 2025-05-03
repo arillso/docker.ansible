@@ -107,10 +107,13 @@ jobs:
                   load: true
                   tags: ansible:test
 
-            - name: Run Performance Tests
+            - name: Prepare Test Results Directory
               run: |
                   mkdir -p test-results
                   chmod 777 test-results
+
+            - name: Run Performance Tests
+              run: |
                   docker run --rm \
                     -v "$GITHUB_WORKSPACE/tests/performance:/tests" \
                     -v "$GITHUB_WORKSPACE/test-results:/results" \
@@ -146,10 +149,16 @@ jobs:
             - name: Start Test Services
               run: docker compose -f tests/integration/docker-compose.yml up -d
 
+            - name: Prepare Test Results Directory
+              run: |
+                  mkdir -p test-results
+                  chmod 777 test-results
+
             - name: Run Integration Tests
               run: |
                   docker run --rm --network ansible-test-network \
                     -v "$GITHUB_WORKSPACE/tests/integration:/tests" \
+                    -v "$GITHUB_WORKSPACE/test-results:/results" \
                     ansible:test bash /tests/run-integration-tests.sh
 
             - name: Cleanup Services
@@ -184,7 +193,7 @@ jobs:
 
             - name: Run Unit Tests
               run: |
-                  ANSIBLE_IMAGE=ansible:test python -m pytest tests/unit/test_ansible_container.py -v
+                  ANSIBLE_IMAGE="ansible:test" python -m pytest tests/unit/test_ansible_container.py -v
 
     upgrade-test:
         runs-on: ubuntu-latest
