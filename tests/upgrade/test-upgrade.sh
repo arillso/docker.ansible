@@ -2,7 +2,10 @@
 # tests/upgrade/test-upgrade.sh
 set -e
 
+IMAGE_NAME=${ANSIBLE_IMAGE:-ansible:latest}
+
 echo "==== Ansible Container Upgrade Test ===="
+echo "Using image: $IMAGE_NAME"
 
 # 1. Start base container with a volume to persist Python packages
 echo "Starting container..."
@@ -12,7 +15,7 @@ TEST_VOLUME="ansible-upgrade-test-vol"
 docker volume create $TEST_VOLUME || true
 
 # Start container with the volume mounted to /tmp/packages
-CONTAINER_ID=$(docker run -d -v $TEST_VOLUME:/tmp/packages ansible:latest tail -f /dev/null)
+CONTAINER_ID=$(docker run -d -v $TEST_VOLUME:/tmp/packages $IMAGE_NAME tail -f /dev/null)
 
 # 2. Check if container is running
 echo "Container $CONTAINER_ID is running"
