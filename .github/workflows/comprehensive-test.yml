@@ -110,10 +110,11 @@ jobs:
             - name: Run Performance Tests
               run: |
                   mkdir -p test-results
+                  chmod 777 test-results
                   docker run --rm \
                     -v "$GITHUB_WORKSPACE/tests/performance:/tests" \
                     -v "$GITHUB_WORKSPACE/test-results:/results" \
-                    ansible:test sh /tests/run-performance-tests.sh
+                    ansible:test sh -c "mkdir -p /results && sh /tests/run-performance-tests.sh"
 
             - name: Upload Performance Results
               uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
