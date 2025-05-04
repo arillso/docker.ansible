@@ -20,8 +20,8 @@ format-all: format-code ## Run both format-code and format-eclint.
 	@echo "Formatting completed."
 
 run-megalinter: ## Run Megalinter locally.
-	@docker run --rm --name megalint -v $(PROJECT_DIR):/tmp/lint busybox:1.36.1 rm -rf /tmp/lint/megalinter-reports
-	@docker run --rm --name megalint -v $(PROJECT_DIR):/tmp/lint oxsecurity/megalinter:v8.4.2
+	@docker run --rm --name megalint -v $(PROJECT_DIR):/tmp/lint busybox:1.37.0 rm -rf /tmp/lint/megalinter-reports
+	@docker run --rm --name megalint -v $(PROJECT_DIR):/tmp/lint oxsecurity/megalinter:v8.6.0
 
 ansible-build: ## Build the Ansible Docker image.
 	@docker build \
@@ -40,7 +40,7 @@ validate-docker: ## Validate Dockerfile with hadolint
 	@docker run --rm -i hadolint/hadolint:2.12.0 < Dockerfile
 
 validate-renovate: ## Validate renovate configuration
-	@docker run --rm -v $(PROJECT_DIR)/.github:/usr/src/app node:22.14.0-alpine3.19 npx renovate-config-validator /usr/src/app/renovate.json
+	@docker run --rm -v $(PROJECT_DIR)/.github:/usr/src/app node:22.15.0-alpine3.19 npx renovate-config-validator /usr/src/app/renovate.json
 
 validate-renovate-deps: ## Show detected dependencies in Renovate
 	@docker run --rm -t \
