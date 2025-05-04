@@ -5,7 +5,8 @@
                 ":dependencyDashboard",
                 ":maintainLockFilesWeekly",
                 ":automergePatch",
-                ":semanticCommits"
+                ":semanticCommits",
+                "helpers:pinGitHubActionDigests"
         ],
         "timezone": "Europe/Zurich",
         "schedule": ["before 5am on Friday"],
@@ -27,7 +28,8 @@
                         "matchCategories": ["security"],
                         "labels": ["dependencies", "security"],
                         "prPriority": 2,
-                        "automerge": true
+                        "automerge": true,
+                        "minimumReleaseAge": "0"
                 },
                 {
                         "description": "GitHub Actions updates",
@@ -54,21 +56,27 @@
                         "description": "Non-breaking updates (patch & minor)",
                         "matchUpdateTypes": ["patch", "minor"],
                         "groupName": "Non-breaking Updates",
-                        "minimumReleaseAge": "3 days",
-                        "prPriority": 0
+                        "minimumReleaseAge": "7 days",
+                        "prPriority": 0,
+                        "automerge": true,
+                        "platformAutomerge": true,
+                        "stabilityDays": 3
                 },
                 {
                         "description": "Major updates (breaking changes)",
                         "matchUpdateTypes": ["major"],
                         "labels": ["dependencies", "breaking"],
-                        "minimumReleaseAge": "7 days",
-                        "automerge": false
+                        "minimumReleaseAge": "14 days",
+                        "automerge": false,
+                        "stabilityDays": 7,
+                        "dependencyDashboardApproval": true
                 },
                 {
                         "description": "Alpine base image",
                         "matchDatasources": ["docker"],
                         "groupName": "alpine",
-                        "matchPackageNames": ["/alpine/"]
+                        "matchPackageNames": ["/alpine/"],
+                        "pinDigests": true
                 },
                 {
                         "description": "Container structure test image",
@@ -96,7 +104,8 @@
                         "matchManagers": ["custom.regex"],
                         "matchDatasources": ["docker"],
                         "matchFileNames": ["^Makefile$"],
-                        "groupName": "Makefile Docker images"
+                        "groupName": "Makefile Docker images",
+                        "pinDigests": false
                 },
                 {
                         "description": "Workflow Docker images",
@@ -104,11 +113,19 @@
                         "matchDatasources": ["docker"],
                         "matchFileNames": [".github/workflows/**"],
                         "groupName": "Workflow Docker Images"
+                },
+                {
+                        "description": "Security vulnerability updates",
+                        "matchCategories": ["vulnerability"],
+                        "labels": ["dependencies", "security"],
+                        "prPriority": 5,
+                        "automerge": false
                 }
         ],
         "vulnerabilityAlerts": {
                 "enabled": true,
-                "labels": ["dependencies", "security"]
+                "labels": ["dependencies", "security"],
+                "automerge": false
         },
         "customManagers": [
                 {
@@ -138,11 +155,10 @@
                         "customType": "regex",
                         "fileMatch": ["^Makefile$"],
                         "matchStrings": [
-                                "docker\\s+run\\s+(?:[^\\n]*?\\s+)(?<depName>[a-z0-9/-]+(?:[.][a-z0-9]+)+\\/[a-z0-9/-]+|[a-z0-9/-]+/[a-z0-9/-]+|busybox):(?<currentValue>v?[0-9]+\\.[0-9]+\\.[0-9]+|[0-9]+\\.[0-9]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?"
+                                "docker\\s+run\\s+(?<prefix>[^\\n]*?\\s+)(?<depName>[a-z0-9/-]+(?:[.][a-z0-9]+)+\\/[a-z0-9/-]+|[a-z0-9/-]+/[a-z0-9/-]+|busybox):(?<currentValue>v?[0-9]+\\.[0-9]+\\.[0-9]+|[0-9]+\\.[0-9]+)"
                         ],
                         "datasourceTemplate": "docker",
-                        "versioningTemplate": "semver",
-                        "autoReplaceStringTemplate": "{{depName}}:{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}"
+                        "versioningTemplate": "semver"
                 },
                 {
                         "description": "Container Structure Test in GitHub workflows",
@@ -180,6 +196,11 @@
                 "fileMatch": ["^Dockerfile$"]
         },
         "github-actions": {
-                "fileMatch": ["\\.github/workflows/[^/]+\\.ya?ml$"]
+                "fileMatch": ["\\.github/workflows/[^/]+\\.ya?ml$"],
+                "pinDigests": true
+        },
+        "lockFileMaintenance": {
+                "enabled": true,
+                "schedule": ["before 5am on Monday"]
         }
 }
