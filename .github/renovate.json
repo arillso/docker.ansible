@@ -49,7 +49,7 @@
                         "description": "Alpine packages (repology)",
                         "matchManagers": ["custom.regex"],
                         "matchDatasources": ["repology"],
-                        "matchPackageNames": ["/^alpine_3_21\\//"],
+                        "matchPackageNames": ["/^alpine_3_21\\\\//"],
                         "groupName": "Alpine Packages",
                         "prConcurrentLimit": 10
                 },
@@ -84,7 +84,8 @@
                         "matchPackageNames": [
                                 "/gcr.io/gcp-runtimes/container-structure-test/",
                                 "/ghcr.io/googlecontainertools/container-structure-test/"
-                        ]
+                        ],
+                        "pinDigests": true
                 },
                 {
                         "description": "Python dependencies (non-major)",
@@ -104,14 +105,15 @@
                         "matchDatasources": ["docker"],
                         "matchFileNames": ["^Makefile$"],
                         "groupName": "Makefile Docker images",
-                        "pinDigests": false
+                        "pinDigests": true
                 },
                 {
                         "description": "Workflow Docker images",
                         "matchManagers": ["custom.regex"],
                         "matchDatasources": ["docker"],
                         "matchFileNames": [".github/workflows/**"],
-                        "groupName": "Workflow Docker Images"
+                        "groupName": "Workflow Docker Images",
+                        "pinDigests": true
                 },
                 {
                         "description": "Security vulnerability updates",
@@ -132,7 +134,7 @@
                         "customType": "regex",
                         "fileMatch": ["^Dockerfile$"],
                         "matchStrings": [
-                                "(?:RUN\\s+(?:apk update\\s+&&\\s+)?apk add --no-cache\\s+|\\\\\\s+)(?<depName>[a-z][a-z0-9-]*)(=(?<currentValue>[a-zA-Z0-9-._]+))?"
+                                "(?:RUN\\\\s+(?:apk update\\\\s+&&\\\\s+)?apk add --no-cache\\\\s+|\\\\\\\\\\s+)(?<depName>[a-z][a-z0-9-]*)(=(?<currentValue>[a-zA-Z0-9-._]+))?"
                         ],
                         "versioningTemplate": "loose",
                         "datasourceTemplate": "repology",
@@ -143,7 +145,7 @@
                         "customType": "regex",
                         "fileMatch": ["^Makefile$"],
                         "matchStrings": [
-                                "docker\\s+run\\s+(?:[^\\n]*?\\s+)node:(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+)(?:-alpine[0-9\\.]*)?"
+                                "docker\\\\s+run\\\\s+(?:[^\\\\n]*?\\\\s+)node:(?<currentValue>[0-9]+\\\\.[0-9]+\\\\.[0-9]+)(?:-alpine[0-9\\\\.]*)?"
                         ],
                         "datasourceTemplate": "docker",
                         "depNameTemplate": "node",
@@ -154,48 +156,60 @@
                         "customType": "regex",
                         "fileMatch": ["^Makefile$"],
                         "matchStrings": [
-                                "docker\\s+run\\s+(?<prefix>[^\\n]*?\\s+)(?<depName>[a-z0-9/-]+(?:[.][a-z0-9]+)+\\/[a-z0-9/-]+|[a-z0-9/-]+/[a-z0-9/-]+|busybox):(?<currentValue>v?[0-9]+\\.[0-9]+\\.[0-9]+|[0-9]+\\.[0-9]+)"
+                                "docker\\s+run\\s+(?<prefix>[^\\n]*?\\s+)(?<depName>[a-z0-9/-]+(?:\\.[a-z0-9]+)+\\/[a-z0-9/-]+|[a-z0-9/-]+\\/[a-z0-9/-]+|busybox):(?<currentValue>v?[0-9]+\\.[0-9]+\\.[0-9]+|[0-9]+\\.[0-9]+)?(?:@(?<currentDigest>sha256:[A-Za-z0-9]+))?\"?"
                         ],
                         "datasourceTemplate": "docker",
-                        "versioningTemplate": "semver"
+                        "versioningTemplate": "semver",
+                        "autoReplaceStringTemplate": "{{prefix}}{{depName}}:{{newValue}}@{{newDigest}}"
                 },
                 {
                         "description": "Container Structure Test in GitHub workflows",
                         "customType": "regex",
                         "fileMatch": ["\\.github/workflows/[^/]+\\.ya?ml$"],
                         "matchStrings": [
-                                "ghcr.io/googlecontainertools/container-structure-test:(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+)"
+                                "ghcr.io/googlecontainertools/container-structure-test:(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+)?(?:@(?<currentDigest>sha256:[A-Za-z0-9]+))?\"?"
                         ],
                         "datasourceTemplate": "docker",
                         "depNameTemplate": "ghcr.io/googlecontainertools/container-structure-test",
-                        "versioningTemplate": "semver"
+                        "versioningTemplate": "semver",
+                        "autoReplaceStringTemplate": "{{depNameTemplate}}:{{newValue}}@{{newDigest}}"
                 },
                 {
                         "description": "Docker images in docker run commands in GitHub workflows",
                         "customType": "regex",
                         "fileMatch": ["\\.github/workflows/[^/]+\\.ya?ml$"],
                         "matchStrings": [
-                                "docker\\s+run\\s+--rm[^:]*\\s+(?<depName>[a-z0-9/-]+(?:[.][a-z0-9]+)+\\/[a-z0-9/-]+|[a-z0-9/-]+/[a-z0-9/-]+):(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+)"
+                                "docker\\s+run\\s+--rm[^:]*\\s+(?<depName>[a-z0-9/-]+(?:\\.[a-z0-9]+)+\\/[a-z0-9/-]+|[a-z0-9/-]+\\/[a-z0-9/-]+):(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+)?(?:@(?<currentDigest>sha256:[A-Za-z0-9]+))?\"?"
+                        ],
+                        "datasourceTemplate": "docker",
+                        "versioningTemplate": "semver",
+                        "autoReplaceStringTemplate": "{{depName}}:{{newValue}}@{{newDigest}}"
+                },
+                {
+                        "description": "Docker images in Trivy image-ref in GitHub workflows",
+                        "customType": "regex",
+                        "fileMatch": ["\\\\.github/workflows/[^/]+\\\\.ya?ml$"],
+                        "matchStrings": [
+                                "image-ref:\\\\s*\"(?<depName>[a-z0-9/-]+):(?<currentValue>[a-z0-9.-]+)\""
                         ],
                         "datasourceTemplate": "docker",
                         "versioningTemplate": "semver"
                 },
                 {
-                        "description": "Docker images in Trivy image-ref in GitHub workflows",
+                        "description": "Docker images mit Digest in Makefile",
                         "customType": "regex",
-                        "fileMatch": ["\\.github/workflows/[^/]+\\.ya?ml$"],
+                        "fileMatch": ["^Makefile$"],
                         "matchStrings": [
-                                "image-ref:\\s*\"(?<depName>[a-z0-9/-]+):(?<currentValue>[a-z0-9.-]+)\""
+                                "^(?<varName>[A-Za-z_][A-Za-z0-9_]*)\\\\s*(?:\\\\?|:)?=\\\\s*\"?(?<depName>[^:@\\\\s]+)(?::(?<currentValue>[^@\\\\s]+))?(?:@(?<currentDigest>sha256:[A-Za-z0-9]+))?\"?"
                         ],
+                        "autoReplaceStringTemplate": "{{varName}} := {{{depName}}}:{{{newValue}}}@{{{newDigest}}}",
                         "datasourceTemplate": "docker",
-                        "versioningTemplate": "semver"
+                        "versioningTemplate": "docker"
                 }
         ],
-        "dockerfile": {
-                "fileMatch": ["^Dockerfile$"]
-        },
+        "dockerfile": { "fileMatch": ["^Dockerfile$"] },
         "github-actions": {
-                "fileMatch": ["\\.github/workflows/[^/]+\\.ya?ml$"],
+                "fileMatch": ["\\\\.github/workflows/[^/]+\\\\.ya?ml$"],
                 "pinDigests": true
         },
         "lockFileMaintenance": {
