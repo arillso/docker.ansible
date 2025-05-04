@@ -6,7 +6,8 @@
                 ":maintainLockFilesWeekly",
                 ":automergePatch",
                 ":semanticCommits",
-                "helpers:pinGitHubActionDigests"
+                "helpers:pinGitHubActionDigests",
+                "docker:pinDigests"
         ],
         "timezone": "Europe/Zurich",
         "schedule": ["before 5am on Friday"],

@@ -274,7 +274,7 @@ jobs:
 
             - name: Comprehensive Deployment Test
               run: |
-                  tests/structure/run-deployment-test.sh ${{ steps.get_version.outputs.version }}
+                  tests/final-validation/run-deployment-test.sh ${{ steps.get_version.outputs.version }}
 
             - name: Publish Test Status
               id: test_status
