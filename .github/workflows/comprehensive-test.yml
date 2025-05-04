@@ -274,45 +274,7 @@ jobs:
 
             - name: Comprehensive Deployment Test
               run: |
-                  mkdir -p deploy-test-results
-
-                  echo "=== Running Ansible Runtime Tests ==="
-                  docker run --rm ansible-test:test \
-                    ansible-playbook -c local -i localhost, -e "test_var=deployment_test" \ # DevSkim: ignore DS162092
-                    /dev/stdin <<EOF
-                  ---
-                  - name: Final Deployment Validation
-                    hosts: all
-                    gather_facts: false
-                    tasks:
-                      - name: "Deployment Test"
-                        debug:
-                          msg: "Ansible Deployment Test successful: {{ test_var }}"
-
-                      - name: "Check Environment"
-                        command: env
-                        register: env_output
-                        changed_when: false
-
-                      - name: "Check Installed Ansible Modules"
-                        command: ansible-doc -l
-                        register: modules
-                        changed_when: false
-
-                      - name: "Save Test Results"
-                        copy:
-                          content: |
-                            ANSIBLE DEPLOYMENT TEST RESULTS
-                            ===============================
-                            Date: {{ ansible_date_time.iso8601 }}
-                            Python: {{ ansible_python.version.major }}.{{ ansible_python.version.minor }}.{{ ansible_python.version.micro }}
-                            Ansible: {{ ansible_version.full }}
-
-                            Available Modules: {{ modules.stdout_lines | length }}
-                          dest: "/tmp/deployment-test-results.txt"
-                  EOF
-
-                  echo "=== Test completed ==="
+                  tests/structure/run-deployment-test.sh ${{ steps.get_version.outputs.version }}
 
             - name: Publish Test Status
               id: test_status
