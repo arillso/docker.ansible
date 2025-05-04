@@ -78,16 +78,6 @@
                         "pinDigests": true
                 },
                 {
-                        "description": "Container structure test image",
-                        "matchDatasources": ["docker"],
-                        "groupName": "container-structure-test",
-                        "matchPackageNames": [
-                                "/gcr.io/gcp-runtimes/container-structure-test/",
-                                "/ghcr.io/googlecontainertools/container-structure-test/"
-                        ],
-                        "pinDigests": true
-                },
-                {
                         "description": "Python dependencies (non-major)",
                         "matchDatasources": ["pip"],
                         "matchUpdateTypes": ["minor", "patch"],
@@ -98,22 +88,6 @@
                         "matchDatasources": ["pip"],
                         "groupName": "ansible-core",
                         "matchPackageNames": ["/ansible-core/"]
-                },
-                {
-                        "description": "Makefile Docker images",
-                        "matchManagers": ["custom.regex"],
-                        "matchDatasources": ["docker"],
-                        "matchFileNames": ["^Makefile$"],
-                        "groupName": "Makefile Docker images",
-                        "pinDigests": true
-                },
-                {
-                        "description": "Workflow Docker images",
-                        "matchManagers": ["custom.regex"],
-                        "matchDatasources": ["docker"],
-                        "matchFileNames": [".github/workflows/**"],
-                        "groupName": "Workflow Docker Images",
-                        "pinDigests": true
                 },
                 {
                         "description": "Security vulnerability updates",
@@ -139,72 +113,6 @@
                         "versioningTemplate": "loose",
                         "datasourceTemplate": "repology",
                         "packageNameTemplate": "alpine_3_21/{{depName}}"
-                },
-                {
-                        "description": "Node.js in Makefile docker run commands",
-                        "customType": "regex",
-                        "fileMatch": ["^Makefile$"],
-                        "matchStrings": [
-                                "docker\\\\s+run\\\\s+(?:[^\\\\n]*?\\\\s+)node:(?<currentValue>[0-9]+\\\\.[0-9]+\\\\.[0-9]+)(?:-alpine[0-9\\\\.]*)?"
-                        ],
-                        "datasourceTemplate": "docker",
-                        "depNameTemplate": "node",
-                        "versioningTemplate": "node"
-                },
-                {
-                        "description": "General Docker images in Makefile docker run commands",
-                        "customType": "regex",
-                        "fileMatch": ["^Makefile$"],
-                        "matchStrings": [
-                                "docker\\s+run\\s+(?<prefix>[^\\n]*?\\s+)(?<depName>[a-z0-9/-]+(?:\\.[a-z0-9]+)+\\/[a-z0-9/-]+|[a-z0-9/-]+\\/[a-z0-9/-]+|busybox):(?<currentValue>v?[0-9]+\\.[0-9]+\\.[0-9]+|[0-9]+\\.[0-9]+)?(?:@(?<currentDigest>sha256:[A-Za-z0-9]+))?\"?"
-                        ],
-                        "datasourceTemplate": "docker",
-                        "versioningTemplate": "semver",
-                        "autoReplaceStringTemplate": "{{prefix}}{{depName}}:{{newValue}}@{{newDigest}}"
-                },
-                {
-                        "description": "Container Structure Test in GitHub workflows",
-                        "customType": "regex",
-                        "fileMatch": ["\\.github/workflows/[^/]+\\.ya?ml$"],
-                        "matchStrings": [
-                                "ghcr.io/googlecontainertools/container-structure-test:(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+)?(?:@(?<currentDigest>sha256:[A-Za-z0-9]+))?\"?"
-                        ],
-                        "datasourceTemplate": "docker",
-                        "depNameTemplate": "ghcr.io/googlecontainertools/container-structure-test",
-                        "versioningTemplate": "semver",
-                        "autoReplaceStringTemplate": "{{depNameTemplate}}:{{newValue}}@{{newDigest}}"
-                },
-                {
-                        "description": "Docker images in docker run commands in GitHub workflows",
-                        "customType": "regex",
-                        "fileMatch": ["\\.github/workflows/[^/]+\\.ya?ml$"],
-                        "matchStrings": [
-                                "docker\\s+run\\s+--rm[^:]*\\s+(?<depName>[a-z0-9/-]+(?:\\.[a-z0-9]+)+\\/[a-z0-9/-]+|[a-z0-9/-]+\\/[a-z0-9/-]+):(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+)?(?:@(?<currentDigest>sha256:[A-Za-z0-9]+))?\"?"
-                        ],
-                        "datasourceTemplate": "docker",
-                        "versioningTemplate": "semver",
-                        "autoReplaceStringTemplate": "{{depName}}:{{newValue}}@{{newDigest}}"
-                },
-                {
-                        "description": "Docker images in Trivy image-ref in GitHub workflows",
-                        "customType": "regex",
-                        "fileMatch": ["\\\\.github/workflows/[^/]+\\\\.ya?ml$"],
-                        "matchStrings": [
-                                "image-ref:\\\\s*\"(?<depName>[a-z0-9/-]+):(?<currentValue>[a-z0-9.-]+)\""
-                        ],
-                        "datasourceTemplate": "docker",
-                        "versioningTemplate": "semver"
-                },
-                {
-                        "description": "Docker images mit Digest in Makefile",
-                        "customType": "regex",
-                        "fileMatch": ["^Makefile$"],
-                        "matchStrings": [
-                                "^(?<varName>[A-Za-z_][A-Za-z0-9_]*)\\\\s*(?:\\\\?|:)?=\\\\s*\"?(?<depName>[^:@\\\\s]+)(?::(?<currentValue>[^@\\\\s]+))?(?:@(?<currentDigest>sha256:[A-Za-z0-9]+))?\"?"
-                        ],
-                        "autoReplaceStringTemplate": "{{varName}} := {{{depName}}}:{{{newValue}}}@{{{newDigest}}}",
-                        "datasourceTemplate": "docker",
-                        "versioningTemplate": "docker"
                 }
         ],
         "dockerfile": { "fileMatch": ["^Dockerfile$"] },

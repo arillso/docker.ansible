@@ -14,6 +14,7 @@ run_deployment_tests() {
 
     # Setup result directory
     mkdir -p "${RESULTS_DIR}"
+    chmod 777 "${RESULTS_DIR}"
 
     # Execute tests
     echo "=== Running Ansible Runtime Tests ==="
