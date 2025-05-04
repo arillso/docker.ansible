@@ -22,27 +22,23 @@
         "dependencyDashboardTitle": "📦 Dependency Dashboard",
         "rebaseWhen": "auto",
         "branchPrefix": "renovate/",
-        "commitMessageAction": "chore",
         "packageRules": [
                 {
-                        "description": "Security updates - Automerge",
-                        "matchCategories": ["security"],
-                        "labels": ["dependencies", "security"],
-                        "prPriority": 2,
-                        "automerge": true,
-                        "minimumReleaseAge": "0"
-                },
-                {
-                        "description": "GitHub Actions updates",
-                        "matchManagers": ["github-actions"],
-                        "groupName": "GitHub Actions",
+                        "description": "Weekly updates for pip dependencies",
+                        "matchManagers": ["pip_requirements", "pip_setup"],
+                        "matchUpdateTypes": ["major", "minor", "patch"],
                         "prConcurrentLimit": 10
                 },
                 {
-                        "description": "Docker image updates",
-                        "matchManagers": ["dockerfile", "custom.regex"],
-                        "matchDatasources": ["docker"],
-                        "groupName": "Docker Images",
+                        "description": "Weekly Docker image updates",
+                        "matchManagers": ["dockerfile"],
+                        "matchUpdateTypes": ["major", "minor", "patch"],
+                        "prConcurrentLimit": 10
+                },
+                {
+                        "description": "Weekly GitHub Actions updates",
+                        "matchManagers": ["github-actions"],
+                        "matchUpdateTypes": ["major", "minor", "patch"],
                         "prConcurrentLimit": 10
                 },
                 {
@@ -57,10 +53,32 @@
                         "description": "Non-breaking updates (patch & minor)",
                         "matchUpdateTypes": ["patch", "minor"],
                         "groupName": "Non-breaking Updates",
-                        "minimumReleaseAge": "7 days",
+                        "minimumReleaseAge": "14 days",
                         "prPriority": 0,
                         "automerge": true,
                         "platformAutomerge": true
+                },
+                {
+                        "description": "Group Docker tool updates",
+                        "groupName": "Docker Tools",
+                        "matchDatasources": ["docker"],
+                        "matchPackageNames": [
+                                "hadolint/hadolint",
+                                "aquasec/trivy",
+                                "ghcr.io/googlecontainertools/container-structure-test",
+                                "oxsecurity/megalinter",
+                                "renovate/renovate"
+                        ],
+                        "matchUpdateTypes": ["minor", "patch"],
+                        "automerge": true
+                },
+                {
+                        "description": "Group Alpine base images",
+                        "groupName": "Alpine base images",
+                        "matchDatasources": ["docker"],
+                        "matchPackageNames": ["^node:.*alpine", "^busybox"],
+                        "matchUpdateTypes": ["minor", "patch"],
+                        "automerge": true
                 },
                 {
                         "description": "Major updates (breaking changes)",
@@ -69,59 +87,43 @@
                         "minimumReleaseAge": "14 days",
                         "automerge": false,
                         "dependencyDashboardApproval": true
-                },
-                {
-                        "description": "Alpine base image",
-                        "matchDatasources": ["docker"],
-                        "groupName": "alpine",
-                        "matchPackageNames": ["/alpine/"],
-                        "pinDigests": true
-                },
-                {
-                        "description": "Python dependencies (non-major)",
-                        "matchDatasources": ["pip"],
-                        "matchUpdateTypes": ["minor", "patch"],
-                        "groupName": "python dependencies (non-major)"
-                },
-                {
-                        "description": "Ansible core updates",
-                        "matchDatasources": ["pip"],
-                        "groupName": "ansible-core",
-                        "matchPackageNames": ["/ansible-core/"]
-                },
-                {
-                        "description": "Security vulnerability updates",
-                        "matchCategories": ["vulnerability"],
-                        "labels": ["dependencies", "security"],
-                        "prPriority": 5,
-                        "automerge": false
                 }
         ],
-        "vulnerabilityAlerts": {
-                "enabled": true,
-                "labels": ["dependencies", "security"],
-                "automerge": false
-        },
         "customManagers": [
                 {
                         "description": "Alpine packages in Dockerfile",
                         "customType": "regex",
                         "fileMatch": ["^Dockerfile$"],
                         "matchStrings": [
-                                "(?:RUN\\\\s+(?:apk update\\\\s+&&\\\\s+)?apk add --no-cache\\\\s+|\\\\\\\\\\s+)(?<depName>[a-z][a-z0-9-]*)(=(?<currentValue>[a-zA-Z0-9-._]+))?"
+                                "(?:RUN\\s+(?:apk update\\s+&&\\s+)?apk add --no-cache\\s+|\\\\\\s+)(?<depName>[a-z][a-z0-9-]*)(=(?<currentValue>[a-zA-Z0-9-._]+))?"
                         ],
                         "versioningTemplate": "loose",
                         "datasourceTemplate": "repology",
                         "packageNameTemplate": "alpine_3_21/{{depName}}"
+                },
+                {
+                        "description": "Docker images in Makefiles and Docker Compose files",
+                        "customType": "regex",
+                        "fileMatch": [
+                                "(^|/)Makefile$",
+                                "(^|/)docker-compose.*\\.ya?ml$"
+                        ],
+                        "matchStrings": [
+                                "(?:docker (?:run|compose|build)[^\\n]*?\\s|image:\\s*[\"]?)(?<depName>[^:\\s\"]+):(?<currentValue>[^\\s\\\\/\"@]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?[\"]?"
+                        ],
+                        "datasourceTemplate": "docker",
+                        "versioningTemplate": "docker"
                 }
         ],
-        "dockerfile": { "fileMatch": ["^Dockerfile$"] },
-        "github-actions": {
-                "fileMatch": ["\\\\.github/workflows/[^/]+\\\\.ya?ml$"],
-                "pinDigests": true
+        "ignoreDeps": [],
+        "vulnerabilityAlerts": {
+                "enabled": true,
+                "labels": ["security"],
+                "assignees": ["sbaerlocher"]
         },
+        "osvVulnerabilityAlerts": true,
         "lockFileMaintenance": {
                 "enabled": true,
-                "schedule": ["before 5am on Monday"]
+                "schedule": ["before 6am on Monday"]
         }
 }
