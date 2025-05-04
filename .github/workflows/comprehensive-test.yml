@@ -51,7 +51,7 @@ jobs:
                   docker run --rm \
                     -v "$GITHUB_WORKSPACE/tests/structure/container-test.yml:/structure-test.yaml" \
                     -v /var/run/docker.sock:/var/run/docker.sock \
-                    gcr.io/gcp-runtimes/container-structure-test:latest \
+                    ghcr.io/googlecontainertools/container-structure-test:1.19.3 \
                     test --image=ansible:test --config=/structure-test.yaml
 
     security-test:
