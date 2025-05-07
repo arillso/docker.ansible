@@ -15,6 +15,13 @@
         "dependencyDashboardTitle": "📦 Dependency Dashboard",
         "packageRules": [
                 {
+                        "description": "Makefile Docker images without digest pinning",
+                        "matchManagers": ["custom.regex"],
+                        "matchDatasources": ["docker"],
+                        "matchFileNames": ["^Makefile$"],
+                        "pinDigests": false
+                },
+                {
                         "description": "Security updates with elevated priority",
                         "matchCategories": ["security"],
                         "labels": ["dependencies", "security"],
@@ -51,13 +58,6 @@
                         "matchUpdateTypes": ["major"],
                         "labels": ["dependencies", "breaking"],
                         "minimumReleaseAge": "7 days"
-                },
-                {
-                        "description": "Makefile Docker images without digest pinning",
-                        "matchManagers": ["custom.regex"],
-                        "matchDatasources": ["docker"],
-                        "matchFileNames": ["^Makefile$"],
-                        "pinDigests": false
                 }
         ],
         "vulnerabilityAlerts": {
