@@ -16,7 +16,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Docker Hub Image Cleanup
-              uses: philiplehmann/docker-hub-retention@v0.0.6
+              uses: philiplehmann/docker-hub-retention@af4891bac44f14c7754a17d1632baf7745329e67 # v0.0.6
               with:
                   repository: arillso/ansible
                   username: sbaerlocher
@@ -33,7 +33,7 @@ jobs:
             packages: write
         steps:
             - name: Delete old untagged images
-              uses: snok/container-retention-policy@v3.0.0
+              uses: snok/container-retention-policy@4f22ef80902ad409ed55a99dc5133cc1250a0d03 # v3.0.0
               with:
                   account: arillso
                   token: ${{ secrets.GITHUB_TOKEN }}
@@ -54,7 +54,7 @@ jobs:
         if: ${{ always() }}
         steps:
             - name: Checkout code
-              uses: actions/checkout@v4
+              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
             - name: Execute cleanup summary script
               run: |
@@ -63,7 +63,7 @@ jobs:
                     "GHCR=${{ needs.ghcr-cleanup.result }}"
 
             - name: Upload Cleanup Report
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
               with:
                   name: cleanup-report
                   path: cleanup-report.md
