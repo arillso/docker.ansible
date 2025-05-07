@@ -1,0 +1,66 @@
+name: Container Registry Cleanup
+
+on:
+    schedule:
+        # Läuft einmal monatlich am 1. um 2:00 Uhr UTC
+        - cron: "0 2 1 * *"
+    workflow_dispatch: # Ermöglicht manuelle Ausführung
+
+jobs:
+    docker-hub-cleanup:
+        name: Docker Hub Cleanup
+        runs-on: ubuntu-latest
+        steps:
+            - name: Docker Hub Image Cleanup
+              uses: philiplehmann/docker-hub-retention@main
+              with:
+                  repository: arillso/ansible
+                  username: ${{ secrets.DOCKERHUB_USERNAME }}
+                  password: ${{ secrets.DOCKERHUB_TOKEN }}
+                  multiple: |
+                      - match: .*-[0-9a-f]{7}$
+                        retention: 60d
+                      - match: <none>
+                        retention: 60d
+                  dryrun: "false"
+
+    ghcr-cleanup:
+        name: GitHub Container Registry Cleanup
+        runs-on: ubuntu-latest
+        permissions:
+            packages: write
+        steps:
+            - name: Delete old untagged images
+              uses: snok/container-retention-policy@v3.0.0
+              with:
+                  account: arillso
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  image-names: ansible
+                  cut-off: 60d
+                  keep-at-least: 5
+                  filter-tags: '^(?!main|latest|v[0-9]+\.[0-9]+\.[0-9]+).*$'
+                  tag-regex-patterns: ".*-[0-9a-f]{7},<none>"
+                  skip-tags: "latest,main"
+
+    cleanup-summary:
+        name: Cleanup Summary
+        needs: [docker-hub-cleanup, ghcr-cleanup]
+        runs-on: ubuntu-latest
+        if: ${{ always() }}
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Execute cleanup summary script
+              run: |
+                  chmod +x ./.github/scripts/cleanup-summary.sh
+                  ./.github/scripts/cleanup-summary.sh \
+                    "DockerHub=${{ needs.docker-hub-cleanup.result }}" \
+                    "GHCR=${{ needs.ghcr-cleanup.result }}"
+
+            - name: Upload Cleanup Report
+              uses: actions/upload-artifact@v4
+              with:
+                  name: cleanup-report
+                  path: cleanup-report.md
+                  retention-days: 30

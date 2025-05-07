@@ -16,6 +16,10 @@ on:
     schedule:
         - cron: "0 1 * * 3"
 
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
 permissions:
     contents: read
     security-events: write
@@ -26,25 +30,27 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Code
-              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+              uses: actions/checkout@v4
 
             - name: Extract Ansible Version
               id: get_version
               run: |
                   version=$(grep '^ansible-core==' requirements.txt | cut -d'=' -f3)
-                  echo "version=$version" >> "$GITHUB_OUTPUT"
+                  echo "version=$version" >> $GITHUB_OUTPUT
 
             - name: Docker Setup
-              uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3
+              uses: docker/setup-buildx-action@v3
 
             - name: Build Container
-              uses: docker/build-push-action@14487ce63c7a62a4a324b0bfb37086795e31c6c1 # v6
+              uses: docker/build-push-action@v6
               with:
                   context: .
                   build-args: ANSIBLE_VERSION=${{ steps.get_version.outputs.version }}
                   push: false
                   load: true
                   tags: ansible:test
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max
 
             - name: Run Structure Tests
               run: |
@@ -59,24 +65,25 @@ jobs:
         needs: structure-test
         steps:
             - name: Checkout Code
-              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+              uses: actions/checkout@v4
 
             - name: Setup Docker
-              uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3
+              uses: docker/setup-buildx-action@v3
 
             - name: Build Container
-              uses: docker/build-push-action@14487ce63c7a62a4a324b0bfb37086795e31c6c1 # v6
+              uses: docker/build-push-action@v6
               with:
                   context: .
                   push: false
                   load: true
                   tags: ansible:test
+                  cache-from: type=gha
 
             - name: Run Security Checks
               run: |
                   mkdir -p test-results
                   docker run --rm -v "$GITHUB_WORKSPACE/tests/security:/tests" ansible:test \
-                  bash -c "bash /tests/container-hardening.sh || echo 'Security check returned warnings' > /dev/stderr" | tee test-results/security-check.log
+                  bash -c "bash /tests/container-hardening.sh || echo 'Security check returned warnings'" | tee test-results/security-check.log
 
             - name: Trivy Vulnerability Scanner
               uses: aquasecurity/trivy-action@master
@@ -87,33 +94,28 @@ jobs:
                   severity: "CRITICAL,HIGH"
 
             - name: Upload Trivy scan results
-              uses: github/codeql-action/upload-sarif@60168efe1c415ce0f5521ea06d5c2062adbeed1b # v3
+              uses: github/codeql-action/upload-sarif@v3
               with:
                   sarif_file: "trivy-results.sarif"
-
-            - name: Upload Security Results
-              uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-              with:
-                  name: security-results
-                  path: test-results/
 
     performance-test:
         runs-on: ubuntu-latest
         needs: structure-test
         steps:
             - name: Checkout Code
-              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+              uses: actions/checkout@v4
 
             - name: Setup Docker
-              uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3
+              uses: docker/setup-buildx-action@v3
 
             - name: Build Container
-              uses: docker/build-push-action@14487ce63c7a62a4a324b0bfb37086795e31c6c1 # v6
+              uses: docker/build-push-action@v6
               with:
                   context: .
                   push: false
                   load: true
                   tags: ansible:test
+                  cache-from: type=gha
 
             - name: Prepare Test Results Directory
               run: |
@@ -127,29 +129,24 @@ jobs:
                     -v "$GITHUB_WORKSPACE/test-results:/results" \
                     ansible:test sh -c "mkdir -p /results && sh /tests/run-performance-tests.sh"
 
-            - name: Upload Performance Results
-              uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-              with:
-                  name: performance-results
-                  path: test-results/
-
     integration-test:
         runs-on: ubuntu-latest
         needs: structure-test
         steps:
             - name: Checkout Code
-              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+              uses: actions/checkout@v4
 
             - name: Setup Docker
-              uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3
+              uses: docker/setup-buildx-action@v3
 
             - name: Build Container
-              uses: docker/build-push-action@14487ce63c7a62a4a324b0bfb37086795e31c6c1 # v6
+              uses: docker/build-push-action@v6
               with:
                   context: .
                   push: false
                   load: true
                   tags: ansible:test
+                  cache-from: type=gha
 
             - name: Create Docker Network
               run: docker network create ansible-test-network
@@ -180,10 +177,10 @@ jobs:
         needs: structure-test
         steps:
             - name: Checkout Code
-              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+              uses: actions/checkout@v4
 
             - name: Setup Python
-              uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+              uses: actions/setup-python@v5
               with:
                   python-version: "3.13.3"
 
@@ -192,12 +189,13 @@ jobs:
                   pip install pytest pytest-cov
 
             - name: Build Container
-              uses: docker/build-push-action@14487ce63c7a62a4a324b0bfb37086795e31c6c1 # v6
+              uses: docker/build-push-action@v6
               with:
                   context: .
                   push: false
                   load: true
                   tags: ansible:test
+                  cache-from: type=gha
 
             - name: Run Unit Tests
               run: |
@@ -208,75 +206,68 @@ jobs:
         needs: structure-test
         steps:
             - name: Checkout Code
-              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+              uses: actions/checkout@v4
 
             - name: Setup Docker
-              uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3
+              uses: docker/setup-buildx-action@v3
 
             - name: Build Container
-              uses: docker/build-push-action@14487ce63c7a62a4a324b0bfb37086795e31c6c1 # v6
+              uses: docker/build-push-action@v6
               with:
                   context: .
                   push: false
                   load: true
                   tags: ansible:test
+                  cache-from: type=gha
 
             - name: Run Upgrade Tests
               run: |
                   ANSIBLE_IMAGE=ansible:test bash tests/upgrade/test-upgrade.sh || (echo "Some upgrade tests failed, but continuing"; exit 0)
 
-    final-validation:
-        runs-on: ubuntu-latest
+    test-summary:
+        name: Test Summary
         needs:
-            [
-                security-test,
-                performance-test,
-                integration-test,
-                unit-test,
-                upgrade-test,
-            ]
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+            - structure-test
+            - security-test
+            - performance-test
+            - integration-test
+            - unit-test
+            - upgrade-test
+        runs-on: ubuntu-latest
+        permissions:
+            pull-requests: write
+        if: ${{ always() }}
         steps:
-            - name: Checkout Code
-              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+            - name: Checkout code
+              uses: actions/checkout@v4
 
-            - name: Extract Version Info
+            - name: Extract Ansible Version
               id: get_version
               run: |
                   version=$(grep '^ansible-core==' requirements.txt | cut -d'=' -f3)
-                  echo "version=$version" >> "$GITHUB_OUTPUT"
+                  echo "ANSIBLE_VERSION=$version" >> $GITHUB_ENV
 
-            - name: Docker Meta
-              id: meta
-              uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5
-              with:
-                  images: |
-                      ansible-test
-                  tags: |
-                      type=raw,value=test
-                      type=raw,value=${{ steps.get_version.outputs.version }}
-                      type=sha
-
-            - name: Setup Docker Buildx
-              uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3
-
-            - name: Build Final Test Image
-              uses: docker/build-push-action@14487ce63c7a62a4a324b0bfb37086795e31c6c1 # v6
-              with:
-                  context: .
-                  build-args: |
-                      ANSIBLE_VERSION=${{ steps.get_version.outputs.version }}
-                      VCS_REF=${{ github.sha }}
-                      BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
-                  push: false
-                  load: true
-                  tags: ${{ steps.meta.outputs.tags }}
-
-            - name: Comprehensive Deployment Test
+            - name: Generate test summary
               run: |
-                  tests/structure/run-deployment-test.sh ${{ steps.get_version.outputs.version }}
+                  ./tests/scripts/container-test-summary.sh \
+                    "Structure Tests=${{ needs.structure-test.result }}" \
+                    "Security Tests=${{ needs.security-test.result }}" \
+                    "Performance Tests=${{ needs.performance-test.result }}" \
+                    "Integration Tests=${{ needs.integration-test.result }}" \
+                    "Unit Tests=${{ needs.unit-test.result }}" \
+                    "Upgrade Tests=${{ needs.upgrade-test.result }}"
 
-            - name: Publish Test Status
-              id: test_status
-              run: |
-                  echo "status=success" >> "$GITHUB_OUTPUT"
+            - name: Comment on pull request with test results
+              if: ${{ github.event_name == 'pull_request' }}
+              uses: thollander/actions-comment-pull-request@v3
+              with:
+                  file-path: ./container-test-results.md
+                  comment-tag: ansible-container-test-results
+                  mode: upsert
+
+            - name: Upload test results
+              uses: actions/upload-artifact@v4
+              with:
+                  name: container-test-results
+                  path: ./container-test-results.md
+                  retention-days: 30
