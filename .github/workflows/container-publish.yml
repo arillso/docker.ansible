@@ -1,9 +1,13 @@
-name: Publish
+name: Publish Container Images
 
 on:
     push:
         branches:
             - main
+        paths:
+            - "Dockerfile"
+            - "requirements.txt"
+            - ".github/workflows/container-publish.yml"
 
 permissions:
     contents: read
@@ -19,8 +23,9 @@ jobs:
             - name: Extract version from requirements.txt
               id: get_version
               run: |
-                  version=$(grep '^ansible-core==' requirements.txt | cut -d'=' -f3)
-                  echo "version=$version" >> "$GITHUB_OUTPUT"
+                  version="$(grep '^ansible-core==' requirements.txt | cut -d'=' -f3)"
+                  echo "version=${version}" >> "$GITHUB_OUTPUT"
+                  echo "Ansible Version: ${version}"
 
             - name: Set up QEMU
               uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3
@@ -37,7 +42,9 @@ jobs:
                       arillso/ansible
                   tags: |
                       type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
-                      type=raw,value=${{ steps.get_version.outputs.version }}
+                      type=raw,value=rolling,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+                      type=raw,value=${{ steps.get_version.outputs.version }},enable=true
+                      type=sha,format=short,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
 
             - name: Login to DockerHub
               uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3
@@ -59,7 +66,11 @@ jobs:
                   build-args: |
                       ANSIBLE_VERSION=${{ steps.get_version.outputs.version }}
                       VCS_REF=${{ github.sha }}
+                      BUILD_DATE=$(date -I)
                   push: true
                   platforms: linux/amd64,linux/arm64
                   tags: |
                       ${{ steps.meta.outputs.tags }}
+                  labels: ${{ steps.meta.outputs.labels }}
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max
