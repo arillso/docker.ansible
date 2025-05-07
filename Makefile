@@ -21,7 +21,7 @@ format-all: format-code ## Run both format-code and format-eclint.
 
 run-megalinter: ## Run Megalinter locally.
 	@docker run --rm --name megalint -v $(PROJECT_DIR):/tmp/lint busybox:1.37.0 rm -rf /tmp/lint/megalinter-reports
-	@docker run --rm --name megalint -v $(PROJECT_DIR):/tmp/lint oxsecurity/megalinter:v8.6.0
+	@docker run --rm --name megalint -v $(PROJECT_DIR):/tmp/lint oxsecurity/megalinter:v8.7.0
 
 ansible-build: ## Build the Ansible Docker image.
 	@docker build \
@@ -63,7 +63,7 @@ security-test: ansible-build ## Run security checks on the container
 	@docker run --rm -v "$(PROJECT_DIR)/tests/security:/tests" ansible:latest bash -c "set -e; bash /tests/container-hardening.sh" || (echo "Security check failed with error code $$?"; exit 0)
 	@echo "Running Trivy scan..."
 	@mkdir -p $(PROJECT_DIR)/test-results
-	@docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$(PROJECT_DIR)/test-results:/results" aquasec/trivy:0.62.0 image --exit-code 0 --severity HIGH,CRITICAL -o /results/trivy-results.txt ansible:latest || (echo "Trivy scan completed with warnings"; exit 0)
+	@docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$(PROJECT_DIR)/test-results:/results" aquasec/trivy:0.62.1 image --exit-code 0 --severity HIGH,CRITICAL -o /results/trivy-results.txt ansible:latest || (echo "Trivy scan completed with warnings"; exit 0)
 	@echo "Security tests completed with warnings - review results in test-results directory"
 
 performance-test: ansible-build ## Run performance benchmarks for the container
