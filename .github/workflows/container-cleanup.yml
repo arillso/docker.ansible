@@ -16,15 +16,13 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Docker Hub Image Cleanup
-              uses: philiplehmann/docker-hub-retention@main
+              uses: philiplehmann/docker-hub-retention@v0.0.6
               with:
                   repository: arillso/ansible
-                  username: ${{ secrets.DOCKERHUB_USERNAME }}
+                  username: sbaerlocher
                   password: ${{ secrets.DOCKERHUB_TOKEN }}
                   multiple: |
-                      - match: .*-[0-9a-f]{7}$
-                        retention: 60d
-                      - match: <none>
+                      - match: sha-[0-9a-f]{7}
                         retention: 60d
                   dryrun: "false"
 

@@ -9,7 +9,7 @@ set -euo pipefail
 
 # Determine script directory for proper relative paths
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-UTILS_DIR="${SCRIPT_DIR}/../../scripts/utils"
+UTILS_DIR="${SCRIPT_DIR}/utils"
 
 # Add custom footer information about retention policies
 add_policy_info() {
