@@ -15,11 +15,11 @@
         "dependencyDashboardTitle": "📦 Dependency Dashboard",
         "packageRules": [
                 {
-                        "description": "Makefile Docker images without digest pinning",
-                        "matchManagers": ["custom.regex"],
+                        "description": "Disable Docker image pinning in Makefiles",
                         "matchDatasources": ["docker"],
-                        "matchFileNames": ["^Makefile$"],
-                        "pinDigests": false
+                        "matchFileNames": ["/^Makefile$/"],
+                        "pinDigests": false,
+                        "rangeStrategy": "replace"
                 },
                 {
                         "description": "Security updates with elevated priority",
