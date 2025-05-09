@@ -9,7 +9,7 @@ set -euo pipefail
 
 # Determine script directory for proper relative paths
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-UTILS_DIR="${SCRIPT_DIR}/../.github/scripts/utils"
+UTILS_DIR="${SCRIPT_DIR}/../../.github/scripts/utils"
 
 # Execute the shared summary generator with test-specific parameters
 "${UTILS_DIR}/generate-summary.sh" \
