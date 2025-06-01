@@ -52,7 +52,7 @@ RUN apk update && \
 	# Compiler toolchain
 	gcc=14.2.0-r4 \
 	libffi-dev=3.4.7-r0 \
-	python3-dev=3.12.10-r0 \
+	python3-dev=3.12.10-r1 \
 	make=4.4.1-r2 \
 	musl-dev=1.2.5-r9 \
 	build-base=0.5-r3 \
@@ -100,8 +100,8 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.21/community" >> /etc/apk/repo
 	# Specific tools
 	kubectl=1.31.5-r2 \
 	jq=1.7.1-r0 \
-	helm=3.16.3-r4 \
-	kustomize=5.5.0-r4 \
+	helm=3.16.3-r5 \
+	kustomize=5.5.0-r5 \
 	gnupg=2.4.7-r0 \
 	openssl=3.3.3-r0 \
 	curl=8.12.1-r1 && \
