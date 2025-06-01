@@ -6,7 +6,7 @@
                 ":semanticCommits"
         ],
         "timezone": "Europe/Zurich",
-        "schedule": ["before 5am every day"],
+        "schedule": ["before 5am"],
         "prConcurrentLimit": 5,
         "labels": ["dependencies"],
         "rangeStrategy": "pin",
