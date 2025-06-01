@@ -84,7 +84,8 @@ ENV USER=ansible \
 WORKDIR /home/ansible
 
 # Install all runtime dependencies in a single layer
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.21/community" >> /etc/apk/repositories && \
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v$(cut -d'.' -f1-2 /etc/alpine-release)/community" >> /etc/apk/repositories && \
 	apk update && \
 	apk add --no-cache \
 	# Base packages
