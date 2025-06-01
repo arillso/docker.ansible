@@ -6,7 +6,7 @@
                 ":semanticCommits"
         ],
         "timezone": "Europe/Zurich",
-        "schedule": ["before 5am on Friday"],
+        "schedule": ["before 5am every day"],
         "prConcurrentLimit": 5,
         "labels": ["dependencies"],
         "rangeStrategy": "pin",
@@ -50,7 +50,6 @@
                         "description": "Group non-breaking updates (patch and minor)",
                         "matchUpdateTypes": ["patch", "minor"],
                         "groupName": "Non-breaking Updates",
-                        "minimumReleaseAge": "3 days",
                         "automerge": true
                 },
                 {
