@@ -43,14 +43,32 @@
                         "description": "Group Alpine packages updates",
                         "matchManagers": ["custom.regex"],
                         "matchDatasources": ["repology"],
-                        "matchPackageNames": ["/^alpine_3_21\\//"],
-                        "groupName": "Alpine Packages"
+                        "groupName": "Alpine Packages",
+                        "matchPackageNames": ["/^alpine_3_\\d+//"]
                 },
                 {
                         "description": "Group non-breaking updates (patch and minor)",
                         "matchUpdateTypes": ["patch", "minor"],
                         "groupName": "Non-breaking Updates",
                         "automerge": true
+                },
+                {
+                        "description": "Group all container structure test updates",
+                        "matchManagers": ["custom.regex"],
+                        "matchPackageNames": [
+                                "alpine-test-version",
+                                "tool-test-versions"
+                        ],
+                        "groupName": "Container Test Updates"
+                },
+                {
+                        "description": "Group renovate config self-updates",
+                        "matchManagers": ["custom.regex"],
+                        "matchPackageNames": [
+                                "alpine-package-template",
+                                "alpine-tool-template"
+                        ],
+                        "groupName": "Renovate Config Updates"
                 },
                 {
                         "description": "Major version updates (potential breaking changes)",
@@ -65,9 +83,24 @@
         },
         "customManagers": [
                 {
+                        "description": "Alpine version in packageNameTemplate",
+                        "customType": "regex",
+                        "fileMatch": [
+                                "renovate\\.json$",
+                                "\\.github/renovate\\.json$"
+                        ],
+                        "matchStrings": [
+                                "\"packageNameTemplate\":\\s*\"alpine_(?<currentValue>\\d+_\\d+)/{{depName}}\""
+                        ],
+                        "depNameTemplate": "alpine-package-template",
+                        "datasourceTemplate": "docker",
+                        "packageNameTemplate": "alpine",
+                        "extractVersionTemplate": "^(?<version>\\d+\\.\\d+)"
+                },
+                {
                         "description": "Alpine packages in Dockerfile",
                         "customType": "regex",
-                        "managerFilePatterns": ["/^Dockerfile$/"],
+                        "fileMatch": ["^Dockerfile$"],
                         "matchStrings": [
                                 "(?:RUN\\s+(?:apk update\\s+&&\\s+)?apk add --no-cache\\s+|\\\\\\s+)(?<depName>[a-z][a-z0-9-]*)(=(?<currentValue>[a-zA-Z0-9-._]+))?"
                         ],
@@ -78,12 +111,58 @@
                 {
                         "description": "Docker images in Makefile",
                         "customType": "regex",
-                        "managerFilePatterns": ["/^Makefile$/"],
+                        "fileMatch": ["^Makefile$"],
                         "matchStrings": [
                                 "(?:docker\\s+run(?:[^\\n]*?)\\s+)(?<depName>[a-z0-9]+(?:[._-][a-z0-9]+)*(?:\\/[a-z0-9]+(?:[._-][a-z0-9]+)*)*):(?<currentValue>[0-9v][A-Za-z0-9._-]*)(?:@(?<currentDigest>sha256:[a-f0-9]{64}))?"
                         ],
                         "datasourceTemplate": "docker",
                         "versioningTemplate": "docker"
+                },
+                {
+                        "description": "Alpine version in container structure tests",
+                        "customType": "regex",
+                        "fileMatch": [
+                                "container-structure-test\\.ya?ml$",
+                                "test\\.ya?ml$"
+                        ],
+                        "matchStrings": [
+                                "expectedContents:\\s*\\n\\s*-\\s*[\"'](?<currentValue>\\d+\\.\\d+\\.\\d+)[\"']"
+                        ],
+                        "depNameTemplate": "alpine-test-version",
+                        "datasourceTemplate": "docker",
+                        "packageNameTemplate": "alpine"
+                },
+                {
+                        "description": "Tool versions in container structure tests",
+                        "customType": "regex",
+                        "fileMatch": [
+                                "container-structure-test\\.ya?ml$",
+                                "test\\.ya?ml$"
+                        ],
+                        "matchStrings": [
+                                "expectedOutput:\\s*\\n\\s*-\\s*[\"']v(?<currentValue>\\d+\\.\\d+(?:\\.\\d+)?)[\"']",
+                                "expectedOutput:\\s*\\n\\s*-\\s*[\"'](?<currentValue>\\d+\\.\\d+\\.\\d+)[\"']",
+                                "expectedOutput:\\s*\\n\\s*-\\s*[\"']jq-(?<currentValue>\\d+\\.\\d+(?:\\.\\d+)?)[\"']",
+                                "expectedOutput:\\s*\\n\\s*-\\s*[\"']Client Version.*?v(?<currentValue>\\d+\\.\\d+\\.\\d+)[\"']"
+                        ],
+                        "depNameTemplate": "tool-test-versions",
+                        "datasourceTemplate": "repology",
+                        "packageNameTemplate": "alpine_3_21/alpine"
+                },
+                {
+                        "description": "Alpine version in tool test packageNameTemplate",
+                        "customType": "regex",
+                        "fileMatch": [
+                                "renovate\\.json$",
+                                "\\.github/renovate\\.json$"
+                        ],
+                        "matchStrings": [
+                                "\"packageNameTemplate\":\\s*\"alpine_(?<currentValue>\\d+_\\d+)/alpine\""
+                        ],
+                        "depNameTemplate": "alpine-tool-template",
+                        "datasourceTemplate": "docker",
+                        "packageNameTemplate": "alpine",
+                        "extractVersionTemplate": "^(?<version>\\d+\\.\\d+)"
                 }
         ]
 }
