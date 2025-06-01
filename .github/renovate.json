@@ -85,9 +85,9 @@
                 {
                         "description": "Alpine version in packageNameTemplate",
                         "customType": "regex",
-                        "fileMatch": [
-                                "renovate\\.json$",
-                                "\\.github/renovate\\.json$"
+                        "managerFilePatterns": [
+                                "/renovate\\.json$/",
+                                "/\\.github/renovate\\.json$/"
                         ],
                         "matchStrings": [
                                 "\"packageNameTemplate\":\\s*\"alpine_(?<currentValue>\\d+_\\d+)/{{depName}}\""
@@ -100,7 +100,7 @@
                 {
                         "description": "Alpine packages in Dockerfile",
                         "customType": "regex",
-                        "fileMatch": ["^Dockerfile$"],
+                        "managerFilePatterns": ["/^Dockerfile$/"],
                         "matchStrings": [
                                 "(?:RUN\\s+(?:apk update\\s+&&\\s+)?apk add --no-cache\\s+|\\\\\\s+)(?<depName>[a-z][a-z0-9-]*)(=(?<currentValue>[a-zA-Z0-9-._]+))?"
                         ],
@@ -111,7 +111,7 @@
                 {
                         "description": "Docker images in Makefile",
                         "customType": "regex",
-                        "fileMatch": ["^Makefile$"],
+                        "managerFilePatterns": ["/^Makefile$/"],
                         "matchStrings": [
                                 "(?:docker\\s+run(?:[^\\n]*?)\\s+)(?<depName>[a-z0-9]+(?:[._-][a-z0-9]+)*(?:\\/[a-z0-9]+(?:[._-][a-z0-9]+)*)*):(?<currentValue>[0-9v][A-Za-z0-9._-]*)(?:@(?<currentDigest>sha256:[a-f0-9]{64}))?"
                         ],
@@ -121,9 +121,9 @@
                 {
                         "description": "Alpine version in container structure tests",
                         "customType": "regex",
-                        "fileMatch": [
-                                "container-structure-test\\.ya?ml$",
-                                "test\\.ya?ml$"
+                        "managerFilePatterns": [
+                                "/container-structure-test\\.ya?ml$/",
+                                "/test\\.ya?ml$/"
                         ],
                         "matchStrings": [
                                 "expectedContents:\\s*\\n\\s*-\\s*[\"'](?<currentValue>\\d+\\.\\d+\\.\\d+)[\"']"
@@ -135,9 +135,9 @@
                 {
                         "description": "Tool versions in container structure tests",
                         "customType": "regex",
-                        "fileMatch": [
-                                "container-structure-test\\.ya?ml$",
-                                "test\\.ya?ml$"
+                        "managerFilePatterns": [
+                                "/container-structure-test\\.ya?ml$/",
+                                "/test\\.ya?ml$/"
                         ],
                         "matchStrings": [
                                 "expectedOutput:\\s*\\n\\s*-\\s*[\"']v(?<currentValue>\\d+\\.\\d+(?:\\.\\d+)?)[\"']",
@@ -152,9 +152,9 @@
                 {
                         "description": "Alpine version in tool test packageNameTemplate",
                         "customType": "regex",
-                        "fileMatch": [
-                                "renovate\\.json$",
-                                "\\.github/renovate\\.json$"
+                        "managerFilePatterns": [
+                                "/renovate\\.json$/",
+                                "/\\.github/renovate\\.json$/"
                         ],
                         "matchStrings": [
                                 "\"packageNameTemplate\":\\s*\"alpine_(?<currentValue>\\d+_\\d+)/alpine\""
