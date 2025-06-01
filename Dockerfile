@@ -44,7 +44,6 @@ COPY requirements.txt /requirements.txt
 RUN apk update && \
 	apk add --no-cache \
 	# System packages
-	python3=3.12.10-r0 \
 	py3-pip=24.3.1-r0 \
 	pipx=1.7.1-r0 \
 	ca-certificates=20241121-r1 \
@@ -89,7 +88,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.21/community" >> /etc/apk/repo
 	apk update && \
 	apk add --no-cache \
 	# Base packages
-	python3=3.12.10-r0 \
+	python3=3.12.10-r1 \
 	bash=5.2.37-r0 \
 	git=2.47.2-r0 \
 	openssh-client-common=9.9_p2-r0 \
@@ -98,7 +97,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.21/community" >> /etc/apk/repo
 	sshpass=1.10-r0 \
 	rsync=3.4.0-r0 \
 	# Specific tools
-	kubectl=1.31.5-r2 \
+	kubectl=1.31.5-r3 \
 	jq=1.7.1-r0 \
 	helm=3.16.3-r5 \
 	kustomize=5.5.0-r5 \
