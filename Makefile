@@ -63,7 +63,7 @@ security-test: ansible-build ## Run security checks on the container
 	@docker run --rm -v "$(PROJECT_DIR)/tests/security:/tests" ansible:latest bash -c "set -e; bash /tests/container-hardening.sh" || (echo "Security check failed with error code $$?"; exit 0)
 	@echo "Running Trivy scan..."
 	@mkdir -p $(PROJECT_DIR)/test-results
-	@docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$(PROJECT_DIR)/test-results:/results" aquasec/trivy:0.62.1 image --exit-code 0 --severity HIGH,CRITICAL -o /results/trivy-results.txt ansible:latest || (echo "Trivy scan completed with warnings"; exit 0)
+	@docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$(PROJECT_DIR)/test-results:/results" aquasec/trivy:0.63.0 image --exit-code 0 --severity HIGH,CRITICAL -o /results/trivy-results.txt ansible:latest || (echo "Trivy scan completed with warnings"; exit 0)
 	@echo "Security tests completed with warnings - review results in test-results directory"
 
 performance-test: ansible-build ## Run performance benchmarks for the container
