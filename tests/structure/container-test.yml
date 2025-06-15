@@ -13,13 +13,13 @@ commandTests:
       command: "helm"
       args: ["version", "--short"]
       expectedOutput:
-          - "v3.16"
+          - "v3.18.0"
 
     - name: "Check kustomize Version"
       command: "kustomize"
       args: ["version"]
       expectedOutput:
-          - "5.5.0"
+          - "5.6.0"
 
     # Shell Tools & Utilities
     - name: "Check Bash Version"
@@ -32,7 +32,7 @@ commandTests:
       command: "jq"
       args: ["--version"]
       expectedOutput:
-          - "jq-1.7"
+          - "jq-1.8.0"
 
     - name: "Check sshpass Availability"
       command: "which"
@@ -44,7 +44,7 @@ commandTests:
       command: "openssl"
       args: ["version"]
       expectedOutput:
-          - "OpenSSL 3.3.3"
+          - "OpenSSL 3.5.0"
 
     - name: "Check Git Version"
       command: "git"
@@ -182,7 +182,7 @@ fileContentTests:
     - name: "Verify Alpine version"
       path: "/etc/alpine-release"
       expectedContents:
-          - "3.21.3"
+          - "3.22.0"
     - name: "Check SSH Client Configuration"
       path: "/etc/ssh/ssh_config"
       excludedContents:
