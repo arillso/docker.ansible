@@ -1,0 +1,56 @@
+name: Create Release
+
+on:
+    push:
+        tags:
+            - "v*"
+
+permissions:
+    contents: write
+
+jobs:
+    release:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+              with:
+                  fetch-depth: 0
+
+            - name: Extract version from requirements.txt
+              id: get_version
+              run: |
+                  version="$(grep '^ansible-core==' requirements.txt | cut -d'=' -f3)"
+                  echo "ansible_version=${version}" >> "$GITHUB_OUTPUT"
+                  echo "tag_version=${GITHUB_REF#refs/tags/v}" >> "$GITHUB_OUTPUT"
+
+            - name: Generate Release Notes
+              id: generate_notes
+              run: |
+                  # Extract changes from CHANGELOG.md for this version
+                  awk '/^## \[/{if(found) exit; if(/\['"${{ steps.get_version.outputs.tag_version }}"'\]/) found=1; next} found' CHANGELOG.md > release_notes.md
+
+                  # If no specific version found, use latest changes
+                  if [ ! -s release_notes.md ]; then
+                    awk '/^## \[/{if(NR>1) exit} /^## \[/{p=1} p' CHANGELOG.md > release_notes.md
+                  fi
+
+                  # Add container info
+                  echo "" >> release_notes.md
+                  echo "## Container Information" >> release_notes.md
+                  echo "- **Ansible Core Version**: ${{ steps.get_version.outputs.ansible_version }}" >> release_notes.md
+                  echo "- **Base Image**: Alpine Linux 3.22" >> release_notes.md
+                  echo "- **Available Tools**: kubectl, helm, kustomize, jq, gnupg" >> release_notes.md
+                  echo "" >> release_notes.md
+                  echo "## Container Images" >> release_notes.md
+                  echo "- **Docker Hub**: \`arillso/ansible:${{ steps.get_version.outputs.tag_version }}\`" >> release_notes.md
+                  echo "- **GitHub Container Registry**: \`ghcr.io/arillso/ansible:${{ steps.get_version.outputs.tag_version }}\`" >> release_notes.md
+
+            - name: Create Release
+              uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191 # v2
+              with:
+                  body_path: release_notes.md
+                  name: "Ansible Container v${{ steps.get_version.outputs.tag_version }}"
+                  draft: false
+                  prerelease: false
+                  generate_release_notes: true

@@ -118,7 +118,18 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v$(cut -d'.' -f1-2 /etc/alpine-re
 # Copy pipx environment and create Ansible configuration
 COPY --from=builder /pipx /pipx
 RUN mkdir -p /etc/ansible && \
-	echo 'localhost' > /etc/ansible/hosts && \
+	echo 'all:' > /etc/ansible/hosts.yml && \
+	echo '  hosts:' >> /etc/ansible/hosts.yml && \
+	echo '    localhost:' >> /etc/ansible/hosts.yml && \
+	echo '      ansible_connection: local' >> /etc/ansible/hosts.yml && \
+	echo '      ansible_python_interpreter: /pipx/venvs/ansible/bin/python3' >> /etc/ansible/hosts.yml && \
+	echo '[defaults]' > /etc/ansible/ansible.cfg && \
+	echo 'inventory = /etc/ansible/hosts.yml' >> /etc/ansible/ansible.cfg && \
+	echo 'host_key_checking = False' >> /etc/ansible/ansible.cfg && \
+	echo 'strategy_plugins = /pipx/venvs/ansible/lib/python3.12/site-packages/ansible_mitogen/plugins/strategy' >> /etc/ansible/ansible.cfg && \
+	echo 'strategy = mitogen_linear' >> /etc/ansible/ansible.cfg && \
+	echo 'stdout_callback = default' >> /etc/ansible/ansible.cfg && \
+	echo 'pipelining = True' >> /etc/ansible/ansible.cfg && \
 	rm -rf /tmp/*
 
 # Use non-root user
