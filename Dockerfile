@@ -3,7 +3,7 @@
 ##############################################
 # Base Stage: Common configuration
 ##############################################
-FROM alpine:3.21.3@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c AS base
+FROM alpine:3.22.0@sha256:8a1f59ffb675680d47db6337b49d22281a139e9d709335b492be023728e11715 AS base
 
 # Define OCI labels for all stages
 ARG BUILD_DATE
@@ -51,7 +51,7 @@ RUN apk update && \
 	# Compiler toolchain
 	gcc=14.2.0-r4 \
 	libffi-dev=3.4.7-r0 \
-	python3-dev=3.12.10-r1 \
+	python3-dev=3.12.11-r0 \
 	make=4.4.1-r2 \
 	musl-dev=1.2.5-r9 \
 	build-base=0.5-r3 \
