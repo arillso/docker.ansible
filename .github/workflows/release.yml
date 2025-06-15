@@ -1,6 +1,7 @@
+---
 name: Docker Image Release
 
-on:
+"on":
     push:
         branches:
             - main
@@ -8,13 +9,6 @@ on:
             - "requirements.txt"
             - "Dockerfile"
             - "CHANGELOG.md"
-    workflow_dispatch:
-        inputs:
-            force_release:
-                description: "Force create release even if no changes detected"
-                required: false
-                type: boolean
-                default: false
 
 permissions:
     contents: write
@@ -33,9 +27,11 @@ jobs:
               run: |
                   ansible_version="$(grep '^ansible-core==' requirements.txt | cut -d'=' -f3)"
                   current_date=$(date '+%Y-%m-%d')
-                  echo "ansible_version=${ansible_version}" >> "$GITHUB_OUTPUT"
-                  echo "release_date=${current_date}" >> "$GITHUB_OUTPUT"
-                  echo "release_tag=${current_date}" >> "$GITHUB_OUTPUT"
+                  {
+                    echo "ansible_version=${ansible_version}"
+                    echo "release_date=${current_date}"
+                    echo "release_tag=${current_date}"
+                  } >> "$GITHUB_OUTPUT"
 
             - name: Check if release exists
               id: check_release
@@ -50,7 +46,7 @@ jobs:
 
             - name: Extract changelog for current date
               id: extract_changelog
-              if: steps.check_release.outputs.release_exists == 'false' || github.event.inputs.force_release == 'true'
+              if: steps.check_release.outputs.release_exists == 'false'
               run: |
                   # Extract changelog section for current date
                   if grep -q "## \[${{ steps.get_info.outputs.release_date }}\]" CHANGELOG.md; then
@@ -63,7 +59,7 @@ jobs:
                   fi
 
             - name: Generate Release Notes
-              if: steps.check_release.outputs.release_exists == 'false' || github.event.inputs.force_release == 'true'
+              if: steps.check_release.outputs.release_exists == 'false'
               run: |
                   cat > release_notes.md << 'EOF'
                   ## Rolling Release - ${{ steps.get_info.outputs.release_date }}
@@ -95,17 +91,21 @@ jobs:
 
                   # Add changelog section if found
                   if [ "${{ steps.extract_changelog.outputs.changelog_found }}" = "true" ]; then
-                    echo "### Changes in this Release" >> release_notes.md
-                    echo "" >> release_notes.md
-                    cat changelog_section.md >> release_notes.md
-                    echo "" >> release_notes.md
+                    {
+                      echo "### Changes in this Release"
+                      echo ""
+                      cat changelog_section.md
+                      echo ""
+                    } >> release_notes.md
                   fi
 
-                  echo "### Full Changelog" >> release_notes.md
-                  echo "See [CHANGELOG.md](CHANGELOG.md) for complete change history." >> release_notes.md
+                  {
+                    echo "### Full Changelog"
+                    echo "See [CHANGELOG.md](CHANGELOG.md) for complete change history."
+                  } >> release_notes.md
 
             - name: Create or Update Release
-              if: steps.check_release.outputs.release_exists == 'false' || github.event.inputs.force_release == 'true'
+              if: steps.check_release.outputs.release_exists == 'false'
               uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191 # v2
               with:
                   tag_name: "${{ steps.get_info.outputs.release_tag }}"
