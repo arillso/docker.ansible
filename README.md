@@ -1,14 +1,18 @@
 # Container: Ansible
 
+<!-- editorconfig-checker-disable -->
 [![License: MIT](https://img.shields.io/github/license/arillso/docker.ansible?style=popout-square)](LICENSE)
-[![Comprehensive Tests](https://github.com/arillso/docker.ansible/actions/workflows/comprehensive-test.yml/badge.svg)](
+[![Comprehensive Tests](
+https://img.shields.io/github/actions/workflow/status/arillso/docker.ansible/comprehensive-test.yml?style=popout-square&label=comprehensive%20tests)](
 https://github.com/arillso/docker.ansible/actions/workflows/comprehensive-test.yml)
-[![Container Lint](https://github.com/arillso/docker.ansible/actions/workflows/container-lint.yml/badge.svg)](
+[![Container Lint](
+https://img.shields.io/github/actions/workflow/status/arillso/docker.ansible/container-lint.yml?style=popout-square&label=container%20lint)](
 https://github.com/arillso/docker.ansible/actions/workflows/container-lint.yml)
 [![Docker Hub](https://img.shields.io/docker/pulls/arillso/ansible?style=popout-square)](
 https://hub.docker.com/r/arillso/ansible)
 [![Security Rating](https://img.shields.io/badge/security-A+-brightgreen?style=popout-square)](
 https://github.com/arillso/docker.ansible/security)
+<!-- editorconfig-checker-enable -->
 
 ## Overview
 
