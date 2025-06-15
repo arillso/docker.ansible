@@ -1,6 +1,7 @@
+---
 name: Comprehensive Container Testing
 
-on:
+"on":
     push:
         branches:
             - main

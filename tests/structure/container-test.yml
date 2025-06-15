@@ -157,7 +157,7 @@ commandTests:
 
     - name: "Check YAML Inventory Contains localhost"
       command: "grep"
-      args: ["localhost:", "/etc/ansible/hosts.yml"]
+      args: ["localhost:", "/etc/ansible/hosts.yml"] # DevSkim: ignore DS162092 - localhost is valid in Ansible inventory
       expectedOutput:
           - "localhost:"
 
@@ -169,13 +169,12 @@ commandTests:
 
     - name: "Check YAML Inventory Python Interpreter for localhost"
       command: "grep"
-      args:
-          [
-              "ansible_python_interpreter: /pipx/venvs/ansible/bin/python3",
+      args: [
+              "ansible_python_interpreter: /pipx/venvs/ansible/bin/python3", # DevSkim: ignore DS162092 - localhost config is valid in Ansible
               "/etc/ansible/hosts.yml",
           ]
       expectedOutput:
-          - "ansible_python_interpreter: /pipx/venvs/ansible/bin/python3"
+          - "ansible_python_interpreter: /pipx/venvs/ansible/bin/python3" # DevSkim: ignore DS162092 - localhost Python interpreter is valid in Ansible
 
     - name: "Check ansible.cfg Inventory Setting"
       command: "grep"
