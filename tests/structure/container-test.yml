@@ -131,6 +131,48 @@ commandTests:
       teardown:
           - ["rm", "-rf", "/tmp/helm-test"]
 
+    # Mitogen Configuration Tests
+    - name: "Check Mitogen Strategy in ansible.cfg"
+      command: "grep"
+      args: ["strategy = mitogen_linear", "/etc/ansible/ansible.cfg"]
+      expectedOutput:
+          - "strategy = mitogen_linear"
+
+    - name: "Check Mitogen Strategy Plugins Path"
+      command: "grep"
+      args: ["strategy_plugins", "/etc/ansible/ansible.cfg"]
+      expectedOutput:
+          - "strategy_plugins = /pipx/venvs/ansible/lib/python3.12/site-packages/ansible_mitogen/plugins/strategy"
+
+    - name: "Verify Mitogen Module Installation"
+      command: "/pipx/venvs/ansible/bin/python3"
+      args: ["-c", "import ansible_mitogen; print('Mitogen available')"]
+      expectedOutput:
+          - "Mitogen available"
+
+    # Ansible Configuration Tests
+    - name: "Check YAML Inventory File Exists"
+      command: "test"
+      args: ["-f", "/etc/ansible/hosts.yml"]
+
+    - name: "Check YAML Inventory Contains localhost" # DevSkim: ignore DS162092 - localhost is valid in Ansible inventory
+      command: "grep"
+      args: ["localhost:", "/etc/ansible/hosts.yml"] # DevSkim: ignore DS162092 - localhost is valid in Ansible inventory
+      expectedOutput:
+          - "localhost:" # DevSkim: ignore DS162092 - localhost is valid in Ansible inventory
+
+    - name: "Check YAML Inventory ansible_connection"
+      command: "grep"
+      args: ["ansible_connection: local", "/etc/ansible/hosts.yml"]
+      expectedOutput:
+          - "ansible_connection: local"
+
+    - name: "Check ansible.cfg Inventory Setting"
+      command: "grep"
+      args: ["inventory = /etc/ansible/hosts.yml", "/etc/ansible/ansible.cfg"]
+      expectedOutput:
+          - "inventory = /etc/ansible/hosts.yml"
+
 fileExistenceTests:
     - name: "Check Python Dependencies"
       path: "/pipx/venvs/ansible/lib/python3.12/site-packages"
@@ -151,8 +193,8 @@ fileExistenceTests:
       path: "/root/.bash_history"
       shouldExist: false
 
-    - name: "Check if /etc/ansible/hosts exists"
-      path: "/etc/ansible/hosts"
+    - name: "Check if /etc/ansible/hosts.yml exists"
+      path: "/etc/ansible/hosts.yml"
       shouldExist: true
 
     - name: "Check if /pipx/bin exists"
@@ -188,10 +230,11 @@ fileContentTests:
       excludedContents:
           - "UseRoaming yes"
 
-    - name: "Check Ansible Hosts File"
-      path: "/etc/ansible/hosts"
+    - name: "Check Ansible Hosts YAML File"
+      path: "/etc/ansible/hosts.yml"
       expectedContents:
-          - "localhost" # DevSkim: ignore DS162092
+          - "localhost:" # DevSkim: ignore DS162092
+          - "ansible_connection: local"
 
 metadataTest:
     labels:
