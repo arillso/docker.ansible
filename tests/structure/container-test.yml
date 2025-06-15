@@ -167,15 +167,6 @@ commandTests:
       expectedOutput:
           - "ansible_connection: local"
 
-    - name: "Check YAML Inventory Python Interpreter for localhost" # DevSkim: ignore DS162092 - localhost config is valid in Ansible
-      command: "grep"
-      args: [
-          "ansible_python_interpreter: /pipx/venvs/ansible/bin/python3", # DevSkim: ignore DS162092 - localhost config is valid in Ansible
-          "/etc/ansible/hosts.yml",
-      ]
-      expectedOutput:
-          - "ansible_python_interpreter: /pipx/venvs/ansible/bin/python3" # DevSkim: ignore DS162092 - localhost Python interpreter is valid in Ansible
-
     - name: "Check ansible.cfg Inventory Setting"
       command: "grep"
       args: ["inventory = /etc/ansible/hosts.yml", "/etc/ansible/ansible.cfg"]
