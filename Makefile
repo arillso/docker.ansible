@@ -21,7 +21,7 @@ format-all: format-code ## Run both format-code and format-eclint.
 
 run-megalinter: ## Run Megalinter locally.
 	@docker run --rm --name megalint -v $(PROJECT_DIR):/tmp/lint busybox:1.37.0 rm -rf /tmp/lint/megalinter-reports
-	@docker run --rm --name megalint -v $(PROJECT_DIR):/tmp/lint oxsecurity/megalinter:v8.7.0
+	@docker run --rm --name megalint -v $(PROJECT_DIR):/tmp/lint oxsecurity/megalinter:v8.8.0
 
 ansible-build: ## Build the Ansible Docker image.
 	@docker build \
