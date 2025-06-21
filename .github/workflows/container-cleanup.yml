@@ -41,8 +41,7 @@ jobs:
                   image-names: ansible
                   cut-off: 60d
                   keep-n-most-recent: 5
-                  tag-selection: "tagged"
-                  skip-shas: "latest,main"
+                  tag-selection: untagged
                   dry-run: "false"
 
     cleanup-summary:
