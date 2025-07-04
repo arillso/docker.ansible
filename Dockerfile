@@ -58,9 +58,11 @@ RUN apk update && \
 	openssh-client-common=10.0_p1-r7 \
 	openssh-client-default=10.0_p1-r7 \
 	rsync=3.4.1-r0 \
-	curl=8.14.1-r0
+	curl=8.14.1-r1
 # Create virtual environment and install dependencies
-RUN python3 -m venv /pipx/venvs/ansible && \
+RUN --mount=type=cache,target=/var/cache/apk \
+	--mount=type=cache,target=/root/.cache/pip \
+	python3 -m venv /pipx/venvs/ansible && \
 	/pipx/venvs/ansible/bin/pip install --upgrade pip --no-cache-dir && \
 	/pipx/venvs/ansible/bin/pip install --no-cache-dir -r /requirements.txt && \
 	mkdir -p /pipx/bin && \
@@ -68,7 +70,7 @@ RUN python3 -m venv /pipx/venvs/ansible && \
 	ln -sf "$file" "/pipx/bin/$(basename "$file")"; \
 	done && \
 	# Cleanup
-	rm -rf /var/cache/apk/* /tmp/*
+	rm -rf /tmp/*
 
 ##############################################
 # Production Stage
@@ -103,8 +105,8 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v$(cut -d'.' -f1-2 /etc/alpine-re
 	helm=3.18.0-r0 \
 	kustomize=5.6.0-r4 \
 	gnupg=2.4.7-r0 \
-	openssl=3.5.0-r0 \
-	curl=8.14.1-r0 && \
+	openssl=3.5.1-r0 \
+	curl=8.14.1-r1 && \
 	# User setup
 	addgroup -g ${GID} ${GROUP} && \
 	adduser -h /home/ansible -s /bin/bash -G ${GROUP} -D -u ${UID} ${USER} && \
@@ -113,7 +115,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v$(cut -d'.' -f1-2 /etc/alpine-re
 	chown -R ${USER}:${GROUP} /home/ansible /data && \
 	chmod 0700 /home/ansible/.gnupg /home/ansible/.ssh && \
 	chmod 0755 /data && \
-	rm -rf /var/cache/apk/* /tmp/*
+	rm -rf /tmp/*
 
 # Copy pipx environment and create Ansible configuration
 COPY --from=builder /pipx /pipx
