@@ -58,6 +58,16 @@ jobs:
                   token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
                   fetch-depth: 0
 
+            - name: Cache MegaLinter
+              uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
+              with:
+                  path: |
+                      ~/.cache/megalinter
+                      /tmp/megalinter
+                  key: ${{ runner.os }}-megalinter-${{ hashFiles('.mega-linter.yml', '.github/workflows/container-lint.yml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-megalinter-
+
             - name: MegaLinter
               id: ml
               uses: oxsecurity/megalinter@e08c2b05e3dbc40af4c23f41172ef1e068a7d651 # v8

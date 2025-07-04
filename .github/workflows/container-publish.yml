@@ -73,5 +73,9 @@ jobs:
                   tags: |
                       ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
-                  cache-from: type=gha
-                  cache-to: type=gha,mode=max
+                  cache-from: |
+                      type=gha
+                      type=registry,ref=ghcr.io/${{ github.repository }}-cache:buildcache
+                  cache-to: |
+                      type=gha,mode=max
+                      type=registry,ref=ghcr.io/${{ github.repository }}-cache:buildcache,mode=max
