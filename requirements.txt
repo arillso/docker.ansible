@@ -23,7 +23,7 @@ openshift==0.13.2
 dnspython==2.7.0
 
 # Security & Monitoring
-crowdstrike-falconpy==1.5.3
+crowdstrike-falconpy==1.5.4
 
 # Performance & Optimization
 mitogen==0.3.24
