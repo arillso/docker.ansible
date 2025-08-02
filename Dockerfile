@@ -46,7 +46,7 @@ RUN apk update && \
 	# System packages
 	py3-pip=25.1.1-r0 \
 	pipx=1.7.1-r0 \
-	ca-certificates=20241121-r2 \
+	ca-certificates=20250619-r0 \
 	git=2.49.0-r0 \
 	# Compiler toolchain
 	gcc=14.2.0-r6 \
