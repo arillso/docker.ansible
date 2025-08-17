@@ -13,7 +13,7 @@ commandTests:
       command: "helm"
       args: ["version", "--short"]
       expectedOutput:
-          - "v3.18.0"
+          - "v3.18.4"
 
     - name: "Check kustomize Version"
       command: "kustomize"
@@ -44,7 +44,7 @@ commandTests:
       command: "openssl"
       args: ["version"]
       expectedOutput:
-          - "OpenSSL 3.5.0"
+          - "OpenSSL 3.5.1"
 
     - name: "Check Git Version"
       command: "git"
@@ -224,7 +224,7 @@ fileContentTests:
     - name: "Verify Alpine version"
       path: "/etc/alpine-release"
       expectedContents:
-          - "3.22.0"
+          - "3.22.1"
     - name: "Check SSH Client Configuration"
       path: "/etc/ssh/ssh_config"
       excludedContents:

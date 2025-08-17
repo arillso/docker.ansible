@@ -46,8 +46,8 @@ RUN apk update && \
 	# System packages
 	py3-pip=25.1.1-r0 \
 	pipx=1.7.1-r0 \
-	ca-certificates=20241121-r2 \
-	git=2.49.0-r0 \
+	ca-certificates=20250619-r0 \
+	git=2.49.1-r0 \
 	# Compiler toolchain
 	gcc=14.2.0-r6 \
 	libffi-dev=3.4.8-r0 \
@@ -58,9 +58,9 @@ RUN apk update && \
 	openssh-client-common=10.0_p1-r7 \
 	openssh-client-default=10.0_p1-r7 \
 	rsync=3.4.1-r0 \
-	curl=8.14.1-r0
-# Create virtual environment and install dependencies
-RUN python3 -m venv /pipx/venvs/ansible && \
+	curl=8.14.1-r1
+	# Create virtual environment and install dependencies
+RUN	python3 -m venv /pipx/venvs/ansible && \
 	/pipx/venvs/ansible/bin/pip install --upgrade pip --no-cache-dir && \
 	/pipx/venvs/ansible/bin/pip install --no-cache-dir -r /requirements.txt && \
 	mkdir -p /pipx/bin && \
@@ -91,20 +91,20 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v$(cut -d'.' -f1-2 /etc/alpine-re
 	# Base packages
 	python3=3.12.11-r0 \
 	bash=5.2.37-r0 \
-	git=2.49.0-r0 \
+	git=2.49.1-r0 \
 	openssh-client-common=10.0_p1-r7 \
 	openssh-client-default=10.0_p1-r7 \
 	openssh-keygen=10.0_p1-r7 \
 	sshpass=1.10-r0 \
 	rsync=3.4.1-r0 \
 	# Specific tools
-	kubectl=1.33.1-r0 \
+	kubectl=1.33.1-r1 \
 	jq=1.8.0-r0 \
-	helm=3.18.0-r0 \
-	kustomize=5.6.0-r4 \
+	helm=3.18.4-r1 \
+	kustomize=5.6.0-r5 \
 	gnupg=2.4.7-r0 \
-	openssl=3.5.0-r0 \
-	curl=8.14.1-r0 && \
+	openssl=3.5.1-r0 \
+	curl=8.14.1-r1 && \
 	# User setup
 	addgroup -g ${GID} ${GROUP} && \
 	adduser -h /home/ansible -s /bin/bash -G ${GROUP} -D -u ${UID} ${USER} && \
