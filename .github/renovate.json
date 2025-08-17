@@ -40,11 +40,16 @@
                         "groupName": "Docker Images"
                 },
                 {
-                        "description": "Group Alpine packages updates",
+                        "description": "Group Alpine packages updates with daily schedule",
                         "matchManagers": ["custom.regex"],
                         "matchDatasources": ["repology"],
                         "groupName": "Alpine Packages",
-                        "matchPackageNames": ["/^alpine_3_\\d+//"]
+                        "groupSlug": "alpine-packages",
+                        "matchPackageNames": ["/^alpine_3_\\d+//"],
+                        "schedule": ["at any time"],
+                        "automerge": true,
+                        "separateMajorMinor": false,
+                        "separateMultipleMajor": false
                 },
                 {
                         "description": "Group non-breaking updates (patch and minor)",
