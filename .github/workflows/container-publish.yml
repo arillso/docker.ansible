@@ -19,7 +19,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+              uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
 
             - name: Extract version from requirements.txt
               id: get_version
@@ -36,7 +36,7 @@ jobs:
 
             - name: Docker meta
               id: meta
-              uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5
+              uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5
               with:
                   images: |
                       ghcr.io/arillso/ansible
@@ -48,13 +48,13 @@ jobs:
                       type=sha,format=short,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
 
             - name: Login to DockerHub
-              uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3
+              uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3
               with:
                   username: sbaerlocher
                   password: ${{ secrets.DOCKER_TOKEN }}
 
             - name: Login to GitHub Container Registry
-              uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3
+              uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3
               with:
                   registry: ghcr.io
                   username: ${{ github.actor }}
