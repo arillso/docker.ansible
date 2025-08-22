@@ -59,8 +59,10 @@ RUN apk update && \
 	openssh-client-default=10.0_p1-r7 \
 	rsync=3.4.1-r0 \
 	curl=8.14.1-r1
-	# Create virtual environment and install dependencies
-RUN	python3 -m venv /pipx/venvs/ansible && \
+# Create virtual environment and install dependencies
+RUN --mount=type=cache,target=/var/cache/apk \
+	--mount=type=cache,target=/root/.cache/pip \
+	python3 -m venv /pipx/venvs/ansible && \
 	/pipx/venvs/ansible/bin/pip install --upgrade pip --no-cache-dir && \
 	/pipx/venvs/ansible/bin/pip install --no-cache-dir -r /requirements.txt && \
 	mkdir -p /pipx/bin && \
