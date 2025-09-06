@@ -44,7 +44,7 @@ commandTests:
       command: "openssl"
       args: ["version"]
       expectedOutput:
-          - "OpenSSL 3.5.1"
+          - "OpenSSL 3.5.2"
 
     - name: "Check Git Version"
       command: "git"
