@@ -43,23 +43,38 @@ COPY requirements.txt /requirements.txt
 # Install all build dependencies in a single layer to reduce image size
 RUN apk update && \
 	apk add --no-cache \
-	# System packages
-	py3-pip=25.1.1-r0 \
-	pipx=1.7.1-r0 \
-	ca-certificates=20250619-r0 \
-	git=2.49.1-r0 \
-	# Compiler toolchain
-	gcc=14.2.0-r6 \
-	libffi-dev=3.4.8-r0 \
-	python3-dev=3.12.11-r0 \
-	make=4.4.1-r3 \
-	musl-dev=1.2.5-r10 \
-	build-base=0.5-r3 \
-	openssh-client-common=10.0_p1-r7 \
-	openssh-client-default=10.0_p1-r7 \
-	rsync=3.4.1-r0 \
-	curl=8.14.1-r1
-	# Create virtual environment and install dependencies
+	'py3-pip>=25.1.0' \
+	'py3-pip<26.0.0' \
+	'pipx>=1.7.0' \
+	'pipx<2.0.0' \
+	'ca-certificates>=20250619' \
+	'ca-certificates<20260000' \
+	'git>=2.49.0' \
+	'git<3.0.0' \
+	# Compiler toolchain - allow patch updates
+	'gcc>=14.2.0' \
+	'gcc<15.0.0' \
+	'libffi-dev>=3.4.0' \
+	'libffi-dev<4.0.0' \
+	'python3-dev>=3.12.0' \
+	'python3-dev<3.13.0' \
+	'make>=4.4.0' \
+	'make<5.0.0' \
+	'musl-dev>=1.2.0' \
+	'musl-dev<2.0.0' \
+	'build-base>=0.5' \
+	'build-base<1.0' \
+	# Network and SSH tools
+	'openssh-client-common>=10.0' \
+	'openssh-client-common<11.0' \
+	'openssh-client-default>=10.0' \
+	'openssh-client-default<11.0' \
+	'rsync>=3.4.0' \
+	'rsync<4.0.0' \
+	'curl>=8.14.0' \
+	'curl<9.0.0'
+
+# Create virtual environment and install dependencies
 RUN	python3 -m venv /pipx/venvs/ansible && \
 	/pipx/venvs/ansible/bin/pip install --upgrade pip --no-cache-dir && \
 	/pipx/venvs/ansible/bin/pip install --no-cache-dir -r /requirements.txt && \
@@ -88,23 +103,43 @@ SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/v$(cut -d'.' -f1-2 /etc/alpine-release)/community" >> /etc/apk/repositories && \
 	apk update && \
 	apk add --no-cache \
-	# Base packages
-	python3=3.12.11-r0 \
-	bash=5.2.37-r0 \
-	git=2.49.1-r0 \
-	openssh-client-common=10.0_p1-r7 \
-	openssh-client-default=10.0_p1-r7 \
-	openssh-keygen=10.0_p1-r7 \
-	sshpass=1.10-r0 \
-	rsync=3.4.1-r0 \
-	# Specific tools
-	kubectl=1.33.1-r1 \
-	jq=1.8.0-r0 \
-	helm=3.18.4-r1 \
-	kustomize=5.6.0-r5 \
-	gnupg=2.4.7-r0 \
-	openssl=3.5.1-r0 \
-	curl=8.14.1-r1 && \
+	# Base packages - conservative ranges
+	'python3>=3.12.0' \
+	'python3<3.13.0' \
+	'bash>=5.2.0' \
+	'bash<5.3.0' \
+	# VCS and networking
+	'git>=2.49.0' \
+	'git<3.0.0' \
+	'curl>=8.14.0' \
+	'curl<9.0.0' \
+	# SSH tools - security critical, allow patch updates
+	'openssh-client-common>=10.0' \
+	'openssh-client-common<11.0' \
+	'openssh-client-default>=10.0' \
+	'openssh-client-default<11.0' \
+	'openssh-keygen>=10.0' \
+	'openssh-keygen<11.0' \
+	'sshpass>=1.10' \
+	'sshpass<2.0' \
+	# File synchronization
+	'rsync>=3.4.0' \
+	'rsync<4.0.0' \
+	# Kubernetes tools - allow minor updates
+	'kubectl>=1.33.0' \
+	'kubectl<1.34.0' \
+	'helm>=3.18.0' \
+	'helm<4.0.0' \
+	'kustomize>=5.6.0' \
+	'kustomize<6.0.0' \
+	# Utilities
+	'jq>=1.8.0' \
+	'jq<2.0.0' \
+	# Security packages - allow patch updates
+	'gnupg>=2.4.0' \
+	'gnupg<3.0.0' \
+	'openssl>=3.5.0' \
+	'openssl<4.0.0' && \
 	# User setup
 	addgroup -g ${GID} ${GROUP} && \
 	adduser -h /home/ansible -s /bin/bash -G ${GROUP} -D -u ${UID} ${USER} && \

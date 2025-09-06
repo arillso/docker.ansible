@@ -31,3 +31,83 @@ mitogen==0.3.26
 # Windows Management
 pywinrm[credssp]==0.5.0
 requests-credssp==2.0.0
+
+# TOML Support
+tomli-w==1.1.0
+tomli==2.2.1
+
+# Cryptography & Security
+cryptography==44.0.0
+paramiko==3.5.0
+bcrypt==4.2.1
+
+# YAML Processing
+PyYAML==6.0.2
+ruamel.yaml==0.18.9
+
+# HTTP & Web
+urllib3==2.3.0
+#certifi==2025.1.22
+charset-normalizer==3.4.1
+idna==3.10
+
+# Database Connectivity
+psycopg2-binary==2.9.10
+PyMySQL==1.1.1
+redis==5.2.1
+
+# VMware Integration
+pyvmomi==8.0.3.0.1
+
+# AWS Integration
+boto3==1.35.93
+botocore==1.35.93
+
+# Azure Integration
+azure-identity==1.19.0
+azure-mgmt-compute==33.0.0
+azure-mgmt-network==28.0.0
+
+# Google Cloud Integration
+google-cloud-compute==1.23.0
+google-auth==2.37.0
+
+# Kubernetes Integration
+kubernetes==31.0.0
+
+# GitLab Integration
+python-gitlab==5.1.0
+
+# Backup & Archive
+#tarfile-compat==0.2.0
+
+# System Information
+distro==1.9.0
+
+# Text Processing & Templates
+Jinja2==3.1.4
+MarkupSafe==3.0.2
+
+# JSON & Data Processing
+jsonschema==4.23.0
+jsonpatch==1.33
+
+# Monitoring & Logging
+prometheus-client==0.21.1
+statsd==4.0.1
+
+# SSH & Terminal
+fabric==3.2.2
+invoke==2.2.0
+
+# Time & Scheduling
+croniter==5.0.1
+apscheduler==3.11.0
+
+# File Processing
+openpyxl==3.1.5
+pandas==2.2.3
+
+# Enterprise Features
+hvac==2.3.0  # HashiCorp Vault
+py-consul==1.6.0  # Consul integration
