@@ -37,7 +37,7 @@ tomli-w==1.1.0
 tomli==2.2.1
 
 # Cryptography & Security
-cryptography==44.0.0
+cryptography==44.0.1
 paramiko==3.5.0
 bcrypt==4.2.1
 
@@ -46,7 +46,7 @@ PyYAML==6.0.2
 ruamel.yaml==0.18.9
 
 # HTTP & Web
-urllib3==2.3.0
+urllib3==2.5.0
 #certifi==2025.1.22
 charset-normalizer==3.4.1
 idna==3.10
@@ -85,7 +85,7 @@ python-gitlab==5.1.0
 distro==1.9.0
 
 # Text Processing & Templates
-Jinja2==3.1.4
+Jinja2==3.1.6
 MarkupSafe==3.0.2
 
 # JSON & Data Processing
