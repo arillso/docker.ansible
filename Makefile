@@ -63,7 +63,7 @@ test-local: ansible-build ## Run comprehensive local container tests
 	@echo "=== All local tests passed successfully! ==="
 
 validate-docker: ## Validate Dockerfile with hadolint
-	@docker run --rm -i hadolint/hadolint:2.12.0 < Dockerfile
+	@docker run --rm -i hadolint/hadolint:v2.13.1 < Dockerfile
 
 validate-renovate: ## Validate renovate configuration
 	@docker run --rm -v $(PROJECT_DIR)/.github:/usr/src/app node:22.15.0-alpine3.19 npx renovate-config-validator /usr/src/app/renovate.json
@@ -91,7 +91,7 @@ security-test: ansible-build ## Run comprehensive security checks
 	@docker run --rm -v "$(PROJECT_DIR)/tests/security:/tests" ansible:latest bash -c "bash /tests/container-hardening.sh" || (echo "Security check warnings found"; exit 0)
 	@echo ""
 	@echo "2. Trivy vulnerability scan..."
-	@docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$(PROJECT_DIR)/test-results:/results" aquasec/trivy:0.65.0 image --exit-code 0 --severity HIGH,CRITICAL --format table -o /results/trivy-results.txt ansible:latest || (echo "Trivy scan found issues - check test-results/trivy-results.txt"; exit 0)
+	@docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$(PROJECT_DIR)/test-results:/results" aquasec/trivy:0.66.0 image --exit-code 0 --severity HIGH,CRITICAL --format table -o /results/trivy-results.txt ansible:latest || (echo "Trivy scan found issues - check test-results/trivy-results.txt"; exit 0)
 	@echo ""
 	@echo "3. User permissions check..."
 	@docker run --rm ansible:latest id | grep "uid=1000(ansible) gid=1000(ansible)" && echo "Non-root user correctly configured"
