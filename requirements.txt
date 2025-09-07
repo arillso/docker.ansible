@@ -57,7 +57,7 @@ PyMySQL==1.1.2
 redis==5.3.1
 
 # VMware Integration
-pyvmomi==8.0.3.0.1
+pyvmomi==9.0.0.0
 
 # AWS Integration
 boto3==1.40.25
