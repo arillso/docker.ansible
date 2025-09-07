@@ -38,7 +38,7 @@ tomli==2.2.1
 
 # Cryptography & Security
 cryptography==45.0.6
-paramiko==3.5.1
+paramiko==4.0.0
 bcrypt==4.3.0
 
 # YAML Processing
