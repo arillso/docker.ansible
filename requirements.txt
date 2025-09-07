@@ -101,7 +101,7 @@ fabric==3.2.2
 invoke==2.2.0
 
 # Time & Scheduling
-croniter==5.0.1
+croniter==6.0.0
 apscheduler==3.11.0
 
 # File Processing
