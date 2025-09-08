@@ -20,7 +20,7 @@ docker==7.1.0
 openshift==0.13.2
 
 # Network & DNS
-dnspython==2.7.0
+dnspython==2.8.0
 
 # Security & Monitoring
 crowdstrike-falconpy==1.5.4
@@ -37,7 +37,7 @@ tomli-w==1.2.0
 tomli==2.2.1
 
 # Cryptography & Security
-cryptography==45.0.6
+cryptography==45.0.7
 paramiko==4.0.0
 bcrypt==4.3.0
 
