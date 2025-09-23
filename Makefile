@@ -63,7 +63,7 @@ test-local: ansible-build ## Run comprehensive local container tests
 	@echo "=== All local tests passed successfully! ==="
 
 validate-docker: ## Validate Dockerfile with hadolint
-	@docker run --rm -i hadolint/hadolint:v2.13.1 < Dockerfile
+	@docker run --rm -i hadolint/hadolint:v2.14.0 < Dockerfile
 
 validate-renovate: ## Validate renovate configuration
 	@docker run --rm -v $(PROJECT_DIR)/.github:/usr/src/app node:22.15.0-alpine3.19 npx renovate-config-validator /usr/src/app/renovate.json
