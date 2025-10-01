@@ -42,7 +42,7 @@ paramiko==4.0.0
 bcrypt==4.3.0
 
 # YAML Processing
-PyYAML==6.0.2
+PyYAML==6.0.3
 ruamel.yaml==0.18.15
 
 # HTTP & Web
