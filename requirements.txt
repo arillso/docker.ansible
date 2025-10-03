@@ -37,12 +37,12 @@ tomli-w==1.2.0
 tomli==2.2.1
 
 # Cryptography & Security
-cryptography==46.0.1
+cryptography==46.0.2
 paramiko==4.0.0
 bcrypt==4.3.0
 
 # YAML Processing
-PyYAML==6.0.2
+PyYAML==6.0.3
 ruamel.yaml==0.18.15
 
 # HTTP & Web
@@ -60,8 +60,8 @@ redis==6.4.0
 pyvmomi==9.0.0.0
 
 # AWS Integration
-boto3==1.40.38
-botocore==1.40.38
+boto3==1.40.45
+botocore==1.40.45
 
 # Azure Integration
 azure-identity==1.25.0
@@ -70,13 +70,13 @@ azure-mgmt-network==29.0.0
 
 # Google Cloud Integration
 google-cloud-compute==1.38.0
-google-auth==2.40.3
+google-auth==2.41.1
 
 # Kubernetes Integration
 kubernetes==33.1.0
 
 # GitLab Integration
-python-gitlab==6.3.0
+python-gitlab==6.4.0
 
 # Backup & Archive
 #tarfile-compat==0.2.0
@@ -86,7 +86,7 @@ distro==1.9.0
 
 # Text Processing & Templates
 Jinja2==3.1.6
-MarkupSafe==3.0.2
+MarkupSafe==3.0.3
 
 # JSON & Data Processing
 jsonschema==4.25.1
@@ -106,7 +106,7 @@ apscheduler==3.11.0
 
 # File Processing
 openpyxl==3.1.5
-pandas==2.3.2
+pandas==2.3.3
 
 # Enterprise Features
 hvac==2.3.0  # HashiCorp Vault
