@@ -39,7 +39,7 @@ tomli==2.3.0
 # Cryptography & Security
 cryptography==46.0.3
 paramiko==4.0.0
-bcrypt==4.3.0
+bcrypt==5.0.0
 
 # YAML Processing
 PyYAML==6.0.3
