@@ -14,14 +14,14 @@ endif
 .PHONY: format-code format-all run-megalinter ansible-build test-local test-quick validate-docker validate-renovate validate-renovate-deps tests help structure-test security-test performance-test integration-test unit-test upgrade-test comprehensive-test clean clean-all release-check debug-container
 
 format-code: ## Format code files using Prettier via Docker.
-	@docker run --rm --name prettier -v $(PROJECT_DIR):$(PROJECT_DIR) -w /$(PROJECT_DIR) node:23-alpine3.20 npx prettier . --write
+	@docker run --rm --name prettier -v $(PROJECT_DIR):$(PROJECT_DIR) -w /$(PROJECT_DIR) node:24-alpine3.20 npx prettier . --write
 
 format-all: format-code ## Run both format-code and format-eclint.
 	@echo "Formatting completed."
 
 run-megalinter: ## Run Megalinter locally.
 	@docker run --rm --name megalint -v $(PROJECT_DIR):/tmp/lint busybox:1.37.0 rm -rf /tmp/lint/megalinter-reports
-	@docker run --rm --name megalint -v $(PROJECT_DIR):/tmp/lint oxsecurity/megalinter:v8.8.0
+	@docker run --rm --name megalint -v $(PROJECT_DIR):/tmp/lint oxsecurity/megalinter:v9.1.0
 
 ansible-build: ## Build the Ansible Docker image with optimizations
 	@echo "Building Ansible container..."
