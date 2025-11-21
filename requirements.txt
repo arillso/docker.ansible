@@ -1,5 +1,5 @@
 # Core Ansible
-ansible-core==2.19.3
+ansible-core==2.20.0
 
 # Build Tools & Package Management
 pip==25.3
@@ -26,7 +26,7 @@ dnspython==2.8.0
 crowdstrike-falconpy==1.5.4
 
 # Performance & Optimization
-mitogen==0.3.30
+mitogen==0.3.32
 
 # Windows Management
 pywinrm[credssp]==0.5.0
@@ -54,23 +54,23 @@ idna==3.11
 # Database Connectivity
 psycopg2-binary==2.9.11
 PyMySQL==1.1.2
-redis==7.0.1
+redis==7.1.0
 
 # VMware Integration
 pyvmomi==9.0.0.0
 
 # AWS Integration
-boto3==1.40.64
-botocore==1.40.64
+boto3==1.41.1
+botocore==1.41.1
 
 # Azure Integration
 azure-identity==1.25.1
-azure-mgmt-compute==37.0.1
+azure-mgmt-compute==37.1.0
 azure-mgmt-network==30.0.0
 
 # Google Cloud Integration
 google-cloud-compute==1.40.0
-google-auth==2.42.1
+google-auth==2.43.0
 
 # Kubernetes Integration
 kubernetes==34.1.0
@@ -110,4 +110,4 @@ pandas==2.3.3
 
 # Enterprise Features
 hvac==2.4.0  # HashiCorp Vault
-py-consul==1.6.0  # Consul integration
+py-consul==1.7.0  # Consul integration
