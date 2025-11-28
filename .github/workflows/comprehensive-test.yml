@@ -39,7 +39,7 @@ jobs:
             ansible_version: ${{ steps.get_version.outputs.version }}
         steps:
             - name: Checkout Code
-              uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+              uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
             - name: Extract Ansible Version
               id: get_version
@@ -53,7 +53,7 @@ jobs:
         needs: prepare
         steps:
             - name: Checkout Code
-              uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+              uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
             - name: Docker Setup
               uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3
@@ -82,7 +82,7 @@ jobs:
         needs: [prepare, structure-test]
         steps:
             - name: Checkout Code
-              uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+              uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
             - name: Setup Docker
               uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3
@@ -120,7 +120,7 @@ jobs:
         needs: [prepare, structure-test]
         steps:
             - name: Checkout Code
-              uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+              uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
             - name: Setup Docker
               uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3
@@ -151,7 +151,7 @@ jobs:
         needs: [prepare, structure-test]
         steps:
             - name: Checkout Code
-              uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+              uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
             - name: Setup Docker
               uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3
@@ -194,7 +194,7 @@ jobs:
         needs: [prepare, structure-test]
         steps:
             - name: Checkout Code
-              uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+              uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
             - name: Setup Python
               uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
@@ -223,7 +223,7 @@ jobs:
         needs: [prepare, structure-test]
         steps:
             - name: Checkout Code
-              uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+              uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
             - name: Setup Docker
               uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3
@@ -257,7 +257,7 @@ jobs:
         if: ${{ always() }}
         steps:
             - name: Checkout code
-              uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+              uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
 
             - name: Set Ansible version as environment variable
               run: |
