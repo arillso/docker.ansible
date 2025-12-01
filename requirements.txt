@@ -110,4 +110,4 @@ pandas==2.3.3
 
 # Enterprise Features
 hvac==2.4.0  # HashiCorp Vault
-py-consul==1.7.0  # Consul integration
+py-consul==1.7.1  # Consul integration
