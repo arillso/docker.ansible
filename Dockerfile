@@ -53,7 +53,7 @@ RUN apk update && \
 	'git<3.0.0' \
 	# Compiler toolchain - allow patch updates
 	'gcc>=14.2.0' \
-	'gcc<15.0.0' \
+	'gcc<16.0.0' \
 	'libffi-dev>=3.4.0' \
 	'libffi-dev<4.0.0' \
 	'python3-dev>=3.12.0' \
@@ -107,7 +107,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v$(cut -d'.' -f1-2 /etc/alpine-re
 	'python3>=3.12.0' \
 	'python3<3.13.0' \
 	'bash>=5.2.0' \
-	'bash<5.3.0' \
+	'bash<5.4.0' \
 	# VCS and networking
 	'git>=2.49.0' \
 	'git<3.0.0' \
@@ -127,7 +127,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v$(cut -d'.' -f1-2 /etc/alpine-re
 	'rsync<4.0.0' \
 	# Kubernetes tools - allow minor updates
 	'kubectl>=1.33.0' \
-	'kubectl<1.34.0' \
+	'kubectl<1.35.0' \
 	'helm>=3.18.0' \
 	'helm<4.0.0' \
 	'kustomize>=5.6.0' \

@@ -13,13 +13,13 @@ commandTests:
       command: "helm"
       args: ["version", "--short"]
       expectedOutput:
-          - "v3.18.4"
+          - "v3.19.0"
 
     - name: "Check kustomize Version"
       command: "kustomize"
       args: ["version"]
       expectedOutput:
-          - "5.6.0"
+          - "5.7.1"
 
     # Shell Tools & Utilities
     - name: "Check Bash Version"
@@ -224,7 +224,7 @@ fileContentTests:
     - name: "Verify Alpine version"
       path: "/etc/alpine-release"
       expectedContents:
-          - "3.22.2"
+          - "3.23.0"
 
     - name: "Check SSH Client Configuration"
       path: "/etc/ssh/ssh_config"
