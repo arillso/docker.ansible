@@ -32,7 +32,7 @@ commandTests:
       command: "jq"
       args: ["--version"]
       expectedOutput:
-          - "jq-1.8.0"
+          - "jq-1.8.1"
 
     - name: "Check sshpass Availability"
       command: "which"
