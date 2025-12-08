@@ -26,7 +26,7 @@ dnspython==2.8.0
 crowdstrike-falconpy==1.5.4
 
 # Performance & Optimization
-mitogen==0.3.32
+mitogen==0.3.35
 
 # Windows Management
 pywinrm[credssp]==0.5.0
@@ -60,13 +60,13 @@ redis==7.1.0
 pyvmomi==9.0.0.0
 
 # AWS Integration
-boto3==1.41.1
-botocore==1.41.1
+boto3==1.42.5
+botocore==1.42.5
 
 # Azure Integration
 azure-identity==1.25.1
 azure-mgmt-compute==37.1.0
-azure-mgmt-network==30.0.0
+azure-mgmt-network==30.1.0
 
 # Google Cloud Integration
 google-cloud-compute==1.40.0
@@ -110,4 +110,4 @@ pandas==2.3.3
 
 # Enterprise Features
 hvac==2.4.0  # HashiCorp Vault
-py-consul==1.7.0  # Consul integration
+py-consul==1.7.1  # Consul integration
