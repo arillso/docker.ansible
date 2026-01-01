@@ -102,7 +102,7 @@ invoke==2.2.1
 
 # Time & Scheduling
 croniter==6.0.0
-apscheduler==3.11.1
+apscheduler==3.11.2
 
 # File Processing
 openpyxl==3.1.5
