@@ -224,7 +224,7 @@ fileContentTests:
     - name: "Verify Alpine version"
       path: "/etc/alpine-release"
       expectedContents:
-          - "3.23.0"
+          - "3.23.2"
 
     - name: "Check SSH Client Configuration"
       path: "/etc/ssh/ssh_config"
