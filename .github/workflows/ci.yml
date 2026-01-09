@@ -211,6 +211,33 @@ jobs:
 
             - name: Start Test Services
               run: docker compose -f tests/integration/docker-compose.yml up -d
+              env:
+                  POSTGRES_PASSWORD: testpassword123
+
+            - name: Wait for services to be healthy
+              run: |
+                  echo "Waiting for services to be healthy..."
+                  for i in {1..30}; do
+                    # Check if all 3 services are healthy
+                    healthy_count=$(docker compose -f tests/integration/docker-compose.yml ps --format json | jq -r '.[] | select(.Health == "healthy") | .Service' | wc -l)
+
+                    if [ "$healthy_count" -eq 3 ]; then
+                      echo "✅ All services are healthy!"
+                      docker compose -f tests/integration/docker-compose.yml ps
+                      exit 0
+                    fi
+
+                    echo "Waiting... ($i/30) - $healthy_count/3 services healthy"
+                    docker compose -f tests/integration/docker-compose.yml ps
+                    sleep 2
+                  done
+
+                  echo "❌ Timeout: Services did not become healthy within 60 seconds"
+                  docker compose -f tests/integration/docker-compose.yml ps
+                  docker compose -f tests/integration/docker-compose.yml logs
+                  exit 1
+              env:
+                  POSTGRES_PASSWORD: testpassword123
 
             - name: Prepare Test Results Directory
               run: |
