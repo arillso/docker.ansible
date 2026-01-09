@@ -1,11 +1,5 @@
 ---
-<<<<<<<< HEAD:.github/workflows/test.yml
-name: Tests
-|||||||| parent of 671a01c (refactor: modernize CI/CD workflows and project structure):.github/workflows/comprehensive-test.yml
-name: Comprehensive Container Testing
-========
 name: Continuous Integration
->>>>>>>> 671a01c (refactor: modernize CI/CD workflows and project structure):.github/workflows/ci.yml
 
 "on":
     push:
