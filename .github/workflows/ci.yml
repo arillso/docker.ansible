@@ -17,6 +17,7 @@ name: Continuous Integration
     schedule:
         - cron: "0 1 * * 3" # Wednesday at 1:00 UTC
     workflow_dispatch:
+    workflow_call:
 
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
