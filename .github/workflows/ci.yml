@@ -67,31 +67,54 @@ jobs:
                   echo "version=${version}" >> "$GITHUB_OUTPUT"
                   echo "Ansible Version: ${version}"
 
-    structure-test:
-        name: Structure Test
+    build:
+        name: Build Container
         runs-on: ubuntu-latest
         needs: prepare
         steps:
             - name: Checkout
               uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-            - name: Docker Setup
+            - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3
 
-            - name: Build Container
+            - name: Build and export
               uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75 # v6
               with:
                   context: .
                   build-args: ANSIBLE_VERSION=${{ needs.prepare.outputs.ansible_version }}
-                  push: false
-                  load: true
                   tags: ansible:test
+                  outputs: type=docker,dest=/tmp/ansible-test.tar
                   cache-from: |
                       type=registry,ref=ghcr.io/arillso/ansible:buildcache
                       type=gha
                   cache-to: type=gha,mode=max
                   provenance: false
                   sbom: false
+
+            - name: Upload image artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: ansible-test-image
+                  path: /tmp/ansible-test.tar
+                  retention-days: 1
+
+    structure-test:
+        name: Structure Test
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+            - name: Checkout
+              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+            - name: Download image artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: ansible-test-image
+                  path: /tmp
+
+            - name: Load Docker image
+              run: docker load --input /tmp/ansible-test.tar
 
             - name: Run Structure Tests
               run: |
@@ -104,27 +127,19 @@ jobs:
     security-test:
         name: Security Test
         runs-on: ubuntu-latest
-        needs: [prepare, structure-test]
+        needs: [build, structure-test]
         steps:
             - name: Checkout
               uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-            - name: Setup Docker
-              uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3
-
-            - name: Build Container
-              uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75 # v6
+            - name: Download image artifact
+              uses: actions/download-artifact@v4
               with:
-                  context: .
-                  push: false
-                  load: true
-                  tags: ansible:test
-                  cache-from: |
-                      type=registry,ref=ghcr.io/arillso/ansible:buildcache
-                      type=gha
-                  cache-to: type=gha,mode=max
-                  provenance: false
-                  sbom: false
+                  name: ansible-test-image
+                  path: /tmp
+
+            - name: Load Docker image
+              run: docker load --input /tmp/ansible-test.tar
 
             - name: Run Security Checks
               run: |
@@ -148,27 +163,19 @@ jobs:
     performance-test:
         name: Performance Test
         runs-on: ubuntu-latest
-        needs: [prepare, structure-test]
+        needs: [build, structure-test]
         steps:
             - name: Checkout
               uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-            - name: Setup Docker
-              uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3
-
-            - name: Build Container
-              uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75 # v6
+            - name: Download image artifact
+              uses: actions/download-artifact@v4
               with:
-                  context: .
-                  push: false
-                  load: true
-                  tags: ansible:test
-                  cache-from: |
-                      type=registry,ref=ghcr.io/arillso/ansible:buildcache
-                      type=gha
-                  cache-to: type=gha,mode=max
-                  provenance: false
-                  sbom: false
+                  name: ansible-test-image
+                  path: /tmp
+
+            - name: Load Docker image
+              run: docker load --input /tmp/ansible-test.tar
 
             - name: Prepare Test Results Directory
               run: |
@@ -185,27 +192,19 @@ jobs:
     integration-test:
         name: Integration Test
         runs-on: ubuntu-latest
-        needs: [prepare, structure-test]
+        needs: [build, structure-test]
         steps:
             - name: Checkout
               uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-            - name: Setup Docker
-              uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3
-
-            - name: Build Container
-              uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75 # v6
+            - name: Download image artifact
+              uses: actions/download-artifact@v4
               with:
-                  context: .
-                  push: false
-                  load: true
-                  tags: ansible:test
-                  cache-from: |
-                      type=registry,ref=ghcr.io/arillso/ansible:buildcache
-                      type=gha
-                  cache-to: type=gha,mode=max
-                  provenance: false
-                  sbom: false
+                  name: ansible-test-image
+                  path: /tmp
+
+            - name: Load Docker image
+              run: docker load --input /tmp/ansible-test.tar
 
             - name: Create Docker Network
               run: docker network create ansible-test-network
@@ -234,10 +233,19 @@ jobs:
     unit-test:
         name: Unit Test
         runs-on: ubuntu-latest
-        needs: [prepare, structure-test]
+        needs: [build, structure-test]
         steps:
             - name: Checkout
               uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+            - name: Download image artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: ansible-test-image
+                  path: /tmp
+
+            - name: Load Docker image
+              run: docker load --input /tmp/ansible-test.tar
 
             - name: Setup Python
               uses: actions/setup-python@v5
@@ -248,20 +256,6 @@ jobs:
               run: |
                   pip install pytest pytest-cov
 
-            - name: Build Container
-              uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75 # v6
-              with:
-                  context: .
-                  push: false
-                  load: true
-                  tags: ansible:test
-                  cache-from: |
-                      type=registry,ref=ghcr.io/arillso/ansible:buildcache
-                      type=gha
-                  cache-to: type=gha,mode=max
-                  provenance: false
-                  sbom: false
-
             - name: Run Unit Tests
               run: |
                   ANSIBLE_IMAGE="ansible:test" python -m pytest tests/unit/test_ansible_container.py -v
@@ -269,27 +263,19 @@ jobs:
     upgrade-test:
         name: Upgrade Test
         runs-on: ubuntu-latest
-        needs: [prepare, structure-test]
+        needs: [build, structure-test]
         steps:
             - name: Checkout
               uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-            - name: Setup Docker
-              uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3
-
-            - name: Build Container
-              uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75 # v6
+            - name: Download image artifact
+              uses: actions/download-artifact@v4
               with:
-                  context: .
-                  push: false
-                  load: true
-                  tags: ansible:test
-                  cache-from: |
-                      type=registry,ref=ghcr.io/arillso/ansible:buildcache
-                      type=gha
-                  cache-to: type=gha,mode=max
-                  provenance: false
-                  sbom: false
+                  name: ansible-test-image
+                  path: /tmp
+
+            - name: Load Docker image
+              run: docker load --input /tmp/ansible-test.tar
 
             - name: Run Upgrade Tests
               run: |
@@ -300,6 +286,7 @@ jobs:
         needs:
             - lint
             - prepare
+            - build
             - structure-test
             - security-test
             - performance-test
@@ -322,6 +309,7 @@ jobs:
               run: |
                   ./tests/scripts/container-test-summary.sh \
                     "Lint=${{ needs.lint.result }}" \
+                    "Build=${{ needs.build.result }}" \
                     "Structure Tests=${{ needs.structure-test.result }}" \
                     "Security Tests=${{ needs.security-test.result }}" \
                     "Performance Tests=${{ needs.performance-test.result }}" \
