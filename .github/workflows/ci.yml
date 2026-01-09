@@ -86,8 +86,12 @@ jobs:
                   push: false
                   load: true
                   tags: ansible:test
-                  cache-from: type=gha
+                  cache-from: |
+                      type=registry,ref=ghcr.io/arillso/ansible:buildcache
+                      type=gha
                   cache-to: type=gha,mode=max
+                  provenance: false
+                  sbom: false
 
             - name: Run Structure Tests
               run: |
@@ -115,7 +119,12 @@ jobs:
                   push: false
                   load: true
                   tags: ansible:test
-                  cache-from: type=gha
+                  cache-from: |
+                      type=registry,ref=ghcr.io/arillso/ansible:buildcache
+                      type=gha
+                  cache-to: type=gha,mode=max
+                  provenance: false
+                  sbom: false
 
             - name: Run Security Checks
               run: |
@@ -154,7 +163,12 @@ jobs:
                   push: false
                   load: true
                   tags: ansible:test
-                  cache-from: type=gha
+                  cache-from: |
+                      type=registry,ref=ghcr.io/arillso/ansible:buildcache
+                      type=gha
+                  cache-to: type=gha,mode=max
+                  provenance: false
+                  sbom: false
 
             - name: Prepare Test Results Directory
               run: |
@@ -186,7 +200,12 @@ jobs:
                   push: false
                   load: true
                   tags: ansible:test
-                  cache-from: type=gha
+                  cache-from: |
+                      type=registry,ref=ghcr.io/arillso/ansible:buildcache
+                      type=gha
+                  cache-to: type=gha,mode=max
+                  provenance: false
+                  sbom: false
 
             - name: Create Docker Network
               run: docker network create ansible-test-network
@@ -236,7 +255,12 @@ jobs:
                   push: false
                   load: true
                   tags: ansible:test
-                  cache-from: type=gha
+                  cache-from: |
+                      type=registry,ref=ghcr.io/arillso/ansible:buildcache
+                      type=gha
+                  cache-to: type=gha,mode=max
+                  provenance: false
+                  sbom: false
 
             - name: Run Unit Tests
               run: |
@@ -260,7 +284,12 @@ jobs:
                   push: false
                   load: true
                   tags: ansible:test
-                  cache-from: type=gha
+                  cache-from: |
+                      type=registry,ref=ghcr.io/arillso/ansible:buildcache
+                      type=gha
+                  cache-to: type=gha,mode=max
+                  provenance: false
+                  sbom: false
 
             - name: Run Upgrade Tests
               run: |

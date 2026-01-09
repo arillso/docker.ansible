@@ -150,6 +150,10 @@ jobs:
 
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3
+              with:
+                  driver-opts: |
+                      network=host
+                      image=moby/buildkit:latest
 
             - name: Docker meta
               id: meta
@@ -187,8 +191,14 @@ jobs:
                   platforms: linux/amd64,linux/arm64
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
-                  cache-from: type=gha
-                  cache-to: type=gha,mode=max
+                  cache-from: |
+                      type=registry,ref=ghcr.io/arillso/ansible:buildcache
+                      type=gha
+                  cache-to: |
+                      type=registry,ref=ghcr.io/arillso/ansible:buildcache,mode=max
+                      type=gha,mode=max
+                  provenance: false
+                  sbom: false
 
             - name: Create Release
               if: steps.check.outputs.exists == 'false'
