@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 <!-- markdownlint-disable MD024 -->
 
+
+## [2026-01-09]
+
+### Changed
+
+- Updated Ansible Core to 2.20.1
 ## [2024-03-09]
 
 ### Changed
