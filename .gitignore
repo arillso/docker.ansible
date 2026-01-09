@@ -1,31 +1,34 @@
-.ansible
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.ruff_cache/
 
-# Variables directory rules
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+
+# Build outputs
+test-results/
+megalinter-reports/
+output/
+artifacts/
+
+# Secrets
+.env
 variables/access/*
 variables/s3/*
 !variables/access/*.dist
 !variables/access/*.md
 !variables/s3/*.conf.dist
 
-megalinter-reports/*
-
-### dde ###
-.dde/*
-
-output/**
-
-# Exceptions for .keep files in certain output directories
-!artifacts/*.keep
-artifacts/*
-
-### Ansible Collections ###
+# Ansible
+.ansible/
 collections/ansible_collections/*
 !collections/ansible_collections/smartlearn/
 
-### Python ###
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
-
-test-results
+# Local
+.dde/

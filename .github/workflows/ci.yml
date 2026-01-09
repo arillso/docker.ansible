@@ -1,0 +1,40 @@
+---
+name: CI
+
+"on":
+    push:
+        branches:
+            - main
+        paths-ignore:
+            - "**.md"
+            - "LICENSE"
+    pull_request:
+        branches:
+            - main
+        paths-ignore:
+            - "**.md"
+            - "LICENSE"
+
+permissions:
+    contents: read
+
+jobs:
+    lint:
+        name: Lint
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+            - name: Lint YAML files
+              uses: ibiqlik/action-yamllint@2576378a8e339169678f9939646ee3ee325e845c # v3
+              with:
+                  config_file: .yamllint.yml
+
+            - name: Lint Dockerfile
+              uses: hadolint/hadolint-action@54c9adbab1582c2ef04b2016b760714a4bfde3cf # v3
+              with:
+                  dockerfile: Dockerfile
+
+            - name: Lint shell scripts
+              uses: ludeeus/action-shellcheck@00cae500b08a931fb5698e11e79bfbd38e612a38 # v2

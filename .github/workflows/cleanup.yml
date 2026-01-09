@@ -1,5 +1,5 @@
 ---
-name: Container Registry Cleanup
+name: Cleanup
 
 "on":
     schedule:
