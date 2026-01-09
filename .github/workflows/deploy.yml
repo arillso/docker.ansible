@@ -5,7 +5,6 @@ name: Deployment
     workflow_run:
         workflows:
             - "Continuous Integration"
-            - "Security Scanning"
         types:
             - completed
         branches:
@@ -21,6 +20,24 @@ jobs:
         runs-on: ubuntu-latest
         if: ${{ github.event.workflow_run.conclusion == 'success' }}
         steps:
+            - name: Wait for Trivy Scan
+              uses: lewagon/wait-on-check-action@v1.3.4
+              with:
+                  ref: ${{ github.event.workflow_run.head_sha }}
+                  check-name: "Trivy Scan"
+                  repo-token: ${{ secrets.GITHUB_TOKEN }}
+                  wait-interval: 10
+                  allowed-conclusions: success
+
+            - name: Wait for Secret Scanning
+              uses: lewagon/wait-on-check-action@v1.3.4
+              with:
+                  ref: ${{ github.event.workflow_run.head_sha }}
+                  check-name: "Secret Scanning"
+                  repo-token: ${{ secrets.GITHUB_TOKEN }}
+                  wait-interval: 10
+                  allowed-conclusions: success
+
             - name: Check if deployment needed
               id: check-files
               run: |
