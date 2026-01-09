@@ -1,5 +1,5 @@
 ---
-name: Security
+name: Security Scanning
 
 "on":
     push:
@@ -50,7 +50,10 @@ jobs:
               with:
                   fetch-depth: 0
 
-            - name: Gitleaks scan
-              uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: TruffleHog scan
+              uses: trufflesecurity/trufflehog@ef6e76c3c4023279497fab4721ffa071a722fd05 # v3.92.4
+              with:
+                  path: ./
+                  base: ${{ github.event.repository.default_branch }}
+                  head: HEAD
+                  extra_args: --only-verified

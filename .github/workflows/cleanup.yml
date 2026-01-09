@@ -1,5 +1,5 @@
 ---
-name: Cleanup
+name: Registry Cleanup
 
 "on":
     schedule:
