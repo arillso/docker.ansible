@@ -18,6 +18,8 @@ permissions:
     contents: write
     packages: write
     security-events: write
+    actions: read
+    pull-requests: write
 
 jobs:
     # Run CI and Security in parallel
@@ -25,11 +27,19 @@ jobs:
         name: CI
         uses: ./.github/workflows/ci.yml
         secrets: inherit
+        permissions:
+            contents: read
+            security-events: write
+            actions: read
+            pull-requests: write
 
     security:
         name: Security
         uses: ./.github/workflows/security.yml
         secrets: inherit
+        permissions:
+            contents: read
+            security-events: write
 
     # Deploy after CI and Security pass
     deploy:
