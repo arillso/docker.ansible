@@ -93,6 +93,7 @@ jsonschema==4.26.0
 jsonpatch==1.33
 
 # Monitoring & Logging
+opentelemetry-exporter-otlp==1.39.1
 prometheus-client==0.23.1
 statsd==4.0.1
 
