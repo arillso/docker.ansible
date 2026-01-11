@@ -229,7 +229,6 @@ jobs:
               id: update_changelog
               run: |
                   tag="${{ steps.version.outputs.release_tag }}"
-                  exists="${{ steps.check.outputs.exists }}"
 
                   # Read changelog notes from file to avoid backtick execution
                   changelog_file="/tmp/changelog_notes.txt"
@@ -237,7 +236,14 @@ jobs:
                   ${{ steps.ai_notes.outputs.changelog_notes }}
                   CHANGELOG_EOF
 
-                  if [ "$exists" = "true" ]; then
+                  # Check if changelog entry exists (independent of GitHub release)
+                  if grep -q "^## \[${tag}\]" CHANGELOG.md; then
+                    changelog_exists="true"
+                  else
+                    changelog_exists="false"
+                  fi
+
+                  if [ "$changelog_exists" = "true" ]; then
                     # Update existing entry in changelog
                     echo "Updating existing changelog entry for $tag"
                     # Remove old entry and add new one
