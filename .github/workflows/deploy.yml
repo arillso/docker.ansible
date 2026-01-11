@@ -73,42 +73,54 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Get changes since last release
-              if: steps.check.outputs.exists == 'false'
+            - name: Get all changes for today
               id: changes
               run: |
-                  # Get the last release tag
+                  release_tag="${{ steps.version.outputs.release_tag }}"
+
+                  # Get all commits from today (00:00 UTC to now)
+                  today_start="${release_tag}T00:00:00Z"
+                  commits=$(git log --since="$today_start" --pretty=format:"%H|%s|%b" --no-merges)
+
+                  # Get diff for requirements.txt and Dockerfile since last release or today's start
                   last_tag=$(gh release list --limit 1 --json tagName -q '.[0].tagName' 2>/dev/null || echo "")
 
-                  if [ -n "$last_tag" ]; then
-                    # Get diff for requirements.txt and Dockerfile
-                    diff_output=$(git diff "$last_tag"..HEAD -- requirements.txt Dockerfile 2>/dev/null || echo "Initial release")
+                  if [ -n "$last_tag" ] && [ "$last_tag" != "$release_tag" ]; then
+                    diff_output=$(git diff "$last_tag"..HEAD -- requirements.txt Dockerfile 2>/dev/null || echo "")
                   else
-                    diff_output="Initial release - no previous version"
+                    # If today's release exists, get all changes since yesterday
+                    yesterday=$(date -u -d "yesterday" '+%Y-%m-%d' 2>/dev/null || date -u -v-1d '+%Y-%m-%d')
+                    diff_output=$(git diff --since="$today_start" -- requirements.txt Dockerfile 2>/dev/null || echo "")
                   fi
 
-                  # Save diff to file (handle multiline)
+                  # Save data to files
+                  echo "$commits" > /tmp/commits.txt
                   echo "$diff_output" > /tmp/changes.diff
+                  echo "commits_file=/tmp/commits.txt" >> "$GITHUB_OUTPUT"
                   echo "diff_file=/tmp/changes.diff" >> "$GITHUB_OUTPUT"
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Generate release notes with AI
-              if: steps.check.outputs.exists == 'false'
               id: ai_notes
               run: |
                   diff_content=$(cat /tmp/changes.diff)
+                  commits_content=$(cat /tmp/commits.txt)
                   ansible_version="${{ steps.version.outputs.ansible_version }}"
+                  release_tag="${{ steps.version.outputs.release_tag }}"
 
-                  # Prepare the prompt
-                  prompt="Analyze this diff from an Ansible Docker container project and generate release notes in Keep a Changelog format (https://keepachangelog.com).
+                  # Prepare the prompt with all today's commits
+                  prompt="Analyze all changes from today ($release_tag) for an Ansible Docker container project and generate release notes in Keep a Changelog format (https://keepachangelog.com).
 
                   Current Ansible version: ${ansible_version}
 
-                  Diff:
+                  All commits from today (format: HASH|Subject|Body):
+                  ${commits_content}
+
+                  File changes (Dockerfile and requirements.txt):
                   ${diff_content}
 
-                  Generate ONLY the content sections (Added, Changed, Removed, Fixed) that apply. Use German package names but English section headers. Be concise. Format as markdown list items starting with '- '. Do not include the version header, just the sections."
+                  Generate comprehensive release notes covering ALL commits from today. Use Keep a Changelog sections (Added, Changed, Removed, Fixed, Security). Use German for package names but English section headers. Be concise but include all significant changes. Format as markdown list items starting with '- '. Do not include the version header, just the sections."
 
                   # Call Anthropic API (supports both API key and OAuth token)
                   response=$(curl -s https://api.anthropic.com/v1/messages \
@@ -124,33 +136,123 @@ jobs:
                       }')")
 
                   # Extract the text from response
-                  notes=$(echo "$response" | jq -r '.content[0].text // "### Changed\n\n- Updated Ansible Core to '"${ansible_version}"'"')
+                  changelog_notes=$(echo "$response" | jq -r '.content[0].text // "### Changed\n\n- Updated Ansible Core to '"${ansible_version}"'"')
 
-                  # Save to file for multiline handling
-                  echo "$notes" > /tmp/release_notes.md
+                  # Get short SHA for image tags
+                  git_sha_short=$(git rev-parse --short HEAD)
+                  git_sha_long=$(git rev-parse HEAD)
+
+                  # Extract versions from Dockerfile
+                  alpine_version=$(grep '^FROM alpine:' Dockerfile | head -1 | sed -E 's/.*alpine:([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
+                  python_version=$(grep "'python3>=" Dockerfile | head -1 | sed -E "s/.*'python3>=([0-9]+\.[0-9]+).*/\1/")
+
+                  # Extract mitogen version from requirements.txt
+                  mitogen_version=$(grep '^mitogen==' requirements.txt | cut -d'=' -f3)
+
+                  # Create enhanced release notes for GitHub
+                  {
+                    echo "This is a rolling release Docker image based on **Ansible Core ${ansible_version}**."
+                    echo ""
+                    echo "## 📦 Container Information"
+                    echo ""
+                    echo "- **Ansible Core Version:** ${ansible_version}"
+                    echo "- **Base Image:** Alpine Linux ${alpine_version}"
+                    echo "- **Python Version:** ${python_version}"
+                    echo "- **Performance:** Mitogen ${mitogen_version} for 10x faster execution"
+                    echo "- **Architecture:** Multi-platform (linux/amd64, linux/arm64)"
+                    echo ""
+                    echo "**Included Tools & Integrations:**"
+                    echo "- **Cloud Platforms:** AWS (boto3), Azure, GCP, OpenShift"
+                    echo "- **Kubernetes:** kubectl, helm, kustomize, kubernetes-python"
+                    echo "- **Version Control:** git, GitLab API"
+                    echo "- **Databases:** PostgreSQL, MySQL, Redis"
+                    echo "- **VMware:** pyvmomi"
+                    echo "- **Security:** Vault (hvac), CrowdStrike, Consul"
+                    echo "- **Windows:** pywinrm with CredSSP"
+                    echo "- **Utilities:** jq, gnupg, openssh, rsync, curl"
+                    echo ""
+                    echo "- **Git SHA:** \`${git_sha_long}\`"
+                    echo ""
+                    echo "## 🐳 Container Images"
+                    echo ""
+                    echo "**Version Tags:**"
+                    echo "- \`arillso/ansible:${ansible_version}\`"
+                    echo "- \`arillso/ansible:latest\`"
+                    echo "- \`ghcr.io/arillso/ansible:${ansible_version}\`"
+                    echo "- \`ghcr.io/arillso/ansible:latest\`"
+                    echo ""
+                    echo "**SHA Tags:**"
+                    echo "- \`arillso/ansible:${ansible_version}-${git_sha_short}\`"
+                    echo "- \`arillso/ansible:${ansible_version}-${git_sha_long}\`"
+                    echo "- \`ghcr.io/arillso/ansible:${ansible_version}-${git_sha_short}\`"
+                    echo "- \`ghcr.io/arillso/ansible:${ansible_version}-${git_sha_long}\`"
+                    echo ""
+                    echo "## 📝 Changes"
+                    echo ""
+                    echo "$changelog_notes"
+                    echo ""
+                    echo "## 🚀 Usage"
+                    echo ""
+                    echo '```bash'
+                    echo "# Use specific Ansible version"
+                    echo "docker run --rm -v \$(pwd):/workspace arillso/ansible:${ansible_version} ansible-playbook playbook.yml"
+                    echo ""
+                    echo "# Use latest version"
+                    echo "docker run --rm -v \$(pwd):/workspace arillso/ansible:latest ansible-playbook playbook.yml"
+                    echo '```'
+                    echo ""
+                    echo "## 📖 Documentation"
+                    echo ""
+                    echo "For more information, see the [project documentation](https://github.com/arillso/docker.ansible)."
+                  } > /tmp/release_notes.md
+
                   echo "notes_file=/tmp/release_notes.md" >> "$GITHUB_OUTPUT"
               env:
                   CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
-            - name: Update changelog
-              if: steps.check.outputs.exists == 'false'
+            - name: Update or create changelog entry
+              id: update_changelog
               run: |
                   tag="${{ steps.version.outputs.release_tag }}"
                   notes=$(cat /tmp/release_notes.md)
+                  exists="${{ steps.check.outputs.exists }}"
 
-                  # Create new changelog entry
-                  {
-                    head -n 7 CHANGELOG.md
-                    echo ""
-                    echo "## [${tag}]"
-                    echo ""
-                    echo "$notes"
-                    tail -n +8 CHANGELOG.md
-                  } > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
+                  if [ "$exists" = "true" ]; then
+                    # Update existing entry in changelog
+                    echo "Updating existing changelog entry for $tag"
+                    # Remove old entry and add new one
+                    sed -i.bak "/^## \[${tag}\]/,/^## \[/{ /^## \[${tag}\]/!{ /^## \[/!d; }; }" CHANGELOG.md
+                    {
+                      head -n 7 CHANGELOG.md
+                      echo ""
+                      echo "## [${tag}]"
+                      echo ""
+                      echo "$notes"
+                      echo ""
+                      tail -n +8 CHANGELOG.md | sed "/^## \[${tag}\]/,/^## \[/d"
+                    } > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
+                    rm -f CHANGELOG.md.bak
+                  else
+                    # Create new changelog entry
+                    echo "Creating new changelog entry for $tag"
+                    {
+                      head -n 7 CHANGELOG.md
+                      echo ""
+                      echo "## [${tag}]"
+                      echo ""
+                      echo "$notes"
+                      echo ""
+                      tail -n +8 CHANGELOG.md
+                    } > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
+                  fi
 
             - name: Commit changelog
-              if: steps.check.outputs.exists == 'false'
               run: |
+                  if git diff --quiet CHANGELOG.md; then
+                    echo "No changes to commit"
+                    exit 0
+                  fi
+
                   git config user.name "github-actions[bot]"
                   git config user.email "github-actions[bot]@users.noreply.github.com"
                   git add CHANGELOG.md
@@ -177,6 +279,8 @@ jobs:
                   tags: |
                       type=raw,value=latest
                       type=raw,value=${{ steps.version.outputs.ansible_version }}
+                      type=sha,prefix=${{ steps.version.outputs.ansible_version }}-
+                      type=sha,format=long,prefix=${{ steps.version.outputs.ansible_version }}-
 
             - name: Login to DockerHub
               uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3
@@ -212,12 +316,13 @@ jobs:
                   provenance: false
                   sbom: false
 
-            - name: Create Release
-              if: steps.check.outputs.exists == 'false'
+            - name: Create or Update Release
               uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2
               with:
                   tag_name: ${{ steps.version.outputs.release_tag }}
                   name: ${{ steps.version.outputs.release_tag }}
                   body_path: /tmp/release_notes.md
+                  make_latest: true
+                  generate_release_notes: false
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
