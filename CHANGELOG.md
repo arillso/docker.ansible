@@ -17,17 +17,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Changed
 
 - Updated dependencies:
-  - `dnspython` from `2.4.2` to `2.5.0`.
-  - `lxml` from `5.0.0` to `5.1.0`.
-  - `netaddr` from `0.10.0` to `0.10.1`.
-  - `pytz` from `2023.3.post1` to `2023.4`.
-- Updated Alpine base image from `3.18.5` to `3.19.0`.
-
-## [2024-01-02]
-
-### Changed
-
-- Updated dependencies:
   - `netaddr` from `0.9.0` to `0.10.0`.
   - `docker` from `6.1.3` to `7.0.0`.
   - `crowdstrike-falconpy` from `1.3.4` to `1.4.0`.
