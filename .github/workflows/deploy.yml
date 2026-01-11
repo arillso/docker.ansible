@@ -82,15 +82,16 @@ jobs:
                   today_start="${release_tag}T00:00:00Z"
                   commits=$(git log --since="$today_start" --pretty=format:"%H|%s|%b" --no-merges)
 
-                  # Get diff for requirements.txt and Dockerfile since last release or today's start
-                  last_tag=$(gh release list --limit 1 --json tagName -q '.[0].tagName' 2>/dev/null || echo "")
+                  # Get diff for requirements.txt and Dockerfile from all commits today
+                  # Get first and last commit from today
+                  first_commit_today=$(git log --since="$today_start" --pretty=format:"%H" --no-merges --reverse | head -1)
 
-                  if [ -n "$last_tag" ] && [ "$last_tag" != "$release_tag" ]; then
-                    diff_output=$(git diff "$last_tag"..HEAD -- requirements.txt Dockerfile 2>/dev/null || echo "")
+                  if [ -n "$first_commit_today" ]; then
+                    # Diff from parent of first commit today to HEAD
+                    diff_output=$(git diff "${first_commit_today}~1"..HEAD -- requirements.txt Dockerfile 2>/dev/null || echo "")
                   else
-                    # If today's release exists, get all changes since yesterday
-                    yesterday=$(date -u -d "yesterday" '+%Y-%m-%d' 2>/dev/null || date -u -v-1d '+%Y-%m-%d')
-                    diff_output=$(git diff --since="$today_start" -- requirements.txt Dockerfile 2>/dev/null || echo "")
+                    # No commits today
+                    diff_output=""
                   fi
 
                   # Save data to files
