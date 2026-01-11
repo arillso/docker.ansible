@@ -1,4 +1,15 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": ["github>arillso/.github:renovate-base"]
+    "extends": ["github>arillso/.github:renovate-base"],
+    "packageRules": [
+        {
+            "matchManagers": ["github-actions"],
+            "matchPackageNames": [
+                "hadolint/hadolint-action",
+                "ludeeus/action-shellcheck",
+                "aquasecurity/trivy-action"
+            ],
+            "pinDigests": false
+        }
+    ]
 }

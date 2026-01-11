@@ -13,12 +13,14 @@ commandTests:
       command: "helm"
       args: ["version", "--short"]
       expectedOutput:
+          # renovate: datasource=github-releases depName=helm/helm
           - "v3.19.0"
 
     - name: "Check kustomize Version"
       command: "kustomize"
       args: ["version"]
       expectedOutput:
+          # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize extractVersion=^kustomize/v(?<version>.*)$
           - "5.7.1"
 
     # Shell Tools & Utilities
@@ -32,6 +34,7 @@ commandTests:
       command: "jq"
       args: ["--version"]
       expectedOutput:
+          # renovate: datasource=github-releases depName=jqlang/jq
           - "jq-1.8.1"
 
     - name: "Check sshpass Availability"
@@ -44,6 +47,7 @@ commandTests:
       command: "openssl"
       args: ["version"]
       expectedOutput:
+          # renovate: datasource=repology depName=openssl versioning=loose
           - "OpenSSL 3.5.4"
 
     - name: "Check Git Version"
@@ -224,6 +228,7 @@ fileContentTests:
     - name: "Verify Alpine version"
       path: "/etc/alpine-release"
       expectedContents:
+          # renovate: datasource=docker depName=alpine
           - "3.23.2"
 
     - name: "Check SSH Client Configuration"
