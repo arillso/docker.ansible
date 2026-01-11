@@ -42,7 +42,7 @@ jobs:
                   sbom: false
 
             - name: Run Trivy vulnerability scanner
-              uses: aquasecurity/trivy-action@0.29.0
+              uses: aquasecurity/trivy-action@0.33.1
               with:
                   image-ref: "ansible:scan"
                   format: "sarif"
