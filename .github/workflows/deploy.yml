@@ -246,18 +246,34 @@ jobs:
                   if [ "$changelog_exists" = "true" ]; then
                     # Update existing entry in changelog
                     echo "Updating existing changelog entry for $tag"
-                    # Remove old entry and add new one
-                    sed -i.bak "/^## \[${tag}\]/,/^## \[/{ /^## \[${tag}\]/!{ /^## \[/!d; }; }" CHANGELOG.md
-                    {
-                      head -n 7 CHANGELOG.md
-                      echo ""
-                      echo "## [${tag}]"
-                      echo ""
-                      cat "$changelog_file"
-                      echo ""
-                      tail -n +8 CHANGELOG.md | sed "/^## \[${tag}\]/,/^## \[/d"
-                    } > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
-                    rm -f CHANGELOG.md.bak
+
+                    # Find line number of the existing entry
+                    entry_line=$(grep -n "^## \[${tag}\]" CHANGELOG.md | head -1 | cut -d: -f1)
+
+                    # Find line number of the next release entry
+                    next_entry_line=$(tail -n +$((entry_line + 1)) CHANGELOG.md | grep -n "^## \[" | head -1 | cut -d: -f1)
+
+                    if [ -n "$next_entry_line" ]; then
+                      # Calculate absolute line number of next entry
+                      next_entry_line=$((entry_line + next_entry_line))
+                      # Replace content between current and next entry
+                      {
+                        head -n $((entry_line - 1)) CHANGELOG.md
+                        echo "## [${tag}]"
+                        echo ""
+                        cat "$changelog_file"
+                        echo ""
+                        tail -n +${next_entry_line} CHANGELOG.md
+                      } > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
+                    else
+                      # No next entry found, replace until end of file
+                      {
+                        head -n $((entry_line - 1)) CHANGELOG.md
+                        echo "## [${tag}]"
+                        echo ""
+                        cat "$changelog_file"
+                      } > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
+                    fi
                   else
                     # Create new changelog entry
                     echo "Creating new changelog entry for $tag"
