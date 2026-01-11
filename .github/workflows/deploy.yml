@@ -110,6 +110,11 @@ jobs:
                   ansible_version="${{ steps.version.outputs.ansible_version }}"
                   release_tag="${{ steps.version.outputs.release_tag }}"
 
+                  # Debug: Show what we're sending to AI
+                  echo "=== Diff Content ==="
+                  echo "$diff_content"
+                  echo "=== End Diff ==="
+
                   # Prepare the prompt with all today's commits
                   prompt="Analyze changes to the Docker container image from today ($release_tag) and generate release notes in Keep a Changelog format (https://keepachangelog.com).
 
