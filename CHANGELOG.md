@@ -17,19 +17,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Changed
 
 - Updated dependencies:
-  - `dnspython` from `2.5.0` to `2.6.1`.
-  - `crowdstrike-falconpy` from `1.4.0` to `1.4.0`.
-  - `pytz` from `2023.4` to `2024.1`.
-  - `netaddr` from `0.10.1` to `1.2.1`.
-  - `pip` from `23.3.2` to `24.0`.
-  - `python-dateutil` from `2.8.2` to `2.9.0.post0`.
-- Updated Ansible version from `2.16.2` to `2.16.4`.
-
-## [2024-02-01]
-
-### Changed
-
-- Updated dependencies:
   - `dnspython` from `2.4.2` to `2.5.0`.
   - `lxml` from `5.0.0` to `5.1.0`.
   - `netaddr` from `0.10.0` to `0.10.1`.
