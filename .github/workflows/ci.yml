@@ -43,12 +43,12 @@ jobs:
                   config_file: .yamllint.yml
 
             - name: Lint Dockerfile
-              uses: hadolint/hadolint-action@54c9adbab1582c2ef04b2016b760714a4bfde3cf # v3
+              uses: hadolint/hadolint-action@v3
               with:
                   dockerfile: Dockerfile
 
             - name: Lint shell scripts
-              uses: ludeeus/action-shellcheck@00cae500b08a931fb5698e11e79bfbd38e612a38 # v2
+              uses: ludeeus/action-shellcheck@v2
 
     prepare:
         name: Prepare
@@ -148,7 +148,7 @@ jobs:
                   bash -c "bash /tests/container-hardening.sh || echo 'Security check returned warnings'" | tee test-results/security-check.log
 
             - name: Trivy Vulnerability Scanner
-              uses: aquasecurity/trivy-action@master
+              uses: aquasecurity/trivy-action@0.29.0
               with:
                   image-ref: "ansible:test"
                   format: "sarif"
