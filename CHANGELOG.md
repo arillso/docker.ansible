@@ -10,24 +10,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- Maintenance release
+- Updated Ansible version to 2.20.1.
+- Updated Alpine packages:
+  - Removed apk update command from the Dockerfile.
+- Updated Python dependencies:
+  - boto3 1.42.24 → 1.42.25
+  - botocore 1.42.24 → 1.42.25
+  - google-cloud-compute 1.40.0 → 1.41.0
 
 
-
-### Changed
-
-- Updated dependencies:
-  - `netaddr` from `0.9.0` to `0.10.0`.
-  - `docker` from `6.1.3` to `7.0.0`.
-  - `crowdstrike-falconpy` from `1.3.4` to `1.4.0`.
-  - `pip` from `23.3.1` to `23.3.2`.
-  - `lxml` from `4.9.3` to `5.0.0`.
-- Updated Alpine base image from `3.18.5` to `3.19.0`.
-- Added `--break-system-packages` option in pip installation to allow installing packages in externally managed
-  environments.
-- Updated Ansible version from `2.15.5` to `2.16.2`.
-
-## [2023-12-01]
 
 ### Changed
 
