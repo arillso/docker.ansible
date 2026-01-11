@@ -9,15 +9,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- Updated Ansible version to 2.20.1.
+- Updated Alpine packages:
+  - Removed redundant `apk update` command in the Dockerfile to optimize image size.
 - Updated Python dependencies:
+  - tomli 2.3.0 → 2.4.0
   - boto3 1.42.24 → 1.42.25
   - botocore 1.42.24 → 1.42.25
-  - google-cloud-compute 1.40.0 → 1.41.0  
-
-- Updated base packages:
-  - Alpine packages updated; removed redundant apk update command.  
-   
-- Updated Ansible version: 2.20.1
+  - google-cloud-compute 1.40.0 → 1.41.0
 
 ## [2023-11-28]
 
