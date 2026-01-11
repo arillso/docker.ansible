@@ -24,7 +24,7 @@ permissions:
 jobs:
     # Run CI and Security in parallel
     ci:
-        name: CI
+        name: Continuous Integration
         uses: ./.github/workflows/ci.yml
         secrets: inherit
         permissions:
@@ -34,7 +34,7 @@ jobs:
             pull-requests: write
 
     security:
-        name: Security
+        name: Security Scanning
         uses: ./.github/workflows/security.yml
         secrets: inherit
         permissions:
