@@ -43,12 +43,12 @@ jobs:
                   config_file: .yamllint.yml
 
             - name: Lint Dockerfile
-              uses: hadolint/hadolint-action@v3
+              uses: hadolint/hadolint-action@v3.3.0
               with:
                   dockerfile: Dockerfile
 
             - name: Lint shell scripts
-              uses: ludeeus/action-shellcheck@v2
+              uses: ludeeus/action-shellcheck@2.0.0
 
     prepare:
         name: Prepare
@@ -93,7 +93,7 @@ jobs:
                   sbom: false
 
             - name: Upload image artifact
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@6f51ac03b9356f520e9adb1b1b7802705f340c2b # v4.5.0
               with:
                   name: ansible-test-image
                   path: /tmp/ansible-test.tar
@@ -108,7 +108,7 @@ jobs:
               uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
             - name: Download image artifact
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
               with:
                   name: ansible-test-image
                   path: /tmp
@@ -133,7 +133,7 @@ jobs:
               uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
             - name: Download image artifact
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
               with:
                   name: ansible-test-image
                   path: /tmp
@@ -169,7 +169,7 @@ jobs:
               uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
             - name: Download image artifact
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
               with:
                   name: ansible-test-image
                   path: /tmp
@@ -198,7 +198,7 @@ jobs:
               uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
             - name: Download image artifact
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
               with:
                   name: ansible-test-image
                   path: /tmp
@@ -265,7 +265,7 @@ jobs:
               uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
             - name: Download image artifact
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
               with:
                   name: ansible-test-image
                   path: /tmp
@@ -274,7 +274,7 @@ jobs:
               run: docker load --input /tmp/ansible-test.tar
 
             - name: Setup Python
-              uses: actions/setup-python@v5
+              uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
               with:
                   python-version: "3.14"
 
@@ -295,7 +295,7 @@ jobs:
               uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
             - name: Download image artifact
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
               with:
                   name: ansible-test-image
                   path: /tmp
@@ -352,7 +352,7 @@ jobs:
                   mode: upsert
 
             - name: Upload test results
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@6f51ac03b9356f520e9adb1b1b7802705f340c2b # v4.5.0
               with:
                   name: container-test-results
                   path: ./container-test-results.md
