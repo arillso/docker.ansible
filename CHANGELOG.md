@@ -18,15 +18,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   - botocore 1.42.24 → 1.42.25
   - google-cloud-compute 1.40.0 → 1.41.0
 
-
-
-### Changed
-
-- Updated dependencies:
-  - `crowdstrike-falconpy` from `1.3.3` to `1.3.4`.
-  - `wheel` from `0.41.3` to `0.42.0`.
-  - `alpine` from `3.18.4` to `3.18.5`.
-
 ## [2023-11-28]
 
 ### Fixed

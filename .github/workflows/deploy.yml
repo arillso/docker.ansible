@@ -229,8 +229,13 @@ jobs:
               id: update_changelog
               run: |
                   tag="${{ steps.version.outputs.release_tag }}"
-                  changelog_notes="${{ steps.ai_notes.outputs.changelog_notes }}"
                   exists="${{ steps.check.outputs.exists }}"
+
+                  # Read changelog notes from file to avoid backtick execution
+                  changelog_file="/tmp/changelog_notes.txt"
+                  cat > "$changelog_file" << 'CHANGELOG_EOF'
+                  ${{ steps.ai_notes.outputs.changelog_notes }}
+                  CHANGELOG_EOF
 
                   if [ "$exists" = "true" ]; then
                     # Update existing entry in changelog
@@ -242,7 +247,7 @@ jobs:
                       echo ""
                       echo "## [${tag}]"
                       echo ""
-                      printf '%s\n' "$changelog_notes"
+                      cat "$changelog_file"
                       echo ""
                       tail -n +8 CHANGELOG.md | sed "/^## \[${tag}\]/,/^## \[/d"
                     } > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
@@ -255,11 +260,13 @@ jobs:
                       echo ""
                       echo "## [${tag}]"
                       echo ""
-                      printf '%s\n' "$changelog_notes"
+                      cat "$changelog_file"
                       echo ""
                       tail -n +8 CHANGELOG.md
                     } > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
                   fi
+
+                  rm -f "$changelog_file"
 
             - name: Commit changelog
               run: |
