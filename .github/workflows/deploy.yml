@@ -138,15 +138,14 @@ jobs:
 
                   OUTPUT ONLY THE MARKDOWN SECTIONS, NO PREAMBLE OR EXPLANATION."
 
-                  # Call Anthropic API (supports both API key and OAuth token)
-                  response=$(curl -s https://api.anthropic.com/v1/messages \
+                  # Call OpenAI API
+                  response=$(curl -s https://api.openai.com/v1/chat/completions \
                     -H "Content-Type: application/json" \
-                    -H "Authorization: Bearer $CLAUDE_CODE_OAUTH_TOKEN" \
-                    -H "anthropic-version: 2023-06-01" \
+                    -H "Authorization: Bearer $OPENAI_API_KEY" \
                     -d "$(jq -n \
                       --arg prompt "$prompt" \
                       '{
-                        model: "claude-sonnet-4-20250514",
+                        model: "gpt-4o-mini",
                         max_tokens: 1024,
                         messages: [{role: "user", content: $prompt}]
                       }')")
@@ -156,8 +155,8 @@ jobs:
                   echo "$response" | jq '.'
                   echo "=== End Response ==="
 
-                  # Extract the text from response
-                  changelog_notes=$(echo "$response" | jq -r '.content[0].text // "### Changed\n\n- Maintenance release"')
+                  # Extract the text from response (OpenAI format)
+                  changelog_notes=$(echo "$response" | jq -r '.choices[0].message.content // "### Changed\n\n- Maintenance release"')
 
                   echo "=== Extracted Changelog Notes ==="
                   echo "$changelog_notes"
@@ -238,7 +237,7 @@ jobs:
 
                   echo "notes_file=/tmp/release_notes.md" >> "$GITHUB_OUTPUT"
               env:
-                  CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+                  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
             - name: Update or create changelog entry
               id: update_changelog
