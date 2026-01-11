@@ -85,9 +85,7 @@ jobs:
                   build-args: ANSIBLE_VERSION=${{ needs.prepare.outputs.ansible_version }}
                   tags: ansible:test
                   outputs: type=docker,dest=/tmp/ansible-test.tar
-                  cache-from: |
-                      type=registry,ref=ghcr.io/arillso/ansible:buildcache
-                      type=gha
+                  cache-from: type=registry,ref=ghcr.io/arillso/ansible-cache:latest
                   cache-to: type=gha,mode=max
                   provenance: false
                   sbom: false

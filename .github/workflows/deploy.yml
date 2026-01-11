@@ -351,12 +351,8 @@ jobs:
                   platforms: linux/amd64,linux/arm64
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
-                  cache-from: |
-                      type=registry,ref=ghcr.io/arillso/ansible:buildcache
-                      type=gha
-                  cache-to: |
-                      type=registry,ref=ghcr.io/arillso/ansible:buildcache,mode=max
-                      type=gha,mode=max
+                  cache-from: type=registry,ref=ghcr.io/arillso/ansible-cache:latest
+                  cache-to: type=registry,ref=ghcr.io/arillso/ansible-cache:latest,mode=max
                   provenance: false
                   sbom: false
 
