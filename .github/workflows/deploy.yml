@@ -110,11 +110,6 @@ jobs:
                   ansible_version="${{ steps.version.outputs.ansible_version }}"
                   release_tag="${{ steps.version.outputs.release_tag }}"
 
-                  # Debug: Show what we're sending to AI
-                  echo "=== Diff Content ==="
-                  echo "$diff_content"
-                  echo "=== End Diff ==="
-
                   # Prepare the prompt with all today's commits
                   prompt="Analyze changes to the Docker container image from today ($release_tag) and generate release notes in Keep a Changelog format (https://keepachangelog.com).
 
@@ -150,17 +145,8 @@ jobs:
                         messages: [{role: "user", content: $prompt}]
                       }')")
 
-                  # Debug: Show API response
-                  echo "=== API Response ==="
-                  echo "$response" | jq '.'
-                  echo "=== End Response ==="
-
                   # Extract the text from response (OpenAI format)
                   changelog_notes=$(echo "$response" | jq -r '.choices[0].message.content // "### Changed\n\n- Maintenance release"')
-
-                  echo "=== Extracted Changelog Notes ==="
-                  echo "$changelog_notes"
-                  echo "=== End Notes ==="
 
                   # Save changelog notes as output for later use
                   echo "changelog_notes<<EOF" >> "$GITHUB_OUTPUT"
@@ -182,7 +168,11 @@ jobs:
                   {
                     echo "This is a rolling release Docker image based on **Ansible Core ${ansible_version}**."
                     echo ""
-                    echo "## 📦 Container Information"
+                    echo "## Changes"
+                    echo ""
+                    printf '%s\n' "$changelog_notes"
+                    echo ""
+                    echo "## Container Information"
                     echo ""
                     echo "- **Ansible Core Version:** ${ansible_version}"
                     echo "- **Base Image:** Alpine Linux ${alpine_version}"
@@ -202,7 +192,7 @@ jobs:
                     echo ""
                     echo "- **Git SHA:** \`${git_sha_long}\`"
                     echo ""
-                    echo "## 🐳 Container Images"
+                    echo "## Container Images"
                     echo ""
                     echo "**Version Tags:**"
                     echo "- \`arillso/ansible:${ansible_version}\`"
@@ -216,11 +206,7 @@ jobs:
                     echo "- \`ghcr.io/arillso/ansible:${ansible_version}-${git_sha_short}\`"
                     echo "- \`ghcr.io/arillso/ansible:${ansible_version}-${git_sha_long}\`"
                     echo ""
-                    echo "## 📝 Changes"
-                    echo ""
-                    echo "$changelog_notes"
-                    echo ""
-                    echo "## 🚀 Usage"
+                    echo "## Usage"
                     echo ""
                     echo '```bash'
                     echo "# Use specific Ansible version"
@@ -230,7 +216,7 @@ jobs:
                     echo "docker run --rm -v \$(pwd):/workspace arillso/ansible:latest ansible-playbook playbook.yml"
                     echo '```'
                     echo ""
-                    echo "## 📖 Documentation"
+                    echo "## Documentation"
                     echo ""
                     echo "For more information, see the [project documentation](https://github.com/arillso/docker.ansible)."
                   } > /tmp/release_notes.md
