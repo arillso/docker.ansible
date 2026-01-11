@@ -5,6 +5,65 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 <!-- markdownlint-disable MD024 -->
 
+
+## [2026-01-11]
+
+This is a rolling release Docker image based on **Ansible Core 2.20.1**.
+
+## 📦 Container Information
+
+- **Ansible Core Version:** 2.20.1
+- **Base Image:** Alpine Linux 3.23.2
+- **Python Version:** 3.12
+- **Performance:** Mitogen 0.3.37 for 10x faster execution
+- **Architecture:** Multi-platform (linux/amd64, linux/arm64)
+
+**Included Tools & Integrations:**
+- **Cloud Platforms:** AWS (boto3), Azure, GCP, OpenShift
+- **Kubernetes:** kubectl, helm, kustomize, kubernetes-python
+- **Version Control:** git, GitLab API
+- **Databases:** PostgreSQL, MySQL, Redis
+- **VMware:** pyvmomi
+- **Security:** Vault (hvac), CrowdStrike, Consul
+- **Windows:** pywinrm with CredSSP
+- **Utilities:** jq, gnupg, openssh, rsync, curl
+
+- **Git SHA:** `458593da142c428beef7b81a7ff3e85316ce815a`
+
+## 🐳 Container Images
+
+**Version Tags:**
+- `arillso/ansible:2.20.1`
+- `arillso/ansible:latest`
+- `ghcr.io/arillso/ansible:2.20.1`
+- `ghcr.io/arillso/ansible:latest`
+
+**SHA Tags:**
+- `arillso/ansible:2.20.1-458593d`
+- `arillso/ansible:2.20.1-458593da142c428beef7b81a7ff3e85316ce815a`
+- `ghcr.io/arillso/ansible:2.20.1-458593d`
+- `ghcr.io/arillso/ansible:2.20.1-458593da142c428beef7b81a7ff3e85316ce815a`
+
+## 📝 Changes
+
+### Changed
+
+- Updated Ansible Core to 2.20.1
+
+## 🚀 Usage
+
+```bash
+# Use specific Ansible version
+docker run --rm -v $(pwd):/workspace arillso/ansible:2.20.1 ansible-playbook playbook.yml
+
+# Use latest version
+docker run --rm -v $(pwd):/workspace arillso/ansible:latest ansible-playbook playbook.yml
+```
+
+## 📖 Documentation
+
+For more information, see the [project documentation](https://github.com/arillso/docker.ansible).
+
 ## [2026-01-09]
 
 ### Changed
