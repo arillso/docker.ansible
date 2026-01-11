@@ -256,7 +256,7 @@ jobs:
                       echo ""
                       echo "## [${tag}]"
                       echo ""
-                      echo "$changelog_notes"
+                      printf '%s\n' "$changelog_notes"
                       echo ""
                       tail -n +8 CHANGELOG.md | sed "/^## \[${tag}\]/,/^## \[/d"
                     } > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
@@ -269,7 +269,7 @@ jobs:
                       echo ""
                       echo "## [${tag}]"
                       echo ""
-                      echo "$changelog_notes"
+                      printf '%s\n' "$changelog_notes"
                       echo ""
                       tail -n +8 CHANGELOG.md
                     } > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
