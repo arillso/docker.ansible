@@ -16,12 +16,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- Updated Ansible Core to 2.20.1
-
-## [2024-03-09]
-
-### Changed
-
 - Updated dependencies:
   - `dnspython` from `2.5.0` to `2.6.1`.
   - `crowdstrike-falconpy` from `1.4.0` to `1.4.0`.
