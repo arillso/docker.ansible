@@ -5,7 +5,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 <!-- markdownlint-disable MD024 -->
 
-
 ## [2026-01-11]
 
 ### Changed
@@ -18,18 +17,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   - botocore 1.42.24 → 1.42.25
   - google-cloud-compute 1.40.0 → 1.41.0
 
+### Fixed
 
-## [2026-01-11]
-
-### Changed
-
-- Updated Ansible version to 2.20.1.
-- Updated Alpine packages:
-  - Removed apk update command from the Dockerfile.
-- Updated Python dependencies:
-  - boto3 1.42.24 → 1.42.25
-  - botocore 1.42.24 → 1.42.25
-  - google-cloud-compute 1.40.0 → 1.41.0
+- Fixed deploy workflow to check changelog entry existence independently of GitHub release status
 
 ## [2023-11-28]
 
