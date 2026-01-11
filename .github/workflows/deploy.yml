@@ -151,8 +151,17 @@ jobs:
                         messages: [{role: "user", content: $prompt}]
                       }')")
 
+                  # Debug: Show API response
+                  echo "=== API Response ==="
+                  echo "$response" | jq '.'
+                  echo "=== End Response ==="
+
                   # Extract the text from response
                   changelog_notes=$(echo "$response" | jq -r '.content[0].text // "### Changed\n\n- Maintenance release"')
+
+                  echo "=== Extracted Changelog Notes ==="
+                  echo "$changelog_notes"
+                  echo "=== End Notes ==="
 
                   # Save changelog notes as output for later use
                   echo "changelog_notes<<EOF" >> "$GITHUB_OUTPUT"
