@@ -42,8 +42,7 @@ COPY requirements.txt /requirements.txt
 
 # Install all build dependencies in a single layer to reduce image size
 # hadolint ignore=DL3018
-RUN apk update && \
-	apk add --no-cache \
+RUN apk add --no-cache \
 	'py3-pip>=25.1.0' \
 	'py3-pip<26.0.0' \
 	'pipx>=1.7.0' \
@@ -103,7 +102,6 @@ WORKDIR /home/ansible
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 # hadolint ignore=DL3018
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/v$(cut -d'.' -f1-2 /etc/alpine-release)/community" >> /etc/apk/repositories && \
-	apk update && \
 	apk add --no-cache \
 	# Base packages - conservative ranges
 	'python3>=3.12.0' \
