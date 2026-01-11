@@ -110,17 +110,27 @@ jobs:
                   release_tag="${{ steps.version.outputs.release_tag }}"
 
                   # Prepare the prompt with all today's commits
-                  prompt="Analyze all changes from today ($release_tag) for an Ansible Docker container project and generate release notes in Keep a Changelog format (https://keepachangelog.com).
+                  prompt="Analyze changes to the Docker container image from today ($release_tag) and generate release notes in Keep a Changelog format (https://keepachangelog.com).
 
                   Current Ansible version: ${ansible_version}
-
-                  All commits from today (format: HASH|Subject|Body):
-                  ${commits_content}
 
                   File changes (Dockerfile and requirements.txt):
                   ${diff_content}
 
-                  Generate comprehensive release notes covering ALL commits from today. Use Keep a Changelog sections (Added, Changed, Removed, Fixed, Security). Use German for package names but English section headers. Be concise but include all significant changes. Format as markdown list items starting with '- '. Do not include the version header, just the sections."
+                  IMPORTANT RULES:
+                  1. ONLY include changes to the container image itself (Dockerfile, requirements.txt, Alpine packages, Python dependencies)
+                  2. IGNORE CI/CD changes, GitHub Actions updates, workflow changes, test changes
+                  3. Use Keep a Changelog sections: ### Added, ### Changed, ### Removed, ### Fixed, ### Security
+                  4. Group related changes together (e.g., 'Updated Python dependencies: boto3 1.42.24 → 1.42.25, botocore 1.42.24 → 1.42.25')
+                  5. Include specific version numbers for package updates
+                  6. Use markdown list items starting with '- '
+                  7. Do NOT include emojis or icons in section headers
+                  8. Do NOT include the version header (## [date])
+                  9. If Ansible Core version changed, mention it
+                  10. If Alpine or Python version changed, mention it
+                  11. If no changes to image, output: ### Changed\n\n- Maintenance release
+
+                  OUTPUT ONLY THE MARKDOWN SECTIONS, NO PREAMBLE OR EXPLANATION."
 
                   # Call Anthropic API (supports both API key and OAuth token)
                   response=$(curl -s https://api.anthropic.com/v1/messages \
@@ -136,7 +146,12 @@ jobs:
                       }')")
 
                   # Extract the text from response
-                  changelog_notes=$(echo "$response" | jq -r '.content[0].text // "### Changed\n\n- Updated Ansible Core to '"${ansible_version}"'"')
+                  changelog_notes=$(echo "$response" | jq -r '.content[0].text // "### Changed\n\n- Maintenance release"')
+
+                  # Save changelog notes as output for later use
+                  echo "changelog_notes<<EOF" >> "$GITHUB_OUTPUT"
+                  echo "$changelog_notes" >> "$GITHUB_OUTPUT"
+                  echo "EOF" >> "$GITHUB_OUTPUT"
 
                   # Get short SHA for image tags
                   git_sha_short=$(git rev-parse --short HEAD)
@@ -214,7 +229,7 @@ jobs:
               id: update_changelog
               run: |
                   tag="${{ steps.version.outputs.release_tag }}"
-                  notes=$(cat /tmp/release_notes.md)
+                  changelog_notes="${{ steps.ai_notes.outputs.changelog_notes }}"
                   exists="${{ steps.check.outputs.exists }}"
 
                   if [ "$exists" = "true" ]; then
@@ -227,7 +242,7 @@ jobs:
                       echo ""
                       echo "## [${tag}]"
                       echo ""
-                      echo "$notes"
+                      echo "$changelog_notes"
                       echo ""
                       tail -n +8 CHANGELOG.md | sed "/^## \[${tag}\]/,/^## \[/d"
                     } > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
@@ -240,7 +255,7 @@ jobs:
                       echo ""
                       echo "## [${tag}]"
                       echo ""
-                      echo "$notes"
+                      echo "$changelog_notes"
                       echo ""
                       tail -n +8 CHANGELOG.md
                     } > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
