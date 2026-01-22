@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [2026-01-22]
+
+### Changed
+
+- Updated `wheel` from version `0.45.1` to `0.46.2`
+
+
 ## [2026-01-19]
 
 ### Changed
