@@ -3,7 +3,7 @@ ansible-core==2.20.1
 
 # Build Tools & Package Management
 pip==25.3
-wheel==0.45.1
+wheel==0.46.2
 
 # Core Libraries & Utilities
 cffi==2.0.0
