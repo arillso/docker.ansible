@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [2026-01-26]
+
+### Changed
+
+- Updated Ansible Core to version 2.20.1.
+- Updated Python dependencies:
+  - boto3 1.42.29 → 1.42.33
+  - botocore 1.42.29 → 1.42.33
+- Updated wheel from version 0.46.2 to 0.46.3.
+
+
 ## [2026-01-22]
 
 ### Changed
