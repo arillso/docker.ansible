@@ -154,7 +154,7 @@ jobs:
                   severity: "CRITICAL,HIGH"
 
             - name: Upload Trivy scan results
-              uses: github/codeql-action/upload-sarif@v4
+              uses: github/codeql-action/upload-sarif@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4
               with:
                   sarif_file: "trivy-results.sarif"
 
@@ -272,7 +272,7 @@ jobs:
               run: docker load --input /tmp/ansible-test.tar
 
             - name: Setup Python
-              uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+              uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
               with:
                   python-version: "3.14"
 
@@ -343,7 +343,7 @@ jobs:
 
             - name: Comment on pull request with test results
               if: ${{ github.event_name == 'pull_request' }}
-              uses: thollander/actions-comment-pull-request@v3
+              uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3
               with:
                   file-path: ./container-test-results.md
                   comment-tag: ansible-container-test-results
