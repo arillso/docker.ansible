@@ -76,7 +76,7 @@ google-auth==2.47.0
 kubernetes==34.1.0
 
 # GitLab Integration
-python-gitlab==7.1.0
+python-gitlab==8.0.0
 
 # Backup & Archive
 #tarfile-compat==0.2.0
