@@ -10,16 +10,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- Updated Ansible Core version to 2.20.1
-- Updated Python dependencies:
-  - pip 25.3 → 26.0
-  - jmespath 1.0.1 → 1.1.0
-  - azure-mgmt-compute 37.1.0 → 37.2.0
-  - google-cloud-compute 1.41.0 → 1.43.0
-  - kubernetes 34.1.0 → 35.0.0
-  - python-gitlab 7.1.0 → 8.0.0
-  - prometheus-client 0.23.1 → 0.24.1
-  - pandas 2.3.3 → 3.0.0
+- Updated ansible-core to 2.20.1
+- Updated pip from 25.3 to 26.0
+- Updated jmespath from 1.0.1 to 1.1.0
+- Updated azure-mgmt-compute from 37.1.0 to 37.2.0
+- Updated google-cloud-compute from 1.41.0 to 1.43.0
+- Updated google-auth from 2.47.0 to 2.48.0
+- Updated kubernetes from 34.1.0 to 35.0.0
+- Updated python-gitlab from 7.1.0 to 8.0.0
+- Updated prometheus-client from 0.23.1 to 0.24.1
+- Updated pandas from 2.3.3 to 3.0.0
 
 ## [2026-01-26]
 
