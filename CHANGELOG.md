@@ -10,9 +10,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- Updated ansible-core to 2.20.1
+- Updated base image from Alpine 3.23.2 to Alpine 3.23.3
+- Updated Ansible Core from 2.20.1 to 2.20.2
 - Updated pip from 25.3 to 26.0
 - Updated jmespath from 1.0.1 to 1.1.0
+- Updated mitogen from 0.3.37 to 0.3.39
+- Updated cryptography from 46.0.3 to 46.0.4
+- Updated boto3 from 1.42.33 to 1.42.39
+- Updated botocore from 1.42.33 to 1.42.39
 - Updated azure-mgmt-compute from 37.1.0 to 37.2.0
 - Updated google-cloud-compute from 1.41.0 to 1.43.0
 - Updated google-auth from 2.47.0 to 2.48.0
