@@ -10,10 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- Updated Python dependencies:
-  - jmespath 1.0.1 → 1.1.0
-  - prometheus-client 0.23.1 → 0.24.1
-
+- Updated Ansible version: 2.20.1 → 2.20.1 (no change)
+- Updated pip version: 25.3 → 26.0
+- Updated jmespath version: 1.0.1 → 1.1.0
+- Updated prometheus-client version: 0.23.1 → 0.24.1
 
 ## [2026-01-26]
 
