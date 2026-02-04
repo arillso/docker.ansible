@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Updated google-cloud-compute version: 1.41.0 → 1.43.0
 - Updated python-gitlab version: 7.1.0 → 8.0.0
 - Updated prometheus-client version: 0.23.1 → 0.24.1
+- Updated pandas version: 2.3.3 → 3.0.0
 
 ## [2026-01-26]
 
