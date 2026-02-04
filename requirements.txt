@@ -1,5 +1,5 @@
 # Core Ansible
-ansible-core==2.20.1
+ansible-core==2.20.2
 
 # Build Tools & Package Management
 pip==26.0
@@ -26,7 +26,7 @@ dnspython==2.8.0
 crowdstrike-falconpy==1.6.0
 
 # Performance & Optimization
-mitogen==0.3.37
+mitogen==0.3.39
 
 # Windows Management
 pywinrm[credssp]==0.5.0
@@ -37,7 +37,7 @@ tomli-w==1.2.0
 tomli==2.4.0
 
 # Cryptography & Security
-cryptography==46.0.3
+cryptography==46.0.4
 paramiko==4.0.0
 bcrypt==5.0.0
 
@@ -60,8 +60,8 @@ redis==7.1.0
 pyvmomi==9.0.0.0
 
 # AWS Integration
-boto3==1.42.33
-botocore==1.42.33
+boto3==1.42.39
+botocore==1.42.39
 
 # Azure Integration
 azure-identity==1.25.1
