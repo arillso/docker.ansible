@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [2026-02-11]
+
+### Changed
+
+- Updated Python dependency: cryptography 46.0.4 → 46.0.5
+
+### Security
+
+- Updated cryptography to version 46.0.5 to address security vulnerabilities.
+
+
 ## [2026-02-09]
 
 ### Changed
