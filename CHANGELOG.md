@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [2026-02-16]
+
+### Changed
+
+- Updated Ansible version to 2.20.2
+- Updated Python dependencies:
+  - mitogen 0.3.40 → 0.3.41
+  - redis 7.1.0 → 7.1.1
+  - boto3 1.42.43 → 1.42.48
+  - botocore 1.42.43 → 1.42.48
+  - azure-identity 1.25.1 → 1.25.2
+
+
 ## [2026-02-11]
 
 ### Changed
