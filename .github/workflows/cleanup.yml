@@ -12,58 +12,13 @@ permissions:
     packages: write
 
 jobs:
-    docker-hub-cleanup:
-        name: Docker Hub Cleanup
-        runs-on: ubuntu-latest
-        steps:
-            - name: Docker Hub Image Cleanup
-              uses: philiplehmann/docker-hub-retention@af4891bac44f14c7754a17d1632baf7745329e67 # v0.0.6
-              with:
-                  repository: arillso/ansible
-                  username: sbaerlocher
-                  password: ${{ secrets.DOCKERHUB_TOKEN }}
-                  multiple: |
-                      - match: sha-[0-9a-f]{7}
-                        retention: 60d
-                  dryrun: "false"
-
-    ghcr-cleanup:
-        name: GitHub Container Registry Cleanup
-        runs-on: ubuntu-latest
-        permissions:
-            packages: write
-        steps:
-            - name: Delete old untagged images
-              uses: snok/container-retention-policy@3b0972b2276b171b212f8c4efbca59ebba26eceb # v3.0.1
-              with:
-                  account: arillso
-                  token: ${{ secrets.GITHUB_TOKEN }}
-                  image-names: ansible
-                  cut-off: 60d
-                  keep-n-most-recent: 5
-                  tag-selection: untagged
-                  dry-run: "false"
-
-    cleanup-summary:
-        name: Cleanup Summary
-        needs: [docker-hub-cleanup, ghcr-cleanup]
-        runs-on: ubuntu-latest
-        permissions:
-            contents: read
-        if: ${{ always() }}
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-
-            - name: Execute cleanup summary script
-              run: |
-                  ./.github/scripts/cleanup-summary.sh \
-                    "DockerHub=${{ needs.docker-hub-cleanup.result }}" \
-                    "GHCR=${{ needs.ghcr-cleanup.result }}"
-
-            - name: Upload Cleanup Report
-              uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
-              with:
-                  name: cleanup-report
-                  path: cleanup-report.md
-                  retention-days: 30
+    cleanup:
+        uses: arillso/.github/.github/workflows/cleanup-container-registry.yml@2026-03-08
+        with:
+            image_names: ansible
+            enable_dockerhub: true
+            dockerhub_repository: arillso/ansible
+            dockerhub_username: sbaerlocher
+        secrets:
+            dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
+            github_token: ${{ secrets.GITHUB_TOKEN }}
