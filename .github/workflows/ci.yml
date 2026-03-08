@@ -102,7 +102,7 @@ jobs:
                   sbom: false
 
             - name: Upload image artifact
-              uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+              uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
               with:
                   name: ansible-test-image
                   path: /tmp/ansible-test.tar
@@ -361,7 +361,7 @@ jobs:
                   mode: upsert
 
             - name: Upload test results
-              uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+              uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
               with:
                   name: container-test-results
                   path: ./container-test-results.md
