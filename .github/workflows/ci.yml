@@ -48,18 +48,19 @@ jobs:
             - name: Checkout
               uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
+            - name: Install yamllint
+              run: pip install yamllint
+
             - name: Lint YAML files
-              uses: ibiqlik/action-yamllint@2576378a8e339169678f9939646ee3ee325e845c # v3
-              with:
-                  config_file: .yamllint.yml
+              run: yamllint -c .yamllint.yml .
 
             - name: Lint Dockerfile
-              uses: hadolint/hadolint-action@v3.3.0
+              uses: hadolint/hadolint-action@2332a7b74a6de0dda2e2221d575162eba76ba5e5 # v3.3.0
               with:
                   dockerfile: Dockerfile
 
             - name: Lint shell scripts
-              uses: ludeeus/action-shellcheck@2.0.0
+              run: shellcheck tests/**/*.sh .github/scripts/**/*.sh
 
     prepare:
         name: Prepare
@@ -354,11 +355,14 @@ jobs:
 
             - name: Comment on pull request with test results
               if: ${{ github.event_name == 'pull_request' }}
-              uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3
-              with:
-                  file-path: ./container-test-results.md
-                  comment-tag: ansible-container-test-results
-                  mode: upsert
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  gh pr comment "${{ github.event.pull_request.number }}" \
+                    --body-file ./container-test-results.md \
+                    --edit-last 2>/dev/null || \
+                  gh pr comment "${{ github.event.pull_request.number }}" \
+                    --body-file ./container-test-results.md
 
             - name: Upload test results
               uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
