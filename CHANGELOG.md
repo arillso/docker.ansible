@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [2026-03-08]
+
+### Changed
+
+- Updated Ansible version to 2.20.3
+- Updated Python dependencies:
+  - pytz 2025.2 → 2026.1.post1
+  - mitogen 0.3.42 → 0.3.43
+  - redis 7.1.1 → 7.2.1
+  - boto3 1.42.58 → 1.42.62
+  - botocore 1.42.58 → 1.42.62
+  - azure-mgmt-network 30.1.0 → 30.2.0
+  - google-cloud-compute 1.43.0 → 1.44.0
+  - python-gitlab 8.0.0 → 8.1.0
+  - opentelemetry-exporter-otlp 1.39.1 → 1.40.0
+- Updated urllib3 version: 2.3.0 → 2.6.3
+
+
 ## [2026-03-02]
 
 ### Changed
