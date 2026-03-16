@@ -60,11 +60,11 @@ redis==7.2.1
 pyvmomi==9.0.0.0
 
 # AWS Integration
-boto3==1.42.62
-botocore==1.42.62
+boto3==1.42.67
+botocore==1.42.67
 
 # Azure Integration
-azure-identity==1.25.2
+azure-identity==1.25.3
 azure-mgmt-compute==37.2.0
 azure-mgmt-network==30.2.0
 
