@@ -54,7 +54,7 @@ idna==3.11
 # Database Connectivity
 psycopg2-binary==2.9.11
 PyMySQL==1.1.2
-redis==7.2.1
+redis==7.3.0
 
 # VMware Integration
 pyvmomi==9.0.0.0
@@ -69,8 +69,8 @@ azure-mgmt-compute==37.2.0
 azure-mgmt-network==30.2.0
 
 # Google Cloud Integration
-google-cloud-compute==1.44.0
-google-auth==2.48.0
+google-cloud-compute==1.46.0
+google-auth==2.49.1
 
 # Kubernetes Integration
 kubernetes==35.0.0
