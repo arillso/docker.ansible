@@ -10,18 +10,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- Updated base Dockerfile syntax from `docker/dockerfile:1@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6` to `docker/dockerfile:1@sha256:4a43a54dd1fedceb30ba47e76cfcf2b47304f4161c0caeac2db1c61804ea3c91`
+- Ansible Core version updated from 2.20.3 to 2.20.4
 - Updated Python dependencies:
+  - crowdstrike-falconpy 1.6.0 → 1.6.1
   - mitogen 0.3.43 → 0.3.44
   - charset-normalizer 3.4.4 → 3.4.6
-  - redis 7.2.1 → 7.3.0
-  - boto3 1.42.62 → 1.42.73
-  - botocore 1.42.62 → 1.42.73
+  - redis 7.2.1 → 7.4.0
+  - boto3 1.42.62 → 1.42.75
+  - botocore 1.42.62 → 1.42.75
   - azure-identity 1.25.2 → 1.25.3
   - google-cloud-compute 1.44.0 → 1.46.0
   - google-auth 2.48.0 → 2.49.1
   - croniter 6.0.0 → 6.2.2
-
 
 ## [2026-03-08]
 
