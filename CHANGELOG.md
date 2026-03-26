@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [2026-03-26]
+
+### Changed
+
+- Updated Python dependencies: requests 2.32.5 → 2.33.0
+- Current Ansible version: 2.20.4
+
+
 ## [2026-03-25]
 
 ### Changed
