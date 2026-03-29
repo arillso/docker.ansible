@@ -10,9 +10,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- Updated Ansible version to 2.20.4
-- Updated Python dependency: cryptography 46.0.5 → 46.0.6
+- Updated Python dependencies:
+  - tomli 2.4.0 → 2.4.1
+  - cryptography 46.0.5 → 46.0.6
+  - boto3 1.42.75 → 1.42.76
+  - botocore 1.42.75 → 1.42.76
 
+### Security
+
+- Upgraded cryptography to 46.0.6 to address security vulnerabilities.
 
 ## [2026-03-26]
 
