@@ -34,7 +34,7 @@ requests-credssp==2.0.0
 
 # TOML Support
 tomli-w==1.2.0
-tomli==2.4.0
+tomli==2.4.1
 
 # Cryptography & Security
 cryptography==46.0.6
@@ -60,8 +60,8 @@ redis==7.4.0
 pyvmomi==9.0.0.0
 
 # AWS Integration
-boto3==1.42.75
-botocore==1.42.75
+boto3==1.42.76
+botocore==1.42.76
 
 # Azure Integration
 azure-identity==1.25.3
