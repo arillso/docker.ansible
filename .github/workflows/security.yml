@@ -48,7 +48,7 @@ jobs:
                   severity: "CRITICAL,HIGH"
 
             - name: Upload Trivy scan results
-              uses: github/codeql-action/upload-sarif@38697555549f1db7851b81482ff19f1fa5c4fedc # v4
+              uses: github/codeql-action/upload-sarif@c10b8064de6f491fea524254123dbe5e09572f13 # v4
               if: always()
               with:
                   sarif_file: "trivy-results.sarif"
@@ -63,7 +63,7 @@ jobs:
                   fetch-depth: 0
 
             - name: TruffleHog scan
-              uses: trufflesecurity/trufflehog@6c64db94d5b2e09d7e0948fb6bd3166cc6fffbc7 # v3.94.0
+              uses: trufflesecurity/trufflehog@586f66d7886cd0b037c7c245d4a6e34ef357ab10 # v3.94.1
               with:
                   path: ./
                   base: ${{ github.event.pull_request.base.sha || 'HEAD~1' }}
