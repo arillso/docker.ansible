@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [2026-04-02]
+
+### Changed
+
+- Updated Python dependencies: 
+  - requests 2.33.0 → 2.33.1
+  - mitogen 0.3.44 → 0.3.45
+  
+### Fixed
+
+- Updated pytz version to 2026.1.post1.
+
+
 ## [2026-03-31]
 
 ### Changed
