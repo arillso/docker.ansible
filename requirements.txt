@@ -60,8 +60,8 @@ redis==7.4.0
 pyvmomi==9.0.0.0
 
 # AWS Integration
-boto3==1.42.78
-botocore==1.42.78
+boto3==1.42.79
+botocore==1.42.79
 
 # Azure Integration
 azure-identity==1.25.3
@@ -69,7 +69,7 @@ azure-mgmt-compute==37.2.0
 azure-mgmt-network==30.2.0
 
 # Google Cloud Integration
-google-cloud-compute==1.46.0
+google-cloud-compute==1.47.0
 google-auth==2.49.1
 
 # Kubernetes Integration
