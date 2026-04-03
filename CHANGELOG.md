@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [2026-04-03]
+
+### Changed
+
+- Updated Python dependencies:  
+  - boto3 1.42.78 → 1.42.79  
+  - botocore 1.42.78 → 1.42.79  
+  - google-cloud-compute 1.46.0 → 1.47.0  
+
+
 ## [2026-04-02]
 
 ### Changed
