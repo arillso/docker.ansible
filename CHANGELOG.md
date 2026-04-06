@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [2026-04-06]
+
+### Changed
+
+- Updated charset-normalizer from 3.4.6 to 3.4.7
+- Updated boto3 from 1.42.81 to 1.42.82
+- Updated botocore from 1.42.81 to 1.42.82
+
+
 ## [2026-04-05]
 
 ### Changed
