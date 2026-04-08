@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [2026-04-08]
+
+### Changed
+
+- Updated cryptography from version 46.0.6 to 46.0.7
+
+
 ## [2026-04-06]
 
 ### Changed
