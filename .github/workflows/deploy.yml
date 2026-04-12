@@ -26,6 +26,8 @@ jobs:
     ci:
         name: Continuous Integration
         uses: ./.github/workflows/ci.yml
+        with:
+            upload-sarif: false
         secrets: inherit
         permissions:
             contents: read
@@ -38,6 +40,8 @@ jobs:
     security:
         name: Security Scanning
         uses: ./.github/workflows/security.yml
+        with:
+            upload-sarif: false
         secrets: inherit
         permissions:
             contents: read
