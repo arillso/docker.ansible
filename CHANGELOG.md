@@ -10,8 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- Updated `ca-certificates` from `<20260000` to `<20270000`
-
+- Updated `ca-certificates` from version `<20260000` to `<20270000`.
+- Updated Python dependency `lxml` from version `6.0.2` to `6.1.0`.
+- Updated `invoke` from version `2.2.1` to `3.0.3`.
+- Removed `fabric` dependency from `requirements.txt` as it is unused in this repository.
 
 ## [2026-04-08]
 
