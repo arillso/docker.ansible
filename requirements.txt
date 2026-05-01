@@ -98,7 +98,10 @@ prometheus-client==0.24.1
 statsd==4.0.1
 
 # SSH & Terminal
-fabric==3.2.2
+# fabric is unused in this repo and pins invoke<3.0; re-enable once
+# upstream releases a fabric version that supports invoke 3 (see
+# https://github.com/fabric/fabric main branch)
+# fabric==3.2.2
 invoke==3.0.3
 
 # Time & Scheduling
