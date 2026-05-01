@@ -48,7 +48,7 @@ RUN apk add --no-cache \
 	'pipx>=1.7.0' \
 	'pipx<2.0.0' \
 	'ca-certificates>=20250619' \
-	'ca-certificates<20260000' \
+	'ca-certificates<20270000' \
 	'git>=2.49.0' \
 	'git<3.0.0' \
 	# Compiler toolchain - allow patch updates
