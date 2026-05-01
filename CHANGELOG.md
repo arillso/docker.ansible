@@ -10,10 +10,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- Updated `ca-certificates` from version `<20260000` to `<20270000`.
-- Updated Python dependency `lxml` from version `6.0.2` to `6.1.0`.
-- Updated `invoke` from version `2.2.1` to `3.0.3`.
-- Removed `fabric` dependency from `requirements.txt` as it is unused in this repository.
+- Updated Ansible core version from 2.20.4 to 2.20.5
+- Updated Alpine version from 3.23.3 to 3.23.4
+- Updated Python dependencies:
+  - pip 26.0.1 → 26.1
+  - wheel 0.46.3 → 0.47.0
+  - lxml 6.0.2 → 6.1.0
+  - mitogen 0.3.45 → 0.3.47
+  - idna 3.11 → 3.13
+  - psycopg2-binary 2.9.11 → 2.9.12
+  - boto3 1.42.82 → 1.42.97
+  - botocore 1.42.82 → 1.42.97
+  - google-auth 2.49.1 → 2.49.2
+  - python-gitlab 8.2.0 → 8.3.0
+  - opentelemetry-exporter-otlp 1.40.0 → 1.41.1
+  - prometheus-client 0.24.1 → 0.25.0
+  - invoke 2.2.1 → 3.0.3
+- Updated ca-certificates version constraint from <20260000 to <20270000
 
 ## [2026-04-08]
 
