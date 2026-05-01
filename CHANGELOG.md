@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [2026-05-01]
+
+### Changed
+
+- Updated `ca-certificates` from `<20260000` to `<20270000`
+
+
 ## [2026-04-08]
 
 ### Changed
