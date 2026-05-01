@@ -229,7 +229,7 @@ fileContentTests:
       path: "/etc/alpine-release"
       expectedContents:
           # renovate: datasource=docker depName=alpine
-          - "3.23.3"
+          - "3.23.4"
 
     - name: "Check SSH Client Configuration"
       path: "/etc/ssh/ssh_config"
