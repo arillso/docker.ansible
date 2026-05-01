@@ -99,7 +99,7 @@ statsd==4.0.1
 
 # SSH & Terminal
 fabric==3.2.2
-invoke==2.2.1
+invoke==3.0.3
 
 # Time & Scheduling
 croniter==6.2.2
