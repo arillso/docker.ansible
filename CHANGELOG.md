@@ -10,23 +10,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- Updated Ansible core version from 2.20.4 to 2.20.5
-- Updated Alpine version from 3.23.3 to 3.23.4
+- Updated Ansible Core version: 2.20.4 → 2.20.5
+- Updated Alpine version: 3.23.3 → 3.23.4
 - Updated Python dependencies:
   - pip 26.0.1 → 26.1
   - wheel 0.46.3 → 0.47.0
   - lxml 6.0.2 → 6.1.0
+  - crowdstrike-falconpy 1.6.1 → 1.6.2
   - mitogen 0.3.45 → 0.3.47
+  - cryptography 46.0.7 → 47.0.0
   - idna 3.11 → 3.13
   - psycopg2-binary 2.9.11 → 2.9.12
-  - boto3 1.42.82 → 1.42.97
-  - botocore 1.42.82 → 1.42.97
-  - google-auth 2.49.1 → 2.49.2
+  - PyMySQL 1.1.2 → 1.1.3
+  - boto3 1.42.82 → 1.43.1
+  - botocore 1.42.82 → 1.43.1
+  - azure-mgmt-compute 37.2.0 → 38.0.0
+  - google-auth 2.49.1 → 2.50.0
   - python-gitlab 8.2.0 → 8.3.0
   - opentelemetry-exporter-otlp 1.40.0 → 1.41.1
   - prometheus-client 0.24.1 → 0.25.0
   - invoke 2.2.1 → 3.0.3
-- Updated ca-certificates version constraint from <20260000 to <20270000
+
+### Security
+
+- Updated `ca-certificates` version base: 20250619 → <20270000
 
 ## [2026-04-08]
 
