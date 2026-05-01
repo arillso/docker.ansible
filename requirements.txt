@@ -98,9 +98,12 @@ prometheus-client==0.24.1
 statsd==4.0.1
 
 # SSH & Terminal
-# fabric is unused in this repo and pins invoke<3.0; re-enable once
-# upstream releases a fabric version that supports invoke 3 (see
-# https://github.com/fabric/fabric main branch)
+# fabric is unused in this repo and pins invoke<3.0. Re-enable once
+# a fabric release with invoke>=3 ships on PyPI.
+# Upstream pinned 3.x to invoke<3 here:
+#   https://github.com/fabric/fabric/commit/ca9cf7a1da7ae9257822798adc492657d65b3a67
+# Invoke 3.x adoption work landed in:
+#   https://github.com/fabric/fabric/commit/7fa309db9dd5dac69079c1fb83b6f579555f7d53
 # fabric==3.2.2
 invoke==3.0.3
 
