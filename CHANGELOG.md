@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [2026-05-05]
+
+### Changed
+
+- Updated Python dependencies:  
+  - boto3 1.43.1 → 1.43.2  
+  - botocore 1.43.1 → 1.43.2  
+
+### Fixed
+
+- Fixed compatibility issues with updated boto3 and botocore versions.
+
+
 ## [2026-05-01]
 
 ### Changed
