@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [2026-05-11]
+
+### Changed
+
+- Updated Python dependencies:
+  - urllib3 2.6.3 → 2.7.0
+  - boto3 1.43.5 → 1.43.6
+  - botocore 1.43.5 → 1.43.6
+  - google-auth 2.50.0 → 2.52.0
+
+### Security
+
+- Updated urllib3 to version 2.7.0 to address security vulnerabilities.
+
+
 ## [2026-05-10]
 
 ### Changed
