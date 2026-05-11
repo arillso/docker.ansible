@@ -46,7 +46,7 @@ PyYAML==6.0.3
 ruamel.yaml==0.19.1
 
 # HTTP & Web
-urllib3>=2.6.3,<3.0.0
+urllib3>=2.7.0,<3.0.0
 #certifi==2025.1.22
 charset-normalizer==3.4.7
 idna==3.13
@@ -60,8 +60,8 @@ redis==7.4.0
 pyvmomi==9.0.0.0
 
 # AWS Integration
-boto3==1.43.5
-botocore==1.43.5
+boto3==1.43.6
+botocore==1.43.6
 
 # Azure Integration
 azure-identity==1.25.3
@@ -70,7 +70,7 @@ azure-mgmt-network==30.2.0
 
 # Google Cloud Integration
 google-cloud-compute==1.47.0
-google-auth==2.50.0
+google-auth==2.52.0
 
 # Kubernetes Integration
 kubernetes==35.0.0
