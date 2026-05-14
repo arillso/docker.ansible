@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [2026-05-14]
+
+### Changed
+
+- Updated idna from 3.13 to 3.14
+
+### Fixed
+
+- Updated Ansible version to 2.20.5
+
+
 ## [2026-05-11]
 
 ### Changed
