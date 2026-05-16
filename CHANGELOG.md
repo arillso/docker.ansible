@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [2026-05-16]
+
+### Changed
+
+- Updated Python dependencies:
+  - idna 3.14 → 3.15
+  - pyvmomi 9.0.0.0 → 9.1.0.0
+  
+### Security
+
+- Updated `idna` to version 3.15 to include security fixes.
+
+
 ## [2026-05-15]
 
 ### Changed
