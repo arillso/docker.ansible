@@ -37,7 +37,7 @@ tomli-w==1.2.0
 tomli==2.4.1
 
 # Cryptography & Security
-cryptography==47.0.0
+cryptography==48.0.0
 paramiko==4.0.0
 bcrypt==5.0.0
 
