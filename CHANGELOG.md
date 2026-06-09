@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [2026-06-09]
+
+### Changed
+
+- Updated Ansible version from 2.20.4 to 2.20.5
+- Updated Alpine version from 3.15 to 3.16
+- Updated Python dependencies: boto3 1.19.23 → 1.19.24, botocore 1.22.23 → 1.22.24
+- Removed unused dependency: requests 2.26.0
+
+
 ## [2026-06-02]
 
 ### Changed
