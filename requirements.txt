@@ -2,7 +2,7 @@
 ansible-core==2.20.5
 
 # Build Tools & Package Management
-pip==26.1.1
+pip==26.1.2
 wheel==0.47.0
 
 # Core Libraries & Utilities
