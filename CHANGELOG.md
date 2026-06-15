@@ -10,16 +10,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- Updated pip from 26.1.1 to 26.1.2
-- Updated Python package specifications:
-  - Python 3 from '<3.13.0' to '<3.15.0'
-  - python3-dev from '<3.13.0' to '<3.15.0'
-  - py3-pip from '<26.0.0' to '<27.0.0'
-  - kubectl from '<1.35.0' to '<1.37.0'
-
-### Fixed
-
-- Updated ansible-core to version 2.20.5
+- Updated Ansible Core version from 2.20.5 to 2.21.0.
+- Updated Alpine version from 3.23.4 to 3.24.0.
+- Updated Python dependencies:
+  - pip 26.1.1 → 26.1.2
+  - lxml 6.1.0 → 6.1.1
+  - mitogen 0.3.47 → 0.3.49
+  - cryptography 48.0.0 → 48.0.1
+  - PyMySQL 1.1.3 → 1.2.0
+  - boto3 1.43.9 → 1.43.28
+  - botocore 1.43.9 → 1.43.28
+  - google-cloud-compute 1.47.0 → 1.48.0
+  - kubernetes 36.0.0 → 36.0.2
+  - python-gitlab 8.3.0 → 8.4.0
+  - opentelemetry-exporter-otlp 1.41.1 → 1.42.1
+- Updated some package constraints in `Dockerfile`:
+  - py3-pip version constraints updated from `<26.0.0` to `<27.0.0`
+  - python3-dev version constraints updated from `<3.13.0` to `<3.15.0`
+  - python version constraints updated from `<3.13.0` to `<3.15.0`
+  - kubectl version constraints updated from `<1.35.0` to `<1.37.0`
 
 ## [2026-06-09]
 
