@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [2026-06-15]
+
+### Changed
+
+- Updated `py3-pip` version constraint: `py3-pip<26.0.0` → `py3-pip<27.0.0`
+- Updated `python3-dev` version constraint: `python3-dev<3.13.0` → `python3-dev<3.14.0`
+
+
 ## [2026-06-09]
 
 ### Changed
