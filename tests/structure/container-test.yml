@@ -21,7 +21,7 @@ commandTests:
       args: ["version"]
       expectedOutput:
           # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize extractVersion=^kustomize/v(?<version>.*)$
-          - "5.7.1"
+          - "5.8.1"
 
     # Shell Tools & Utilities
     - name: "Check Bash Version"
@@ -146,7 +146,7 @@ commandTests:
       command: "grep"
       args: ["strategy_plugins", "/etc/ansible/ansible.cfg"]
       expectedOutput:
-          - "strategy_plugins = /pipx/venvs/ansible/lib/python3.12/site-packages/ansible_mitogen/plugins/strategy"
+          - "strategy_plugins = /pipx/venvs/ansible/lib/python3\\.[0-9]+/site-packages/ansible_mitogen/plugins/strategy"
 
     - name: "Verify Mitogen Module Installation"
       command: "/pipx/venvs/ansible/bin/python3"
@@ -179,7 +179,7 @@ commandTests:
 
 fileExistenceTests:
     - name: "Check Python Dependencies"
-      path: "/pipx/venvs/ansible/lib/python3.12/site-packages"
+      path: "/pipx/venvs/ansible/lib/python3.14/site-packages"
       shouldExist: true
 
     - name: "Check Security-Related Files"
@@ -229,7 +229,7 @@ fileContentTests:
       path: "/etc/alpine-release"
       expectedContents:
           # renovate: datasource=docker depName=alpine
-          - "3.23.4"
+          - "3.24.0"
 
     - name: "Check SSH Client Configuration"
       path: "/etc/ssh/ssh_config"

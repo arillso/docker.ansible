@@ -1,9 +1,9 @@
-# syntax=docker/dockerfile:1@sha256:2780b5c3bab67f1f76c781860de469442999ed1a0d7992a5efdf2cffc0e3d769
+# syntax=docker/dockerfile:1@sha256:87999aa3d42bdc6bea60565083ee17e86d1f3339802f543c0d03998580f9cb89
 
 ##############################################
 # Base Stage: Common configuration
 ##############################################
-FROM alpine:3.23.4@sha256:5b10f432ef3da1b8d4c7eb6c487f2f5a8f096bc91145e68878dd4a5019afde11 AS base
+FROM alpine:3.24.0@sha256:a2d49ea686c2adfe3c992e47dc3b5e7fa6e6b5055609400dc2acaeb241c829f4 AS base
 
 # Define OCI labels for all stages
 ARG BUILD_DATE
@@ -161,7 +161,7 @@ RUN mkdir -p /etc/ansible && \
 	echo '[defaults]' > /etc/ansible/ansible.cfg && \
 	echo 'inventory = /etc/ansible/hosts.yml' >> /etc/ansible/ansible.cfg && \
 	echo 'host_key_checking = False' >> /etc/ansible/ansible.cfg && \
-	echo 'strategy_plugins = /pipx/venvs/ansible/lib/python3.12/site-packages/ansible_mitogen/plugins/strategy' >> /etc/ansible/ansible.cfg && \
+	echo "strategy_plugins = $(/pipx/venvs/ansible/bin/python3 -c 'import os, ansible_mitogen.plugins.strategy as s; print(os.path.dirname(s.__file__))')" >> /etc/ansible/ansible.cfg && \
 	echo 'strategy = mitogen_linear' >> /etc/ansible/ansible.cfg && \
 	echo 'stdout_callback = default' >> /etc/ansible/ansible.cfg && \
 	echo 'pipelining = True' >> /etc/ansible/ansible.cfg && \
