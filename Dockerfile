@@ -105,7 +105,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v$(cut -d'.' -f1-2 /etc/alpine-re
 	apk add --no-cache \
 	# Base packages - conservative ranges
 	'python3>=3.12.0' \
-	'python3<3.13.0' \
+	'python3<3.15.0' \
 	'bash>=5.2.0' \
 	'bash<5.4.0' \
 	# VCS and networking
@@ -127,7 +127,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v$(cut -d'.' -f1-2 /etc/alpine-re
 	'rsync<4.0.0' \
 	# Kubernetes tools - allow minor updates
 	'kubectl>=1.33.0' \
-	'kubectl<1.35.0' \
+	'kubectl<1.37.0' \
 	'helm>=3.18.0' \
 	'helm<4.0.0' \
 	'kustomize>=5.6.0' \
