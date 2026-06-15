@@ -44,7 +44,7 @@ COPY requirements.txt /requirements.txt
 # hadolint ignore=DL3018
 RUN apk add --no-cache \
 	'py3-pip>=25.1.0' \
-	'py3-pip<26.0.0' \
+	'py3-pip<27.0.0' \
 	'pipx>=1.7.0' \
 	'pipx<2.0.0' \
 	'ca-certificates>=20250619' \
@@ -57,7 +57,7 @@ RUN apk add --no-cache \
 	'libffi-dev>=3.4.0' \
 	'libffi-dev<4.0.0' \
 	'python3-dev>=3.12.0' \
-	'python3-dev<3.13.0' \
+	'python3-dev<3.14.0' \
 	'make>=4.4.0' \
 	'make<5.0.0' \
 	'musl-dev>=1.2.0' \
