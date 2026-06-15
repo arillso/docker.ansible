@@ -161,7 +161,7 @@ RUN mkdir -p /etc/ansible && \
 	echo '[defaults]' > /etc/ansible/ansible.cfg && \
 	echo 'inventory = /etc/ansible/hosts.yml' >> /etc/ansible/ansible.cfg && \
 	echo 'host_key_checking = False' >> /etc/ansible/ansible.cfg && \
-	echo 'strategy_plugins = /pipx/venvs/ansible/lib/python3.12/site-packages/ansible_mitogen/plugins/strategy' >> /etc/ansible/ansible.cfg && \
+	echo "strategy_plugins = $(/pipx/venvs/ansible/bin/python3 -c 'import os, ansible_mitogen.plugins.strategy as s; print(os.path.dirname(s.__file__))')" >> /etc/ansible/ansible.cfg && \
 	echo 'strategy = mitogen_linear' >> /etc/ansible/ansible.cfg && \
 	echo 'stdout_callback = default' >> /etc/ansible/ansible.cfg && \
 	echo 'pipelining = True' >> /etc/ansible/ansible.cfg && \
