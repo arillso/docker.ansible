@@ -48,7 +48,7 @@ commandTests:
       args: ["version"]
       expectedOutput:
           # renovate: datasource=repology depName=openssl versioning=loose
-          - "OpenSSL 3.5.6"
+          - "OpenSSL 3.5.7"
 
     - name: "Check Git Version"
       command: "git"
