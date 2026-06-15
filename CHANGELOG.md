@@ -10,8 +10,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- Updated `py3-pip` from `>=25.1.0, <26.0.0` to `>=25.1.0, <27.0.0`
-- Updated `python3-dev` from `>=3.12.0, <3.13.0` to `>=3.12.0, <3.15.0`
+- Updated pip from 26.1.1 to 26.1.2
+- Updated Python package specifications:
+  - Python 3 from '<3.13.0' to '<3.15.0'
+  - python3-dev from '<3.13.0' to '<3.15.0'
+  - py3-pip from '<26.0.0' to '<27.0.0'
+  - kubectl from '<1.35.0' to '<1.37.0'
+
+### Fixed
+
+- Updated ansible-core to version 2.20.5
 
 ## [2026-06-09]
 
