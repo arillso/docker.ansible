@@ -57,7 +57,7 @@ RUN apk add --no-cache \
 	'libffi-dev>=3.4.0' \
 	'libffi-dev<4.0.0' \
 	'python3-dev>=3.12.0' \
-	'python3-dev<3.14.0' \
+	'python3-dev<3.15.0' \
 	'make>=4.4.0' \
 	'make<5.0.0' \
 	'musl-dev>=1.2.0' \
