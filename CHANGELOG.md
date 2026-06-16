@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [2026-06-16]
+
+### Changed
+
+- Updated Python dependencies:
+  - boto3 1.43.28 → 1.43.29
+  - botocore 1.43.28 → 1.43.29
+  - google-auth 2.53.0 → 2.54.0
+
+
 ## [2026-06-15]
 
 ### Changed
