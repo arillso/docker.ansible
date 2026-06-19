@@ -27,7 +27,7 @@ ansible-build: ## Build the Ansible Docker image with optimizations
 	@echo "Building Ansible container..."
 	@docker build \
 		--build-arg BUILD_DATE=$$(date -I) \
-		--build-arg ANSIBLE_VERSION=$$(grep '^ansible-core==' requirements.txt | cut -d'=' -f3) \
+		--build-arg ANSIBLE_VERSION=$$(sed -n 's/^ansible-core==\([0-9][^[:space:]#]*\).*/\1/p' requirements.txt) \
 		--build-arg VCS_REF=$$(git rev-parse --short HEAD 2>/dev/null || echo "unknown") \
 		--build-arg TARGETPLATFORM=$$(docker version --format '{{.Server.Arch}}') \
 		-t ansible:latest \
@@ -143,7 +143,7 @@ comprehensive-test: test-quick structure-test security-test performance-test int
 release-check: comprehensive-test ## Comprehensive release readiness check
 	@echo ""
 	@echo "=== RELEASE READINESS CHECK ==="
-	@ansible_version=$$(grep '^ansible-core==' requirements.txt | cut -d'=' -f3); \
+	@ansible_version=$$(sed -n 's/^ansible-core==\([0-9][^[:space:]#]*\).*/\1/p' requirements.txt); \
 	echo "Current Ansible version: $$ansible_version"; \
 	echo "Checking CHANGELOG.md for version entry..."; \
 	if grep -q "$$ansible_version" CHANGELOG.md; then \
