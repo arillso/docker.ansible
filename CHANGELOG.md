@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [Unreleased]
+
+### Changed
+
+- Resolve Python `site-packages` paths via the interpreter instead of a
+  hardcoded `python3.X` directory, so the Makefile `test-local` Mitogen check
+  and the container structure test no longer break on a Python minor bump.
+
+
 ## [2026-06-19]
 
 ### Changed

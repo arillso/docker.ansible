@@ -53,7 +53,6 @@ test-local: ansible-build ## Run comprehensive local container tests
 	@docker run --rm ansible:latest ansible-inventory --list --yaml | head -10
 	@echo ""
 	@echo "3. Mitogen integration..."
-	@docker run --rm ansible:latest test -d /pipx/venvs/ansible/lib/python3.12/site-packages/ansible_mitogen && echo "Mitogen directory exists"
 	@docker run --rm ansible:latest /pipx/venvs/ansible/bin/python3 -c "import ansible_mitogen; print('Mitogen successfully imported')"
 	@docker run --rm ansible:latest grep "strategy = mitogen_linear" /etc/ansible/ansible.cfg && echo "Mitogen strategy configured"
 	@echo ""
