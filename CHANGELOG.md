@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [Unreleased]
+
+### Changed
+
+- Track the Alpine base image with a Renovate marker on the `FROM` line so its
+  tag and digest update automatically.
+- Document the deliberate loose-range policy for the Dockerfile apk blocks
+  (minor/patch updates ride the Alpine release bump; major ceilings are raised
+  manually because Renovate cannot track apk range expressions).
+
+
 ## [2026-06-19]
 
 ### Changed

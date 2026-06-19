@@ -3,6 +3,7 @@
 ##############################################
 # Base Stage: Common configuration
 ##############################################
+# renovate: datasource=docker depName=alpine
 FROM alpine:3.24.0@sha256:a2d49ea686c2adfe3c992e47dc3b5e7fa6e6b5055609400dc2acaeb241c829f4 AS base
 
 # Define OCI labels for all stages
@@ -40,7 +41,15 @@ WORKDIR /home
 # Copy dependencies
 COPY requirements.txt /requirements.txt
 
-# Install all build dependencies in a single layer to reduce image size
+# Install all build dependencies in a single layer to reduce image size.
+#
+# apk versions use loose ranges (>= floor, < next-major ceiling) on purpose:
+# patch and minor updates from the pinned Alpine release flow in automatically
+# on rebuild without touching this file. Renovate manages the Alpine release
+# itself (the marker on the FROM line above); the apk ceilings are bumped
+# manually when a dependency's major changes, since Renovate cannot track apk
+# range expressions. The Alpine release bump is the single update that pulls
+# all package versions forward together.
 # hadolint ignore=DL3018
 RUN apk add --no-cache \
 	'py3-pip>=25.1.0' \
@@ -98,7 +107,9 @@ ENV USER=ansible \
 
 WORKDIR /home/ansible
 
-# Install all runtime dependencies in a single layer
+# Install all runtime dependencies in a single layer.
+# Same loose-range policy as the builder stage above: minor/patch updates ride
+# the Alpine release bump, major ceilings are raised manually.
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 # hadolint ignore=DL3018
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/v$(cut -d'.' -f1-2 /etc/alpine-release)/community" >> /etc/apk/repositories && \
