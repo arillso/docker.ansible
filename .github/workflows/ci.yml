@@ -38,10 +38,10 @@ permissions:
 
 jobs:
     security-secrets:
-        uses: arillso/.github/.github/workflows/security-secrets.yml@2026-06-14
+        uses: arillso/.github/.github/workflows/security-secrets.yml@2026-06-18
 
     claude-review:
-        uses: arillso/.github/.github/workflows/ai-claude-review.yml@2026-06-14
+        uses: arillso/.github/.github/workflows/ai-claude-review.yml@2026-06-18
         if: github.event_name == 'pull_request'
         secrets:
             CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
