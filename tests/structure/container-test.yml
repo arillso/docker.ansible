@@ -234,8 +234,10 @@ fileContentTests:
     - name: "Verify Alpine version"
       path: "/etc/alpine-release"
       expectedContents:
+          # Must match the Alpine version of the FROM base in the Dockerfile.
+          # Renovate keeps it in sync via the marker below; bump both together.
           # renovate: datasource=docker depName=alpine
-          - "3.24.0"
+          - "3.24.1"
 
     - name: "Check SSH Client Configuration"
       path: "/etc/ssh/ssh_config"
