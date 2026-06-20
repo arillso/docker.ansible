@@ -160,6 +160,11 @@ RUN mkdir -p /etc/ansible && \
 	echo '      ansible_python_interpreter: /pipx/venvs/ansible/bin/python3' >> /etc/ansible/hosts.yml && \
 	echo '[defaults]' > /etc/ansible/ansible.cfg && \
 	echo 'inventory = /etc/ansible/hosts.yml' >> /etc/ansible/ansible.cfg && \
+	# host_key_checking is disabled because this image targets ephemeral
+	# CI/automation runs against freshly provisioned, short-lived hosts
+	# whose host keys are not known ahead of time and would otherwise abort
+	# the first connection. Override at runtime (ANSIBLE_HOST_KEY_CHECKING=True
+	# or a mounted ansible.cfg) when connecting to persistent, trusted hosts.
 	echo 'host_key_checking = False' >> /etc/ansible/ansible.cfg && \
 	echo "strategy_plugins = $(/pipx/venvs/ansible/bin/python3 -c 'import os, ansible_mitogen.plugins.strategy as s; print(os.path.dirname(s.__file__))')" >> /etc/ansible/ansible.cfg && \
 	echo 'strategy = mitogen_linear' >> /etc/ansible/ansible.cfg && \

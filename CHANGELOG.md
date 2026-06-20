@@ -8,11 +8,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- Document the image's environment variables (`ANSIBLE_FORCE_COLOR`,
+  `ANSIBLE_HOST_KEY_CHECKING`, `ANSIBLE_CONFIG`) and common SSH-key / Vault
+  mount patterns in the README Quick Start.
+
 ### Changed
 
 - Resolve Python `site-packages` paths via the interpreter instead of a
   hardcoded `python3.X` directory, so the Makefile `test-local` Mitogen check
   and the container structure test no longer break on a Python minor bump.
+- Extract the `ansible-core` version with an anchored `sed` expression that
+  tolerates trailing comments/whitespace and fails fast in CI when no version
+  is found, replacing the brittle `grep | cut` pipeline.
+- Document in the generated `ansible.cfg` why `host_key_checking` is disabled
+  (ephemeral CI hosts) and how to re-enable it for persistent hosts.
 
 
 ## [2026-06-19]

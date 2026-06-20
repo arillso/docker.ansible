@@ -80,7 +80,11 @@ jobs:
             - name: Extract Ansible Version
               id: get_version
               run: |
-                  version="$(grep '^ansible-core==' requirements.txt | cut -d'=' -f3)"
+                  version="$(sed -n 's/^ansible-core==\([0-9][^[:space:]#]*\).*/\1/p' requirements.txt)"
+                  if [ -z "${version}" ]; then
+                      echo "::error::Could not extract ansible-core version from requirements.txt (expected a line like 'ansible-core==2.21.0')" >&2
+                      exit 1
+                  fi
                   echo "version=${version}" >> "$GITHUB_OUTPUT"
                   echo "Ansible Version: ${version}"
 
