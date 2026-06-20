@@ -177,11 +177,17 @@ commandTests:
       expectedOutput:
           - "inventory = /etc/ansible/hosts.yml"
 
-fileExistenceTests:
-    - name: "Check Python Dependencies"
-      path: "/pipx/venvs/ansible/lib/python3.14/site-packages"
-      shouldExist: true
+    # Python dependencies: resolve site-packages via the interpreter so the
+    # test does not drift when the Python minor version bumps.
+    - name: "Check Python Dependencies Installed"
+      command: "/pipx/venvs/ansible/bin/python3"
+      args:
+          - "-c"
+          - "import os, sysconfig; p = sysconfig.get_path('purelib'); print('site-packages present' if os.path.isdir(p) and os.listdir(p) else 'missing')"
+      expectedOutput:
+          - "site-packages present"
 
+fileExistenceTests:
     - name: "Check Security-Related Files"
       path: "/etc/ssl/certs/ca-certificates.crt"
       shouldExist: true
