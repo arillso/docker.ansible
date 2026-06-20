@@ -171,7 +171,10 @@ jobs:
                   severity: "CRITICAL,HIGH"
 
             - name: Upload Trivy scan results
-              if: ${{ inputs.upload-sarif != false }}
+              # Skip only when a workflow_call caller (merge.yml) passes
+              # upload-sarif: false. On pull_request / schedule there is no
+              # inputs context, so the bare check skipped the upload.
+              if: ${{ !(github.event_name == 'workflow_call' && inputs.upload-sarif == false) }}
               uses: github/codeql-action/upload-sarif@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4
               with:
                   sarif_file: "trivy-results.sarif"
