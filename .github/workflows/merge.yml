@@ -235,14 +235,18 @@ jobs:
 
             - name: Update or create changelog entry
               id: update_changelog
+              env:
+                  RELEASE_TAG: ${{ steps.version.outputs.release_tag }}
+                  CHANGELOG_NOTES: ${{ steps.ai_notes.outputs.changelog_notes }}
               run: |
-                  tag="${{ steps.version.outputs.release_tag }}"
+                  tag="$RELEASE_TAG"
 
-                  # Read changelog notes from file to avoid backtick execution
+                  # Write the AI-generated notes via an env var, never via ${{ }}
+                  # interpolation — otherwise a delimiter or shell token in the
+                  # model output would be parsed by the workflow/shell instead of
+                  # treated as data.
                   changelog_file="/tmp/changelog_notes.txt"
-                  cat > "$changelog_file" << 'CHANGELOG_EOF'
-                  ${{ steps.ai_notes.outputs.changelog_notes }}
-                  CHANGELOG_EOF
+                  printf '%s\n' "$CHANGELOG_NOTES" > "$changelog_file"
 
                   # Check if changelog entry exists (independent of GitHub release)
                   if grep -q "^## \[${tag}\]" CHANGELOG.md; then
