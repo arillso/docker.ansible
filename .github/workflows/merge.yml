@@ -241,10 +241,10 @@ jobs:
               run: |
                   tag="$RELEASE_TAG"
 
-                  # Write the AI-generated notes via an env var, never via ${{ }}
-                  # interpolation — otherwise a delimiter or shell token in the
-                  # model output would be parsed by the workflow/shell instead of
-                  # treated as data.
+                  # Write the AI-generated notes via the CHANGELOG_NOTES env
+                  # var, never via a templated expression — otherwise a
+                  # delimiter or shell token in the model output would be parsed
+                  # by the workflow/shell instead of treated as data.
                   changelog_file="/tmp/changelog_notes.txt"
                   printf '%s\n' "$CHANGELOG_NOTES" > "$changelog_file"
 
