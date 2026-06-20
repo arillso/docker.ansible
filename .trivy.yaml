@@ -1,0 +1,5 @@
+---
+scan:
+    skip-dirs:
+        - test-results/
+        - megalinter-reports/

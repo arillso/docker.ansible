@@ -1,0 +1,36 @@
+---
+# Lefthook git hooks — run `lefthook install` once after cloning.
+# Tools without a system binary are installed on-demand via `npx --yes`.
+# System binaries: yamllint, gitleaks (>= v8.19 for `git --staged` subcommand),
+# hadolint, actionlint.
+#
+# Stack: Container image. Adapted from arillso/ansible.system
+# (prettier+yamllint+markdownlint+gitleaks+actionlint), ansible-lint swapped
+# for hadolint since this repo ships a Dockerfile, not Ansible roles.
+
+pre-commit:
+    parallel: true
+    commands:
+        prettier:
+            glob: "*.{json,yml,yaml,md}"
+            run: npx --yes -- prettier --check {staged_files}
+        yamllint:
+            glob: "*.{yml,yaml}"
+            run: yamllint -c .yamllint.yml {staged_files}
+        markdownlint:
+            glob: "*.md"
+            run: npx --yes -- markdownlint-cli2 {staged_files}
+        hadolint:
+            glob: "Dockerfile*"
+            run: hadolint {staged_files}
+        actionlint:
+            glob: ".github/workflows/*.{yml,yaml}"
+            run: actionlint {staged_files}
+        gitleaks:
+            run: gitleaks git --staged --redact --no-banner
+
+pre-push:
+    parallel: true
+    commands:
+        gitleaks-full:
+            run: gitleaks git --redact --no-banner

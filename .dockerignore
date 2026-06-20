@@ -1,0 +1,42 @@
+# The Dockerfile only copies requirements.txt; everything else is build noise.
+# Keeping the context small speeds up `docker build` and avoids leaking local
+# artifacts or secrets into image layers.
+
+# VCS and CI
+.git/
+.github/
+.gitignore
+.gitattributes
+
+# Docs and meta
+*.md
+LICENSE
+AGENTS.md
+CLAUDE.md
+REVIEW.md
+
+# Lint / tooling configs
+.editorconfig
+.yamllint.yml
+.markdownlint.json
+.gitleaks.toml
+.secretlintrc.json
+.trivy.yaml
+lefthook.yml
+Makefile
+
+# Tests and generated artifacts
+tests/
+test-results/
+megalinter-reports/
+output/
+artifacts/
+
+# Local / editor
+.idea/
+.vscode/
+.DS_Store
+.dde/
+__pycache__/
+*.py[cod]
+.ruff_cache/
