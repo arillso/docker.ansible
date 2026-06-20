@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 <!-- markdownlint-disable MD024 -->
 
 
+## [2026-06-20]
+
+### Changed
+
+- Updated base image from `alpine:3.24.0` to `alpine:3.24.1`.
+- Updated Ansible Core version from `2.21.0` to `2.21.1`.
+- Updated Python dependencies:
+  - `mitogen` from `0.3.49` to `0.3.50`
+  - `cryptography` from `48.0.1` to `49.0.0`
+  - `boto3` from `1.43.30` to `1.43.34`
+  - `botocore` from `1.43.30` to `1.43.34` 
+
+- Added configuration to `/etc/ansible/ansible.cfg` to disable host key checking, targeting ephemeral CI/automation runs.
+
+
 ## [Unreleased]
 
 ### Added
