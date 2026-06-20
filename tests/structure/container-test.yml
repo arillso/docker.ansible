@@ -234,8 +234,11 @@ fileContentTests:
     - name: "Verify Alpine version"
       path: "/etc/alpine-release"
       expectedContents:
+          # /etc/alpine-release tracks the apk alpine-baselayout patch, which
+          # can move ahead of the FROM tag after `apk add` (e.g. 3.24.1 on a
+          # 3.24.0 base). Bump this when the production stage's baselayout does.
           # renovate: datasource=docker depName=alpine
-          - "3.24.0"
+          - "3.24.1"
 
     - name: "Check SSH Client Configuration"
       path: "/etc/ssh/ssh_config"
