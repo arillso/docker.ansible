@@ -303,6 +303,8 @@ jobs:
                   rm -f "$changelog_file"
 
             - name: Commit changelog
+              env:
+                  RELEASE_TAG: ${{ steps.version.outputs.release_tag }}
               run: |
                   if git diff --quiet CHANGELOG.md; then
                     echo "No changes to commit"
@@ -312,8 +314,17 @@ jobs:
                   git config user.name "github-actions[bot]"
                   git config user.email "github-actions[bot]@users.noreply.github.com"
                   git add CHANGELOG.md
-                  git commit -m "chore: update changelog for ${{ steps.version.outputs.release_tag }}"
-                  git push
+                  git commit -m "chore: update changelog for $RELEASE_TAG"
+
+                  # The branch ruleset blocks direct pushes by GITHUB_TOKEN.
+                  # The changelog commit is best-effort housekeeping — the
+                  # release itself (image build/push below) must not be gated
+                  # on it, so a rejected push only warns.
+                  if ! git push; then
+                    echo "::warning::Could not push the changelog commit to main \
+                  (branch ruleset). Continuing with build and release; the \
+                  release notes are still attached to the GitHub release."
+                  fi
 
             - name: Set up QEMU
               uses: docker/setup-qemu-action@06116385d9baf250c9f4dcb4858b16962ea869c3 # v4
