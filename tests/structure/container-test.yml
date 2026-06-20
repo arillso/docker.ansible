@@ -211,6 +211,21 @@ fileExistenceTests:
       path: "/pipx/bin"
       shouldExist: true
 
+    # Build tools belong only in the builder stage. The production stage is a
+    # fresh FROM base that copies just /pipx, so a compiler toolchain in the
+    # final image means the multi-stage split regressed (bloat + attack surface).
+    - name: "No GCC compiler in final image"
+      path: "/usr/bin/gcc"
+      shouldExist: false
+
+    - name: "No cc compiler symlink in final image"
+      path: "/usr/bin/cc"
+      shouldExist: false
+
+    - name: "No make in final image"
+      path: "/usr/bin/make"
+      shouldExist: false
+
     - name: "Check /data Directory"
       path: "/data"
       shouldExist: true
