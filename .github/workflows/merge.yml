@@ -1,5 +1,7 @@
 ---
-name: Deployment
+name: Merge to Main
+run-name: |
+    Deployment by @${{ github.actor }}
 
 "on":
     push:
@@ -22,10 +24,10 @@ permissions:
     pull-requests: write
 
 jobs:
-    # Run CI and Security in parallel
+    # Re-run the full CI and security suites as a release gate before pushing.
     ci:
         name: Continuous Integration
-        uses: ./.github/workflows/ci.yml
+        uses: ./.github/workflows/pull-request.yml
         with:
             upload-sarif: false
         secrets: inherit
@@ -39,7 +41,7 @@ jobs:
 
     security:
         name: Security Scanning
-        uses: ./.github/workflows/security.yml
+        uses: ./.github/workflows/weekly-security.yml
         with:
             upload-sarif: false
         secrets: inherit
