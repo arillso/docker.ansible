@@ -40,13 +40,13 @@ WORKDIR /home
 # Copy dependencies
 COPY requirements.txt /requirements.txt
 
-# Point apk at the pkg.sbaerlo.ch caching proxy for the exact pins below. This
+# Point apk at the pkg.arillso.io caching proxy for the exact pins below. This
 # is the BUILDER stage — it never ships, so the proxy URL stays local to the
 # build. The proxy keeps old -rN releases, which is what makes the pins
 # reproducible. Pins are auto-bumped by the customManager in
 # .github/renovate.json (no per-package markers).
 RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
-	printf 'https://pkg.sbaerlo.ch/alpine/%s/main\nhttps://pkg.sbaerlo.ch/alpine/%s/community\n' \
+	printf 'https://pkg.arillso.io/alpine/%s/main\nhttps://pkg.arillso.io/alpine/%s/community\n' \
 		"$alpine_minor" "$alpine_minor" > /etc/apk/repositories && \
 	apk add --no-cache \
 	py3-pip=26.1.2-r0 \
@@ -90,10 +90,10 @@ WORKDIR /home/ansible
 
 # Install all runtime dependencies in a single layer. Exact apk pins
 # auto-bumped by Renovate (see .github/renovate.json), resolved through the
-# pkg.sbaerlo.ch proxy configured in the base stage.
+# pkg.arillso.io proxy configured in the base stage.
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
-	printf 'https://pkg.sbaerlo.ch/alpine/%s/main\nhttps://pkg.sbaerlo.ch/alpine/%s/community\n' \
+	printf 'https://pkg.arillso.io/alpine/%s/main\nhttps://pkg.arillso.io/alpine/%s/community\n' \
 		"$alpine_minor" "$alpine_minor" > /etc/apk/repositories && \
 	apk add --no-cache \
 	python3=3.14.5-r0 \
