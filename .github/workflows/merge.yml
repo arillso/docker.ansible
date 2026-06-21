@@ -183,7 +183,7 @@ jobs:
 
                   # Extract versions from Dockerfile
                   alpine_version=$(grep '^FROM alpine:' Dockerfile | head -1 | sed -E 's/.*alpine:([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
-                  python_version=$(grep "'python3>=" Dockerfile | head -1 | sed -E "s/.*'python3>=([0-9]+\.[0-9]+).*/\1/")
+                  python_version=$(grep -E '^[[:space:]]*python3=' Dockerfile | head -1 | sed -E 's/.*python3=([0-9]+\.[0-9]+).*/\1/')
 
                   # Extract mitogen version from requirements.txt
                   mitogen_version=$(grep '^mitogen==' requirements.txt | cut -d'=' -f3)

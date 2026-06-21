@@ -30,14 +30,6 @@ ENV PIPX_HOME=/pipx \
 	PIPX_BIN_DIR=/pipx/bin \
 	PATH=/pipx/bin:$PATH
 
-# Resolve apk through the pkg.sbaerlo.ch caching proxy (mirrors
-# dl-cdn.alpinelinux.org). It retains older -rN package releases, which is
-# what makes the exact pins below reproducible. main + community for the
-# running Alpine minor.
-RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
-	printf 'https://pkg.sbaerlo.ch/alpine/%s/main\nhttps://pkg.sbaerlo.ch/alpine/%s/community\n' \
-		"$alpine_minor" "$alpine_minor" > /etc/apk/repositories
-
 ##############################################
 # Builder Stage
 ##############################################
@@ -48,12 +40,15 @@ WORKDIR /home
 # Copy dependencies
 COPY requirements.txt /requirements.txt
 
-# Exact apk pins, auto-bumped by Renovate (repology datasource) via the
-# customManager in .github/renovate.json — no per-package markers needed.
-# Resolved through the pkg.sbaerlo.ch proxy, which keeps old -rN releases so
-# pinned builds stay reproducible. The Alpine minor lives once in the
-# customManager's depNameTemplate; raise it with the FROM base on a minor bump.
-RUN apk add --no-cache \
+# Point apk at the pkg.sbaerlo.ch caching proxy for the exact pins below. This
+# is the BUILDER stage — it never ships, so the proxy URL stays local to the
+# build. The proxy keeps old -rN releases, which is what makes the pins
+# reproducible. Pins are auto-bumped by the customManager in
+# .github/renovate.json (no per-package markers).
+RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
+	printf 'https://pkg.sbaerlo.ch/alpine/%s/main\nhttps://pkg.sbaerlo.ch/alpine/%s/community\n' \
+		"$alpine_minor" "$alpine_minor" > /etc/apk/repositories && \
+	apk add --no-cache \
 	py3-pip=26.1.2-r0 \
 	pipx=1.14.0-r0 \
 	ca-certificates=20260611-r0 \
@@ -97,7 +92,10 @@ WORKDIR /home/ansible
 # auto-bumped by Renovate (see .github/renovate.json), resolved through the
 # pkg.sbaerlo.ch proxy configured in the base stage.
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
-RUN apk add --no-cache \
+RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
+	printf 'https://pkg.sbaerlo.ch/alpine/%s/main\nhttps://pkg.sbaerlo.ch/alpine/%s/community\n' \
+		"$alpine_minor" "$alpine_minor" > /etc/apk/repositories && \
+	apk add --no-cache \
 	python3=3.14.5-r0 \
 	bash=5.3.9-r1 \
 	git=2.54.0-r0 \
@@ -113,6 +111,10 @@ RUN apk add --no-cache \
 	jq=1.8.1-r0 \
 	gnupg=2.4.9-r1 \
 	openssl=3.5.7-r0 && \
+	# Reset to the public Alpine mirrors so the SHIPPED image does not depend
+	# on the private build-time proxy — downstream `apk add` uses dl-cdn.
+	printf 'https://dl-cdn.alpinelinux.org/alpine/%s/main\nhttps://dl-cdn.alpinelinux.org/alpine/%s/community\n' \
+		"$alpine_minor" "$alpine_minor" > /etc/apk/repositories && \
 	# User setup
 	addgroup -g ${GID} ${GROUP} && \
 	adduser -h /home/ansible -s /bin/bash -G ${GROUP} -D -u ${UID} ${USER} && \
