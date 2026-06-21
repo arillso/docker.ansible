@@ -40,39 +40,29 @@ WORKDIR /home
 # Copy dependencies
 COPY requirements.txt /requirements.txt
 
-# Install all build dependencies in a single layer to reduce image size
-# hadolint ignore=DL3018
-RUN apk add --no-cache \
-	'py3-pip>=25.1.0' \
-	'py3-pip<27.0.0' \
-	'pipx>=1.7.0' \
-	'pipx<2.0.0' \
-	'ca-certificates>=20250619' \
-	'ca-certificates<20270000' \
-	'git>=2.49.0' \
-	'git<3.0.0' \
-	# Compiler toolchain - allow patch updates
-	'gcc>=14.2.0' \
-	'gcc<16.0.0' \
-	'libffi-dev>=3.4.0' \
-	'libffi-dev<4.0.0' \
-	'python3-dev>=3.12.0' \
-	'python3-dev<3.15.0' \
-	'make>=4.4.0' \
-	'make<5.0.0' \
-	'musl-dev>=1.2.0' \
-	'musl-dev<2.0.0' \
-	'build-base>=0.5' \
-	'build-base<1.0' \
-	# Network and SSH tools
-	'openssh-client-common>=10.0' \
-	'openssh-client-common<11.0' \
-	'openssh-client-default>=10.0' \
-	'openssh-client-default<11.0' \
-	'rsync>=3.4.0' \
-	'rsync<4.0.0' \
-	'curl>=8.14.0' \
-	'curl<9.0.0'
+# Point apk at the pkg.arillso.io caching proxy for the exact pins below. This
+# is the BUILDER stage — it never ships, so the proxy URL stays local to the
+# build. The proxy keeps old -rN releases, which is what makes the pins
+# reproducible. Pins are auto-bumped by the customManager in
+# .github/renovate.json (no per-package markers).
+RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
+	printf 'https://pkg.arillso.io/alpine/%s/main\nhttps://pkg.arillso.io/alpine/%s/community\n' \
+		"$alpine_minor" "$alpine_minor" > /etc/apk/repositories && \
+	apk add --no-cache \
+	py3-pip=26.1.2-r0 \
+	pipx=1.14.0-r0 \
+	ca-certificates=20260611-r0 \
+	git=2.54.0-r0 \
+	gcc=15.2.0-r5 \
+	libffi-dev=3.5.2-r1 \
+	python3-dev=3.14.5-r0 \
+	make=4.4.1-r4 \
+	musl-dev=1.2.6-r2 \
+	build-base=0.5-r4 \
+	openssh-client-common=10.3_p1-r0 \
+	openssh-client-default=10.3_p1-r0 \
+	rsync=3.4.3-r1 \
+	curl=8.20.0-r1
 
 # Create virtual environment and install dependencies
 RUN	python3 -m venv /pipx/venvs/ansible && \
@@ -98,48 +88,34 @@ ENV USER=ansible \
 
 WORKDIR /home/ansible
 
-# Install all runtime dependencies in a single layer
+# Install all runtime dependencies in a single layer. Exact apk pins
+# auto-bumped by Renovate (see .github/renovate.json), resolved through the
+# pkg.arillso.io proxy configured inline in this RUN, then reset to the
+# public mirrors so the shipped image does not depend on the proxy.
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
-# hadolint ignore=DL3018
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/v$(cut -d'.' -f1-2 /etc/alpine-release)/community" >> /etc/apk/repositories && \
+RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
+	printf 'https://pkg.arillso.io/alpine/%s/main\nhttps://pkg.arillso.io/alpine/%s/community\n' \
+		"$alpine_minor" "$alpine_minor" > /etc/apk/repositories && \
 	apk add --no-cache \
-	# Base packages - conservative ranges
-	'python3>=3.12.0' \
-	'python3<3.15.0' \
-	'bash>=5.2.0' \
-	'bash<5.4.0' \
-	# VCS and networking
-	'git>=2.49.0' \
-	'git<3.0.0' \
-	'curl>=8.14.0' \
-	'curl<9.0.0' \
-	# SSH tools - security critical, allow patch updates
-	'openssh-client-common>=10.0' \
-	'openssh-client-common<11.0' \
-	'openssh-client-default>=10.0' \
-	'openssh-client-default<11.0' \
-	'openssh-keygen>=10.0' \
-	'openssh-keygen<11.0' \
-	'sshpass>=1.10' \
-	'sshpass<2.0' \
-	# File synchronization
-	'rsync>=3.4.0' \
-	'rsync<4.0.0' \
-	# Kubernetes tools - allow minor updates
-	'kubectl>=1.33.0' \
-	'kubectl<1.37.0' \
-	'helm>=3.18.0' \
-	'helm<4.0.0' \
-	'kustomize>=5.6.0' \
-	'kustomize<6.0.0' \
-	# Utilities
-	'jq>=1.8.0' \
-	'jq<2.0.0' \
-	# Security packages - allow patch updates
-	'gnupg>=2.4.0' \
-	'gnupg<3.0.0' \
-	'openssl>=3.5.0' \
-	'openssl<4.0.0' && \
+	python3=3.14.5-r0 \
+	bash=5.3.9-r1 \
+	git=2.54.0-r0 \
+	curl=8.20.0-r1 \
+	openssh-client-common=10.3_p1-r0 \
+	openssh-client-default=10.3_p1-r0 \
+	openssh-keygen=10.3_p1-r0 \
+	sshpass=1.10-r0 \
+	rsync=3.4.3-r1 \
+	kubectl=1.36.1-r0 \
+	helm=3.19.0-r7 \
+	kustomize=5.8.1-r2 \
+	jq=1.8.1-r0 \
+	gnupg=2.4.9-r1 \
+	openssl=3.5.7-r0 && \
+	# Reset to the public Alpine mirrors so the SHIPPED image does not depend
+	# on the private build-time proxy — downstream `apk add` uses dl-cdn.
+	printf 'https://dl-cdn.alpinelinux.org/alpine/%s/main\nhttps://dl-cdn.alpinelinux.org/alpine/%s/community\n' \
+		"$alpine_minor" "$alpine_minor" > /etc/apk/repositories && \
 	# User setup
 	addgroup -g ${GID} ${GROUP} && \
 	adduser -h /home/ansible -s /bin/bash -G ${GROUP} -D -u ${UID} ${USER} && \
