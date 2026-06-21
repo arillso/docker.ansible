@@ -16,7 +16,7 @@ tests/               # Unit, integration, security, performance tests
 
 ## Conventions
 
-- Alpine packages use version ranges (e.g., `>=3.12.0`, `<4.0.0`)
+- Alpine packages use exact pins (`pkg=version-rN`), resolved through the pkg.sbaerlo.ch caching proxy and bumped by Renovate (a customManager auto-detects every `apk add` pin via the repology datasource — no per-package markers)
 - Non-root user `ansible` (UID/GID 1000)
 - Mitogen enabled by default for performance
 - Multi-platform builds (amd64, arm64)
@@ -32,7 +32,7 @@ make release-check       # Pre-release validation
 
 ## Do Not
 
-- Pin Alpine packages to exact patch versions
+- Pin Alpine packages without a `# renovate:` marker, or to a registry other than pkg.sbaerlo.ch (exact pins are only safe because the proxy retains old -rN releases)
 - Run as root in production
 - Disable Mitogen without reason
 - Skip security scans before release
