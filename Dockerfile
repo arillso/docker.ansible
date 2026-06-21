@@ -90,7 +90,8 @@ WORKDIR /home/ansible
 
 # Install all runtime dependencies in a single layer. Exact apk pins
 # auto-bumped by Renovate (see .github/renovate.json), resolved through the
-# pkg.arillso.io proxy configured in the base stage.
+# pkg.arillso.io proxy configured inline in this RUN, then reset to the
+# public mirrors so the shipped image does not depend on the proxy.
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	printf 'https://pkg.arillso.io/alpine/%s/main\nhttps://pkg.arillso.io/alpine/%s/community\n' \
