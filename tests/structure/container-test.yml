@@ -13,8 +13,12 @@ commandTests:
       command: "helm"
       args: ["version", "--short"]
       expectedOutput:
-          # renovate: datasource=github-releases depName=helm/helm
-          - "v3.19.0"
+          # Bare version so Renovate's currentValue capture works (its regex
+          # stops at whitespace/quote). container-structure-test matches it as
+          # an unanchored substring of `helm version --short` ("v3.19.0+g...").
+          # extractVersion strips the v prefix from the helm/helm tags.
+          # renovate: datasource=github-releases depName=helm/helm extractVersion=^v(?<version>.*)$
+          - "3.19.0"
 
     - name: "Check kustomize Version"
       command: "kustomize"
@@ -34,8 +38,11 @@ commandTests:
       command: "jq"
       args: ["--version"]
       expectedOutput:
-          # renovate: datasource=github-releases depName=jqlang/jq
-          - "jq-1.8.1"
+          # Bare version; `jq --version` prints "jq-1.8.1" and CST matches the
+          # substring. extractVersion strips the jq- prefix from jqlang/jq tags
+          # so Renovate compares plain semver.
+          # renovate: datasource=github-releases depName=jqlang/jq extractVersion=^jq-(?<version>.*)$
+          - "1.8.1"
 
     - name: "Check sshpass Availability"
       command: "which"
@@ -47,8 +54,12 @@ commandTests:
       command: "openssl"
       args: ["version"]
       expectedOutput:
+          # Bare version — the old "OpenSSL 3.5.7" broke Renovate: its
+          # currentValue capture stops at the space, so it saw "OpenSSL" and
+          # never updated. `openssl version` prints "OpenSSL 3.5.7 ..." and CST
+          # matches the bare version as a substring.
           # renovate: datasource=repology depName=openssl versioning=loose
-          - "OpenSSL 3.5.7"
+          - "3.5.7"
 
     - name: "Check Git Version"
       command: "git"
