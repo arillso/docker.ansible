@@ -1,11 +1,11 @@
 ---
-name: Weekly Security Scan
+name: Nightly Security Scan
 run-name: |
     Security Scan by @${{ github.actor }}
 
 "on":
     schedule:
-        - cron: "0 2 * * 1" # Weekly Monday 02:00 UTC
+        - cron: "0 2 * * *" # Daily 02:00 UTC (public repo — Actions minutes are free)
     workflow_dispatch:
     workflow_call:
         inputs:
@@ -13,6 +13,10 @@ run-name: |
                 description: "Upload SARIF results to GitHub Code Scanning"
                 type: boolean
                 default: true
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: false
 
 permissions:
     contents: read
