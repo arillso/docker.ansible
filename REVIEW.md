@@ -4,7 +4,7 @@
 
 In scope:
 
-- `Dockerfile` changes (stages, package sets, version ranges)
+- `Dockerfile` changes (stages, package sets, exact package pins)
 - `requirements.txt` changes (ansible-core, mitogen, Python deps)
 - Test changes (`tests/` — unit, integration, security, performance, structure, upgrade)
 - CI/CD workflow changes
@@ -25,7 +25,7 @@ Out of scope:
 - Container structure tests pass (`make structure-test`)
 - Security scans pass (gitleaks, secretlint, trivy)
 - Image runs as the non-root `ansible` user (UID/GID 1000)
-- Alpine packages use version ranges, never exact patch pins
+- Alpine packages use exact pins (`pkg=version-rN`) through the pkg.arillso.io proxy, never unpinned or version ranges
 - Build tools stay in the builder stage and out of the production image
 
 ## Severity levels

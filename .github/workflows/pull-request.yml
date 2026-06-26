@@ -7,9 +7,6 @@ run-name: |
     pull_request:
         branches:
             - main
-        paths-ignore:
-            - "**.md"
-            - "LICENSE"
     schedule:
         - cron: "0 1 * * 3" # Wednesday at 1:00 UTC — weekly full CI run
     workflow_dispatch:
@@ -42,9 +39,28 @@ jobs:
         secrets:
             CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
+    changes:
+        name: Detect Changes
+        runs-on: ubuntu-latest
+        outputs:
+            code: ${{ steps.filter.outputs.code }}
+        steps:
+            - name: Checkout
+              uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+
+            - name: Filter paths
+              id: filter
+              uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4.0.1
+              with:
+                  filters: |
+                      code:
+                        - '!(**/*.md|LICENSE)'
+
     lint:
         name: Lint
         runs-on: ubuntu-latest
+        needs: changes
+        if: ${{ needs.changes.outputs.code == 'true' }}
         steps:
             - name: Checkout
               uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -66,7 +82,8 @@ jobs:
     prepare:
         name: Prepare
         runs-on: ubuntu-latest
-        needs: lint
+        needs: [changes, lint]
+        if: ${{ needs.changes.outputs.code == 'true' }}
         outputs:
             ansible_version: ${{ steps.get_version.outputs.version }}
         steps:
@@ -87,7 +104,8 @@ jobs:
     build:
         name: Build Container
         runs-on: ubuntu-latest
-        needs: prepare
+        needs: [changes, prepare]
+        if: ${{ needs.changes.outputs.code == 'true' }}
         steps:
             - name: Checkout
               uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -117,7 +135,8 @@ jobs:
     structure-test:
         name: Structure Test
         runs-on: ubuntu-latest
-        needs: build
+        needs: [changes, build]
+        if: ${{ needs.changes.outputs.code == 'true' }}
         steps:
             - name: Checkout
               uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -142,7 +161,8 @@ jobs:
     security-test:
         name: Security Test
         runs-on: ubuntu-latest
-        needs: [build, structure-test]
+        needs: [changes, build, structure-test]
+        if: ${{ needs.changes.outputs.code == 'true' }}
         steps:
             - name: Checkout
               uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -182,7 +202,8 @@ jobs:
     performance-test:
         name: Performance Test
         runs-on: ubuntu-latest
-        needs: [build, structure-test]
+        needs: [changes, build, structure-test]
+        if: ${{ needs.changes.outputs.code == 'true' }}
         steps:
             - name: Checkout
               uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -211,7 +232,8 @@ jobs:
     integration-test:
         name: Integration Test
         runs-on: ubuntu-latest
-        needs: [build, structure-test]
+        needs: [changes, build, structure-test]
+        if: ${{ needs.changes.outputs.code == 'true' }}
         steps:
             - name: Checkout
               uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -278,7 +300,8 @@ jobs:
     unit-test:
         name: Unit Test
         runs-on: ubuntu-latest
-        needs: [build, structure-test]
+        needs: [changes, build, structure-test]
+        if: ${{ needs.changes.outputs.code == 'true' }}
         steps:
             - name: Checkout
               uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -308,7 +331,8 @@ jobs:
     upgrade-test:
         name: Upgrade Test
         runs-on: ubuntu-latest
-        needs: [build, structure-test]
+        needs: [changes, build, structure-test]
+        if: ${{ needs.changes.outputs.code == 'true' }}
         steps:
             - name: Checkout
               uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -329,6 +353,7 @@ jobs:
     test-summary:
         name: Test Summary
         needs:
+            - changes
             - lint
             - prepare
             - build
@@ -343,14 +368,28 @@ jobs:
             pull-requests: write
         if: ${{ always() }}
         steps:
+            - name: Docs-only change
+              # No code-relevant files changed: the heavy test jobs were
+              # skipped on purpose. Report success so the required
+              # "Test Summary" status check is satisfied and the PR can merge.
+              if: ${{ needs.changes.outputs.code != 'true' }}
+              run: |
+                  echo "Docs-only change detected — full CI was skipped."
+                  echo "Marking Test Summary as successful."
+
             - name: Checkout
+              if: ${{ needs.changes.outputs.code == 'true' }}
               uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
             - name: Set Ansible version as environment variable
+              if: ${{ needs.changes.outputs.code == 'true' }}
+              env:
+                  ANSIBLE_VERSION: ${{ needs.prepare.outputs.ansible_version }}
               run: |
-                  echo "ANSIBLE_VERSION=${{ needs.prepare.outputs.ansible_version }}" >> "$GITHUB_ENV"
+                  echo "ANSIBLE_VERSION=${ANSIBLE_VERSION}" >> "$GITHUB_ENV"
 
             - name: Generate test summary
+              if: ${{ needs.changes.outputs.code == 'true' }}
               run: |
                   ./tests/scripts/container-test-summary.sh \
                     "Lint=${{ needs.lint.result }}" \
@@ -363,17 +402,19 @@ jobs:
                     "Upgrade Tests=${{ needs.upgrade-test.result }}"
 
             - name: Comment on pull request with test results
-              if: ${{ github.event_name == 'pull_request' }}
+              if: ${{ github.event_name == 'pull_request' && needs.changes.outputs.code == 'true' }}
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  PR_NUMBER: ${{ github.event.pull_request.number }}
               run: |
-                  gh pr comment "${{ github.event.pull_request.number }}" \
+                  gh pr comment "${PR_NUMBER}" \
                     --body-file ./container-test-results.md \
                     --edit-last 2>/dev/null || \
-                  gh pr comment "${{ github.event.pull_request.number }}" \
+                  gh pr comment "${PR_NUMBER}" \
                     --body-file ./container-test-results.md
 
             - name: Upload test results
+              if: ${{ needs.changes.outputs.code == 'true' }}
               uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
               with:
                   name: container-test-results
