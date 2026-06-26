@@ -54,18 +54,18 @@ idna==3.18
 # Database Connectivity
 psycopg2-binary==2.9.12
 PyMySQL==1.2.0
-redis==8.0.0
+redis==8.0.1
 
 # VMware Integration
 pyvmomi==9.1.0.0
 
 # AWS Integration
-boto3==1.43.34
-botocore==1.43.34
+boto3==1.43.36
+botocore==1.43.36
 
 # Azure Integration
 azure-identity==1.25.3
-azure-mgmt-compute==38.0.0
+azure-mgmt-compute==38.1.0
 azure-mgmt-network==30.2.0
 
 # Google Cloud Integration
