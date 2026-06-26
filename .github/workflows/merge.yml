@@ -41,7 +41,7 @@ jobs:
 
     security:
         name: Security Scanning
-        uses: ./.github/workflows/weekly-security.yml
+        uses: ./.github/workflows/nightly-security.yml
         with:
             upload-sarif: false
         secrets: inherit
