@@ -62,7 +62,7 @@ RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	openssh-client-common=10.3_p1-r0 \
 	openssh-client-default=10.3_p1-r0 \
 	rsync=3.4.3-r1 \
-	curl=8.20.0-r1
+	curl=8.21.0-r0
 
 # Create virtual environment and install dependencies
 RUN	python3 -m venv /pipx/venvs/ansible && \
@@ -100,7 +100,7 @@ RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	python3=3.14.5-r0 \
 	bash=5.3.9-r1 \
 	git=2.54.0-r0 \
-	curl=8.20.0-r1 \
+	curl=8.21.0-r0 \
 	openssh-client-common=10.3_p1-r0 \
 	openssh-client-default=10.3_p1-r0 \
 	openssh-keygen=10.3_p1-r0 \
