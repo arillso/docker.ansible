@@ -66,7 +66,7 @@ botocore==1.43.48
 # Azure Integration
 azure-identity==1.25.3
 azure-mgmt-compute==38.1.0
-azure-mgmt-network==30.2.0
+azure-mgmt-network==31.0.1
 
 # Google Cloud Integration
 google-cloud-compute==1.49.0
