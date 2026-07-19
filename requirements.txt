@@ -60,8 +60,8 @@ redis==8.0.1
 pyvmomi==9.1.0.0
 
 # AWS Integration
-boto3==1.43.49
-botocore==1.43.49
+boto3==1.43.50
+botocore==1.43.50
 
 # Azure Integration
 azure-identity==1.25.3
@@ -69,7 +69,7 @@ azure-mgmt-compute==38.1.0
 azure-mgmt-network==31.0.1
 
 # Google Cloud Integration
-google-cloud-compute==1.49.0
+google-cloud-compute==1.50.0
 google-auth==2.56.0
 
 # Kubernetes Integration
@@ -93,7 +93,7 @@ jsonschema==4.26.0
 jsonpatch==1.33
 
 # Monitoring & Logging
-opentelemetry-exporter-otlp==1.43.0
+opentelemetry-exporter-otlp==1.44.0
 prometheus-client==0.25.0
 statsd==4.0.1
 
