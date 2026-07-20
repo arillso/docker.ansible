@@ -42,8 +42,10 @@ COPY requirements.txt /requirements.txt
 
 # Point apk at the pkg.arillso.io caching proxy for the exact pins below. This
 # is the BUILDER stage — it never ships, so the proxy URL stays local to the
-# build. The proxy keeps old -rN releases, which is what makes the pins
-# reproducible. Pins are auto-bumped by the customManager in
+# build. The proxy is a pull-through cache, not an archive — it evicts .apk
+# files unread for 21 days, and Alpine rotates old -rN releases off dl-cdn.
+# What keeps these pins resolvable is the nightly warm-apk-pins.sh step, not
+# the proxy itself. Pins are auto-bumped by the customManager in
 # .github/renovate.json (no per-package markers).
 RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	printf 'https://pkg.arillso.io/alpine/%s/main\nhttps://pkg.arillso.io/alpine/%s/community\n' \
