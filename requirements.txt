@@ -23,7 +23,7 @@ openshift==0.13.2
 dnspython==2.8.0
 
 # Security & Monitoring
-crowdstrike-falconpy==1.6.3
+crowdstrike-falconpy==1.6.4
 
 # Performance & Optimization
 mitogen==0.3.51
@@ -60,12 +60,12 @@ redis==8.0.1
 pyvmomi==9.1.0.0
 
 # AWS Integration
-boto3==1.43.51
-botocore==1.43.51
+boto3==1.43.52
+botocore==1.43.52
 
 # Azure Integration
 azure-identity==1.25.3
-azure-mgmt-compute==38.1.0
+azure-mgmt-compute==38.2.0
 azure-mgmt-network==31.0.1
 
 # Google Cloud Integration
