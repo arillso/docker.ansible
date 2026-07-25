@@ -18,14 +18,17 @@ commandTests:
           # an unanchored substring of `helm version --short` ("v3.19.0+g...").
           # extractVersion strips the v prefix from the helm/helm tags.
           # renovate: datasource=github-releases depName=helm/helm extractVersion=^v(?<version>.*)$
-          - "3.19.0"
+          # Major-prefix only: under `>=` apk installs the current patch, so an
+          # exact patch substring breaks on drift. A helm 4 jump still fails "3.".
+          - "3."
 
     - name: "Check kustomize Version"
       command: "kustomize"
       args: ["version"]
       expectedOutput:
           # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize extractVersion=^kustomize/v(?<version>.*)$
-          - "5.8.1"
+          # Major-prefix only: `>=` installs the current patch (see helm above).
+          - "5."
 
     # Shell Tools & Utilities
     - name: "Check Bash Version"
@@ -42,7 +45,8 @@ commandTests:
           # substring. extractVersion strips the jq- prefix from jqlang/jq tags
           # so Renovate compares plain semver.
           # renovate: datasource=github-releases depName=jqlang/jq extractVersion=^jq-(?<version>.*)$
-          - "1.8.1"
+          # Major-prefix only: `>=` installs the current patch (see helm above).
+          - "1."
 
     - name: "Check sshpass Availability"
       command: "which"
@@ -59,7 +63,8 @@ commandTests:
           # never updated. `openssl version` prints "OpenSSL 3.5.7 ..." and CST
           # matches the bare version as a substring.
           # renovate: datasource=repology depName=openssl versioning=loose
-          - "3.5.7"
+          # Major-prefix only: `>=` installs the current patch (see helm above).
+          - "3."
 
     - name: "Check Git Version"
       command: "git"

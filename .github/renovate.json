@@ -4,10 +4,10 @@
     "customManagers": [
         {
             "customType": "regex",
-            "description": "Auto-detect every exact 'pkg=version-rN' apk pin in the Dockerfile and bump it via repology (Alpine alpine_3_24), including the -rN release suffix. No per-package comment markers needed — the apk add block structure is the anchor.",
+            "description": "Auto-detect every 'pkg>=version-rN' apk lower-bound pin in the Dockerfile and bump it via repology (Alpine alpine_3_24), including the -rN release suffix. No per-package comment markers needed — the apk add block structure is the anchor.",
             "managerFilePatterns": ["/(^|/)Dockerfile$/"],
             "matchStrings": [
-                "(?:apk add(?:[^\\n]*)?|\\\\)\\s+(?<depName>[a-z0-9][a-z0-9._-]*)=(?<currentValue>[a-zA-Z0-9._-]+)"
+                "(?:apk add(?:[^\\n]*)?|\\\\)\\s+\"?(?<depName>[a-z0-9][a-z0-9._-]*)>=(?<currentValue>[a-zA-Z0-9._-]+)"
             ],
             "depNameTemplate": "alpine_3_24/{{{depName}}}",
             "datasourceTemplate": "repology",

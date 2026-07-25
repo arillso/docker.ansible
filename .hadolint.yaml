@@ -1,0 +1,8 @@
+---
+# DL3018: hadolint flags `apk add pkg>=version` as "not pinned" because it only
+# recognizes exact `=`. The `>=` lower bounds here are a deliberate pin (see the
+# Dockerfile apk blocks and AGENTS.md): they tolerate Alpine's -rN rotation,
+# which exact pins do not. The bound is still enforced, so this is a false
+# positive for this repo's pinning policy.
+ignored:
+    - DL3018
