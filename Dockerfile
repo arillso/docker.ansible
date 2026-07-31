@@ -40,29 +40,32 @@ WORKDIR /home
 # Copy dependencies
 COPY requirements.txt /requirements.txt
 
-# Point apk at the pkg.arillso.io caching proxy for the exact pins below. This
-# is the BUILDER stage — it never ships, so the proxy URL stays local to the
-# build. The proxy keeps old -rN releases, which is what makes the pins
-# reproducible. Pins are auto-bumped by the customManager in
-# .github/renovate.json (no per-package markers).
+# Point apk at the pkg.arillso.io caching proxy for the lower-bound pins below.
+# This is the BUILDER stage — it never ships, so the proxy URL stays local to
+# the build. Pins use `>=` lower bounds, not exact `=`: the proxy is a
+# pull-through cache, not an archive, so once Alpine rotates an old -rN out of
+# dl-cdn an exact pin breaks on rebuild. `>=` lets apk take the current -rN and
+# tolerates that rotation, while Renovate still lifts the lower bound and the
+# text change invalidates the cache. The customManager in .github/renovate.json
+# auto-detects every pin (no per-package markers).
 RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	printf 'https://pkg.arillso.io/alpine/%s/main\nhttps://pkg.arillso.io/alpine/%s/community\n' \
 		"$alpine_minor" "$alpine_minor" > /etc/apk/repositories && \
 	apk add --no-cache \
-	py3-pip=26.1.2-r0 \
-	pipx=1.14.0-r0 \
-	ca-certificates=20260611-r0 \
-	git=2.54.0-r0 \
-	gcc=15.2.0-r5 \
-	libffi-dev=3.5.2-r1 \
-	python3-dev=3.14.5-r0 \
-	make=4.4.1-r4 \
-	musl-dev=1.2.6-r2 \
-	build-base=0.5-r4 \
-	openssh-client-common=10.3_p1-r0 \
-	openssh-client-default=10.3_p1-r0 \
-	rsync=3.4.3-r1 \
-	curl=8.21.0-r0
+	"py3-pip>=26.1.2-r0" \
+	"pipx>=1.14.0-r0" \
+	"ca-certificates>=20260611-r0" \
+	"git>=2.54.0-r0" \
+	"gcc>=15.2.0-r5" \
+	"libffi-dev>=3.5.2-r1" \
+	"python3-dev>=3.14.5-r0" \
+	"make>=4.4.1-r4" \
+	"musl-dev>=1.2.6-r2" \
+	"build-base>=0.5-r4" \
+	"openssh-client-common>=10.3_p1-r0" \
+	"openssh-client-default>=10.3_p1-r0" \
+	"rsync>=3.4.3-r1" \
+	"curl>=8.21.0-r0"
 
 # Create virtual environment and install dependencies
 RUN	python3 -m venv /pipx/venvs/ansible && \
@@ -88,30 +91,33 @@ ENV USER=ansible \
 
 WORKDIR /home/ansible
 
-# Install all runtime dependencies in a single layer. Exact apk pins
-# auto-bumped by Renovate (see .github/renovate.json), resolved through the
-# pkg.arillso.io proxy configured inline in this RUN, then reset to the
-# public mirrors so the shipped image does not depend on the proxy.
+# Install all runtime dependencies in a single layer. apk pins use `>=` lower
+# bounds (not exact `=`) auto-bumped by Renovate (see .github/renovate.json),
+# resolved through the pkg.arillso.io proxy configured inline in this RUN, then
+# reset to the public mirrors so the shipped image does not depend on the proxy.
+# The proxy is a pull-through cache, not an archive: an exact pin breaks on
+# rebuild once Alpine rotates an old -rN out of dl-cdn, whereas `>=` lets apk
+# take the current -rN and tolerates that rotation.
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	printf 'https://pkg.arillso.io/alpine/%s/main\nhttps://pkg.arillso.io/alpine/%s/community\n' \
 		"$alpine_minor" "$alpine_minor" > /etc/apk/repositories && \
 	apk add --no-cache \
-	python3=3.14.5-r0 \
-	bash=5.3.9-r1 \
-	git=2.54.0-r0 \
-	curl=8.21.0-r0 \
-	openssh-client-common=10.3_p1-r0 \
-	openssh-client-default=10.3_p1-r0 \
-	openssh-keygen=10.3_p1-r0 \
-	sshpass=1.10-r0 \
-	rsync=3.4.3-r1 \
-	kubectl=1.36.1-r0 \
-	helm=3.19.0-r7 \
-	kustomize=5.8.1-r2 \
-	jq=1.8.1-r0 \
-	gnupg=2.4.9-r1 \
-	openssl=3.5.7-r0 && \
+	"python3>=3.14.5-r0" \
+	"bash>=5.3.9-r1" \
+	"git>=2.54.0-r0" \
+	"curl>=8.21.0-r0" \
+	"openssh-client-common>=10.3_p1-r0" \
+	"openssh-client-default>=10.3_p1-r0" \
+	"openssh-keygen>=10.3_p1-r0" \
+	"sshpass>=1.10-r0" \
+	"rsync>=3.4.3-r1" \
+	"kubectl>=1.36.1-r0" \
+	"helm>=3.19.0-r7" \
+	"kustomize>=5.8.1-r2" \
+	"jq>=1.8.1-r0" \
+	"gnupg>=2.4.9-r1" \
+	"openssl>=3.5.7-r0" && \
 	# Reset to the public Alpine mirrors so the SHIPPED image does not depend
 	# on the private build-time proxy — downstream `apk add` uses dl-cdn.
 	printf 'https://dl-cdn.alpinelinux.org/alpine/%s/main\nhttps://dl-cdn.alpinelinux.org/alpine/%s/community\n' \
