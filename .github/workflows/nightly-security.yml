@@ -45,13 +45,15 @@ jobs:
                   provenance: false
                   sbom: false
 
-            - name: Run Trivy vulnerability scanner
+            # Reporting step: never gates, always produces SARIF for upload.
+            - name: Run Trivy vulnerability scanner (report)
               uses: aquasecurity/trivy-action@v0.36.0
               with:
                   image-ref: "ansible:scan"
                   format: "sarif"
                   output: "trivy-results.sarif"
                   severity: "CRITICAL,HIGH"
+                  exit-code: "0"
 
             - name: Upload Trivy scan results
               uses: github/codeql-action/upload-sarif@5595ccaf912efad79be6eef63a5619ff05969be3 # v4
@@ -63,6 +65,17 @@ jobs:
               if: ${{ always() && !(github.event_name == 'workflow_call' && inputs.upload-sarif == false) }}
               with:
                   sarif_file: "trivy-results.sarif"
+
+            # Gating step: fails the job on fixable CRITICAL/HIGH findings.
+            # Runs after the upload so results reach Code Scanning either way.
+            - name: Run Trivy vulnerability scanner (gate)
+              uses: aquasecurity/trivy-action@v0.36.0
+              with:
+                  image-ref: "ansible:scan"
+                  format: "table"
+                  severity: "CRITICAL,HIGH"
+                  ignore-unfixed: true
+                  exit-code: "1"
 
     secrets:
         name: Secret Scanning

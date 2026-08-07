@@ -90,7 +90,7 @@ security-test: ansible-build ## Run comprehensive security checks
 	@docker run --rm -v "$(PROJECT_DIR)/tests/security:/tests" ansible:latest bash /tests/container-hardening.sh
 	@echo ""
 	@echo "2. Trivy vulnerability scan..."
-	@docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$(PROJECT_DIR)/test-results:/results" aquasec/trivy:0.68.2 image --exit-code 0 --severity HIGH,CRITICAL --format table -o /results/trivy-results.txt ansible:latest || (echo "Trivy scan found issues - check test-results/trivy-results.txt"; exit 0)
+	@docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$(PROJECT_DIR)/test-results:/results" aquasec/trivy:0.68.2 image --exit-code 1 --ignore-unfixed --severity HIGH,CRITICAL --format table -o /results/trivy-results.txt ansible:latest || (echo "Trivy scan found fixable HIGH/CRITICAL issues - check test-results/trivy-results.txt"; exit 1)
 	@echo ""
 	@echo "3. User permissions check..."
 	@docker run --rm ansible:latest id | grep "uid=1000(ansible) gid=1000(ansible)" && echo "Non-root user correctly configured"
