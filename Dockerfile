@@ -179,8 +179,19 @@ RUN mkdir -p /etc/ansible && \
 USER 1000:1000
 ENV ANSIBLE_FORCE_COLOR=True
 
+# tini is PID 1: it forwards signals to the actual command and reaps the
+# connection-multiplexer children Mitogen forks. Exec-form ENTRYPOINT keeps
+# CMD overridable — `docker run ... arillso/ansible bash` becomes
+# `/sbin/tini -- bash`, as documented in README.md.
+ENTRYPOINT ["/sbin/tini", "--"]
+
 # Default command
 CMD ["ansible-playbook", "--version"]
+
+# `docker stop` sends SIGTERM by default. Ansible implements a graceful
+# interrupt path for SIGINT — it finishes the running task and prints the
+# recap — but not an equivalent one for SIGTERM.
+STOPSIGNAL SIGINT
 
 # Healthcheck to verify Ansible functionality
 HEALTHCHECK --interval=30s --timeout=10s \
