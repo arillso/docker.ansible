@@ -296,4 +296,8 @@ metadataTest:
           value: "True"
     cmd: ["ansible-playbook", "--version"]
     workdir: "/home/ansible"
-    user: "ansible"
+    # Numeric, matching the literal `USER 1000:1000` in the Dockerfile, which is
+    # spelled that way for hadolint DL3066. Together with the UID/GID assertions
+    # above this catches the literal drifting from the ARG defaults. The account
+    # is unchanged — the command tests above still assert whoami is `ansible`.
+    user: "1000:1000"

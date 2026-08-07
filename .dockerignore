@@ -21,6 +21,7 @@ REVIEW.md
 .markdownlint.json
 .gitleaks.toml
 .secretlintrc.json
+.trivyignore
 lefthook.yml
 Makefile
 

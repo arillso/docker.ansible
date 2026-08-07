@@ -68,6 +68,8 @@ jobs:
 
             # Gating step: fails the job on fixable CRITICAL/HIGH findings.
             # Runs after the upload so results reach Code Scanning either way.
+            # Only the gate honours .trivyignore; the reporting step above keeps
+            # sending every finding to Code Scanning.
             - name: Run Trivy vulnerability scanner (gate)
               uses: aquasecurity/trivy-action@v0.36.0
               with:
@@ -75,6 +77,7 @@ jobs:
                   format: "table"
                   severity: "CRITICAL,HIGH"
                   ignore-unfixed: true
+                  trivyignores: ".trivyignore"
                   exit-code: "1"
 
     secrets:

@@ -78,16 +78,35 @@ RUN	python3 -m venv /pipx/venvs/ansible && \
 	# Cleanup
 	rm -rf /var/cache/apk/* /tmp/*
 
+# Replace the msgpack copy pip vendors (GHSA-6v7p-g79w-8964). The script carries
+# the reasoning; it runs in the builder stage, so it never ships.
+COPY build/vendorfix-msgpack.sh /tmp/vendorfix-msgpack.sh
+RUN sh /tmp/vendorfix-msgpack.sh /pipx/venvs/ansible && \
+	rm -f /tmp/vendorfix-msgpack.sh
+
 ##############################################
 # Production Stage
 ##############################################
 FROM base AS production
 
-# User parameters
-ENV USER=ansible \
-	GROUP=ansible \
-	UID=1000 \
-	GID=1000
+# User parameters. The ids are defined here as ARGs and mirrored into ENV below,
+# because `USER` further down has to be written literally: hadolint reads that
+# instruction statically and rejects ${UID} as non-numeric (DL3066) just as it
+# rejects ${USER}.
+#
+# So overriding --build-arg UID/GID moves the account and the ENV, but not that
+# literal, and the image would run as a uid it did not create. Change both
+# together; the structure test asserts the metadata user and these environment
+# variables, so a mismatch fails there.
+ARG USER=ansible
+ARG GROUP=ansible
+ARG UID=1000
+ARG GID=1000
+
+ENV USER=${USER} \
+	GROUP=${GROUP} \
+	UID=${UID} \
+	GID=${GID}
 
 WORKDIR /home/ansible
 
@@ -154,12 +173,14 @@ RUN mkdir -p /etc/ansible && \
 	echo 'pipelining = True' >> /etc/ansible/ansible.cfg && \
 	rm -rf /tmp/*
 
-# Use non-root user
-USER ${USER}
+# Use non-root user, numeric so a host can resolve the id without reading the
+# image's passwd file. Literal rather than ${UID}:${GID} — see the ARG block.
+USER 1000:1000
 ENV ANSIBLE_FORCE_COLOR=True
 
 # Default command
 CMD ["ansible-playbook", "--version"]
 
 # Healthcheck to verify Ansible functionality
-HEALTHCHECK --interval=30s --timeout=10s CMD ansible --version || exit 1
+HEALTHCHECK --interval=30s --timeout=10s \
+	CMD ["/bin/sh", "-c", "ansible --version || exit 1"]

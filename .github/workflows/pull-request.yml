@@ -77,7 +77,7 @@ jobs:
                   dockerfile: Dockerfile
 
             - name: Lint shell scripts
-              run: shellcheck tests/**/*.sh .github/scripts/**/*.sh
+              run: shellcheck tests/**/*.sh .github/scripts/**/*.sh build/*.sh
 
     prepare:
         name: Prepare
@@ -204,6 +204,8 @@ jobs:
 
             # Gating step: fails the job on fixable CRITICAL/HIGH findings.
             # Runs after the upload so results reach Code Scanning either way.
+            # Only the gate honours .trivyignore; the reporting step above keeps
+            # sending every finding to Code Scanning.
             - name: Trivy Vulnerability Scanner (gate)
               uses: aquasecurity/trivy-action@v0.36.0
               with:
@@ -211,6 +213,7 @@ jobs:
                   format: "table"
                   severity: "CRITICAL,HIGH"
                   ignore-unfixed: true
+                  trivyignores: ".trivyignore"
                   exit-code: "1"
 
     performance-test:

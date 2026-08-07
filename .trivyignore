@@ -1,0 +1,20 @@
+# CVE-2025-47273 — setuptools PackageIndex path traversal.
+#
+# Trivy reports setuptools 70.3.0 against this image, but no setuptools code is
+# in it: `find <pip>/_vendor -iname '*setuptools*'` comes back empty, and the
+# venv's site-packages has no setuptools either. pip absorbed the pkg_resources
+# module into its _vendor tree, rewrote its imports to pip._vendor.packaging and
+# pip._internal.utils._jaraco_text, and kept crediting setuptools for it in
+# bom.cdx.json — which is where this finding comes from, carrying a BOMRef and
+# no file path.
+#
+# The advisory targets PackageIndex, which that module does not contain: pip
+# never vendored the part of setuptools the CVE is about. Upgrading cannot clear
+# it either, since every pip release up to 26.2.1 carries the same stale credit.
+#
+# Only the gating scans read this file; the reporting scans still send every
+# finding to Code Scanning.
+#
+# Revisit when pip drops the setuptools entry from its SBOM, or when a finding
+# appears that names an actual file in the image.
+CVE-2025-47273
