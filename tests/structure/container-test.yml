@@ -261,6 +261,14 @@ fileExistenceTests:
       path: "/etc/alpine-release"
       shouldExist: true
 
+    # tini is the container's init (PID 1) — it forwards signals to
+    # ansible-playbook and reaps the connection-multiplexer children Mitogen
+    # forks. The ENTRYPOINT points at this exact path, so a package that
+    # installs elsewhere must fail here rather than at container start.
+    - name: "Check tini init binary exists"
+      path: "/sbin/tini"
+      shouldExist: true
+
 fileContentTests:
     - name: "Verify Alpine version"
       path: "/etc/alpine-release"

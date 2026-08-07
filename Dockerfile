@@ -136,7 +136,8 @@ RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	"kustomize>=5.8.1-r2" \
 	"jq>=1.8.1-r0" \
 	"gnupg>=2.4.9-r1" \
-	"openssl>=3.5.7-r0" && \
+	"openssl>=3.5.7-r0" \
+	"tini>=0.19.0-r3" && \
 	# Reset to the public Alpine mirrors so the SHIPPED image does not depend
 	# on the private build-time proxy — downstream `apk add` uses dl-cdn.
 	printf 'https://dl-cdn.alpinelinux.org/alpine/%s/main\nhttps://dl-cdn.alpinelinux.org/alpine/%s/community\n' \
