@@ -2,6 +2,10 @@
 # Safer security check that works for non-root users
 set -e
 
+# Hard violations set this flag and make the script exit non-zero at the end.
+# Soft findings stay warnings so the whole report is always printed first.
+hard_failure=0
+
 echo "==== Container Security Hardening Check ===="
 
 # Check for unnecessary packages - only if we can run apk
@@ -45,13 +49,15 @@ ALLOWED_SUID=(
 # Only check directories the user can access
 for dir in /home/ansible /usr/local/bin /bin /usr/bin; do
     if [ -d "$dir" ] && [ -r "$dir" ]; then
-        suid_files=$(find $dir -type f -perm -2000 -o -perm -4000 2>/dev/null | grep -v -E "$(
+        # Parenthesize the perm alternation so -type f binds to both branches.
+        suid_files=$(find "$dir" -type f \( -perm -2000 -o -perm -4000 \) 2>/dev/null | grep -v -E "$(
             IFS="|"
             echo "${ALLOWED_SUID[*]}"
         )" 2>/dev/null || true)
         if [ -n "$suid_files" ]; then
-            echo "WARNING: SUID/SGID binaries found in $dir (excluding allowed ones):"
+            echo "FAIL: unexpected SUID/SGID binaries found in $dir (excluding allowed ones):"
             echo "$suid_files"
+            hard_failure=1
         fi
     fi
 done
@@ -60,7 +66,8 @@ done
 echo -e "\n[+] Checking for insecure permissions..."
 for dir in /home/ansible /tmp /usr/local/bin; do
     if [ -d "$dir" ] && [ -r "$dir" ]; then
-        writable=$(find $dir -type d -perm -o+w -c 2>/dev/null)
+        # -c is a grep flag, not a find predicate: count with wc -l instead.
+        writable=$(find "$dir" -type d -perm -o+w 2>/dev/null | wc -l)
         if [ "$writable" -gt 0 ]; then
             echo "WARNING: World-writable directories found under $dir"
         fi
@@ -72,7 +79,8 @@ done
 # Check for user privileges
 echo -e "\n[+] Checking user privileges..."
 if [ "$(id -u)" = "0" ]; then
-    echo "WARNING: Container is running as root"
+    echo "FAIL: Container is running as root"
+    hard_failure=1
 else
     echo "OK: Container is running as non-root user ($(id -u))"
 fi
@@ -80,7 +88,7 @@ fi
 # Check for temporary files
 echo -e "\n[+] Checking for temporary files..."
 if [ -d "/tmp" ] && [ -r "/tmp" ]; then
-    temp_files=$(find /tmp -type f -c 2>/dev/null)
+    temp_files=$(find /tmp -type f 2>/dev/null | wc -l)
     if [ "$temp_files" -gt 0 ]; then
         echo "WARNING: Temporary files found in /tmp"
     fi
@@ -123,5 +131,9 @@ if [ -f "/etc/ssh/ssh_config" ] && [ -r "/etc/ssh/ssh_config" ]; then
 fi
 
 echo -e "\n==== Security check completed ===="
-# Always exit with success
+if [ "$hard_failure" -ne 0 ]; then
+    echo "RESULT: hard security violations found (see FAIL lines above)"
+    exit 1
+fi
+echo "RESULT: no hard security violations found"
 exit 0
