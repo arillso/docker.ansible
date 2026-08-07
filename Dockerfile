@@ -192,7 +192,3 @@ CMD ["ansible-playbook", "--version"]
 # interrupt path for SIGINT — it finishes the running task and prints the
 # recap — but not an equivalent one for SIGTERM.
 STOPSIGNAL SIGINT
-
-# Healthcheck to verify Ansible functionality
-HEALTHCHECK --interval=30s --timeout=10s \
-	CMD ["/bin/sh", "-c", "ansible --version || exit 1"]
