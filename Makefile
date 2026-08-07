@@ -87,7 +87,7 @@ security-test: ansible-build ## Run comprehensive security checks
 	@echo "=== Running Security Tests ==="
 	@mkdir -p $(PROJECT_DIR)/test-results
 	@echo "1. Container hardening checks..."
-	@docker run --rm -v "$(PROJECT_DIR)/tests/security:/tests" ansible:latest bash -c "bash /tests/container-hardening.sh" || (echo "Security check warnings found"; exit 0)
+	@docker run --rm -v "$(PROJECT_DIR)/tests/security:/tests" ansible:latest bash /tests/container-hardening.sh
 	@echo ""
 	@echo "2. Trivy vulnerability scan..."
 	@docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$(PROJECT_DIR)/test-results:/results" aquasec/trivy:0.68.2 image --exit-code 0 --severity HIGH,CRITICAL --format table -o /results/trivy-results.txt ansible:latest || (echo "Trivy scan found issues - check test-results/trivy-results.txt"; exit 0)
@@ -125,7 +125,7 @@ unit-test: ansible-build ## Run unit tests with Python
 
 upgrade-test: ansible-build ## Test the container's ability to upgrade
 	@echo "Testing upgrade capability..."
-	@bash $(PROJECT_DIR)/tests/upgrade/test-upgrade.sh || (echo "Some upgrade tests failed, but continuing"; exit 0)
+	@bash $(PROJECT_DIR)/tests/upgrade/test-upgrade.sh
 
 comprehensive-test: test-quick structure-test security-test performance-test integration-test unit-test upgrade-test ## Run all tests in order
 	@echo ""

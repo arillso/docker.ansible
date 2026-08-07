@@ -179,8 +179,9 @@ jobs:
             - name: Run Security Checks
               run: |
                   mkdir -p test-results
+                  set -o pipefail
                   docker run --rm -v "$GITHUB_WORKSPACE/tests/security:/tests" ansible:test \
-                  bash -c "bash /tests/container-hardening.sh || echo 'Security check returned warnings'" | tee test-results/security-check.log
+                  bash /tests/container-hardening.sh | tee test-results/security-check.log
 
             - name: Trivy Vulnerability Scanner
               uses: aquasecurity/trivy-action@v0.36.0
@@ -348,7 +349,7 @@ jobs:
 
             - name: Run Upgrade Tests
               run: |
-                  ANSIBLE_IMAGE="ansible:test" bash tests/upgrade/test-upgrade.sh || (echo "Some upgrade tests failed, but continuing"; exit 0)
+                  ANSIBLE_IMAGE="ansible:test" bash tests/upgrade/test-upgrade.sh
 
     test-summary:
         name: Test Summary
