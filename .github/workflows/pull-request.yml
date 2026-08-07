@@ -77,7 +77,7 @@ jobs:
                   dockerfile: Dockerfile
 
             - name: Lint shell scripts
-              run: shellcheck tests/**/*.sh .github/scripts/**/*.sh
+              run: shellcheck tests/**/*.sh .github/scripts/**/*.sh build/*.sh
 
     prepare:
         name: Prepare
@@ -183,22 +183,38 @@ jobs:
                   docker run --rm -v "$GITHUB_WORKSPACE/tests/security:/tests" ansible:test \
                   bash /tests/container-hardening.sh | tee test-results/security-check.log
 
-            - name: Trivy Vulnerability Scanner
+            # Reporting step: never gates, always produces SARIF for upload.
+            - name: Trivy Vulnerability Scanner (report)
               uses: aquasecurity/trivy-action@v0.36.0
               with:
                   image-ref: "ansible:test"
                   format: "sarif"
                   output: "trivy-results.sarif"
                   severity: "CRITICAL,HIGH"
+                  exit-code: "0"
 
             - name: Upload Trivy scan results
               # Skip only when a workflow_call caller (merge.yml) passes
               # upload-sarif: false. On pull_request / schedule there is no
               # inputs context, so the bare check skipped the upload.
-              if: ${{ !(github.event_name == 'workflow_call' && inputs.upload-sarif == false) }}
+              if: ${{ always() && !(github.event_name == 'workflow_call' && inputs.upload-sarif == false) }}
               uses: github/codeql-action/upload-sarif@5595ccaf912efad79be6eef63a5619ff05969be3 # v4
               with:
                   sarif_file: "trivy-results.sarif"
+
+            # Gating step: fails the job on fixable CRITICAL/HIGH findings.
+            # Runs after the upload so results reach Code Scanning either way.
+            # Only the gate honours .trivyignore; the reporting step above keeps
+            # sending every finding to Code Scanning.
+            - name: Trivy Vulnerability Scanner (gate)
+              uses: aquasecurity/trivy-action@v0.36.0
+              with:
+                  image-ref: "ansible:test"
+                  format: "table"
+                  severity: "CRITICAL,HIGH"
+                  ignore-unfixed: true
+                  trivyignores: ".trivyignore"
+                  exit-code: "1"
 
     performance-test:
         name: Performance Test
