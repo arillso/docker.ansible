@@ -21,8 +21,23 @@ concurrency:
 permissions:
     contents: read
     security-events: write
+    actions: read
 
 jobs:
+    codeql:
+        # docker.ansible ships Python test tooling; the reusable workflow
+        # defaults to Go, so the language has to be passed explicitly.
+        #
+        # security-codeql.yml uploads its SARIF unconditionally and exposes no
+        # upload toggle, so the whole job is skipped when a caller opts out —
+        # the trivy job below suppresses only its upload step for the same
+        # reason. Without this, merge.yml would still push CodeQL results on
+        # every merge to main despite passing upload-sarif: false.
+        if: ${{ !(github.event_name == 'workflow_call' && inputs.upload-sarif == false) }}
+        uses: arillso/.github/.github/workflows/security-codeql.yml@2026-06-18
+        with:
+            language: python
+
     trivy:
         name: Trivy Scan
         runs-on: ubuntu-latest
