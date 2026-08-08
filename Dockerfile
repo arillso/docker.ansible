@@ -136,7 +136,8 @@ RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	"kustomize>=5.8.1-r2" \
 	"jq>=1.8.1-r0" \
 	"gnupg>=2.4.9-r1" \
-	"openssl>=3.5.7-r0" && \
+	"openssl>=3.5.7-r0" \
+	"tini>=0.19.0-r3" && \
 	# Reset to the public Alpine mirrors so the SHIPPED image does not depend
 	# on the private build-time proxy — downstream `apk add` uses dl-cdn.
 	printf 'https://dl-cdn.alpinelinux.org/alpine/%s/main\nhttps://dl-cdn.alpinelinux.org/alpine/%s/community\n' \
@@ -178,9 +179,16 @@ RUN mkdir -p /etc/ansible && \
 USER 1000:1000
 ENV ANSIBLE_FORCE_COLOR=True
 
+# tini is PID 1: it forwards signals to the actual command and reaps the
+# connection-multiplexer children Mitogen forks. Exec-form ENTRYPOINT keeps
+# CMD overridable — `docker run ... arillso/ansible bash` becomes
+# `/sbin/tini -- bash`, as documented in README.md.
+ENTRYPOINT ["/sbin/tini", "--"]
+
 # Default command
 CMD ["ansible-playbook", "--version"]
 
-# Healthcheck to verify Ansible functionality
-HEALTHCHECK --interval=30s --timeout=10s \
-	CMD ["/bin/sh", "-c", "ansible --version || exit 1"]
+# `docker stop` sends SIGTERM by default. Ansible implements a graceful
+# interrupt path for SIGINT — it finishes the running task and prints the
+# recap — but not an equivalent one for SIGTERM.
+STOPSIGNAL SIGINT

@@ -261,6 +261,14 @@ fileExistenceTests:
       path: "/etc/alpine-release"
       shouldExist: true
 
+    # tini is the container's init (PID 1) — it forwards signals to
+    # ansible-playbook and reaps the connection-multiplexer children Mitogen
+    # forks. The ENTRYPOINT points at this exact path, so a package that
+    # installs elsewhere must fail here rather than at container start.
+    - name: "Check tini init binary exists"
+      path: "/sbin/tini"
+      shouldExist: true
+
 fileContentTests:
     - name: "Verify Alpine version"
       path: "/etc/alpine-release"
@@ -294,6 +302,11 @@ metadataTest:
           value: "1000"
         - key: "ANSIBLE_FORCE_COLOR"
           value: "True"
+    # tini runs as PID 1 and exec's the CMD as its own child. Exec-form
+    # ENTRYPOINT keeps the command overridable: a `docker run` argument
+    # replaces CMD only, so `docker run ... arillso/ansible bash` becomes
+    # `/sbin/tini -- bash` and still works as documented in README.md.
+    entrypoint: ["/sbin/tini", "--"]
     cmd: ["ansible-playbook", "--version"]
     workdir: "/home/ansible"
     # Numeric, matching the literal `USER 1000:1000` in the Dockerfile, which is
