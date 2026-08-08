@@ -25,7 +25,7 @@ Out of scope:
 - Container structure tests pass (`make structure-test`)
 - Security scans pass (gitleaks, secretlint, trivy)
 - Image runs as the non-root `ansible` user (UID/GID 1000)
-- Alpine packages use exact pins (`pkg=version-rN`) through the pkg.arillso.io proxy, never unpinned or version ranges
+- Alpine packages use `>=` lower-bound pins (`pkg>=version-rN`) through the pkg.arillso.io proxy, never unpinned, never exact `=` pins and never upper-bounded — the proxy is a pull-through cache, not an archive, so exact pins break on rebuild once Alpine rotates an old `-rN` out of dl-cdn
 - Build tools stay in the builder stage and out of the production image
 
 ## Severity levels
