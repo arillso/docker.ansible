@@ -95,8 +95,8 @@ write_summary() {
     failed=0
     skipped=0
     for line in "${lines[@]}"; do
-        [[ "$line" == *'❌'* ]] && ((failed++))
-        [[ "$line" == *'⏭️'* ]] && ((skipped++))
+        [[ "$line" == *'❌'* ]] && ((++failed))
+        [[ "$line" == *'⏭️'* ]] && ((++skipped))
     done
     passed=$((total - failed - skipped))
 
