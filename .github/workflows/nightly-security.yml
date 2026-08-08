@@ -23,6 +23,13 @@ permissions:
     security-events: write
 
 jobs:
+    codeql:
+        # docker.ansible ships Python test tooling; the reusable workflow
+        # defaults to Go, so the language has to be passed explicitly.
+        uses: arillso/.github/.github/workflows/security-codeql.yml@2026-06-18
+        with:
+            language: python
+
     trivy:
         name: Trivy Scan
         runs-on: ubuntu-latest
