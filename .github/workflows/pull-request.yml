@@ -31,10 +31,10 @@ permissions:
 
 jobs:
     security-secrets:
-        uses: arillso/.github/.github/workflows/security-secrets.yml@2026-06-18
+        uses: arillso/.github/.github/workflows/security-secrets.yml@2026-08-07
 
     claude-review:
-        uses: arillso/.github/.github/workflows/ai-claude-review.yml@2026-06-18
+        uses: arillso/.github/.github/workflows/ai-claude-review.yml@2026-08-07
         if: github.event_name == 'pull_request'
         secrets:
             CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -50,7 +50,7 @@ jobs:
 
             - name: Filter paths
               id: filter
-              uses: dorny/paths-filter@7b450fff21473bca461d4b92ce414b9d0420d706 # v4.0.2
+              uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
               with:
                   filters: |
                       code:
@@ -335,7 +335,7 @@ jobs:
             - name: Setup Python
               uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
               with:
-                  python-version: "3.14.6"
+                  python-version: "3.14.7"
 
             - name: Install Test Dependencies
               run: |
