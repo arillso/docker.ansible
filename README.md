@@ -20,12 +20,12 @@ docker run --rm -it -v $(pwd):/workspace -w /workspace arillso/ansible bash
 The image needs no environment variables to run. The defaults below are baked
 in; override them with `-e NAME=value` when needed.
 
-| Variable                     | Default            | Purpose                                                              |
-| ---------------------------- | ------------------ | -------------------------------------------------------------------- |
-| `ANSIBLE_FORCE_COLOR`        | `True`             | Colored output even when stdout is not a TTY. Set `False` to disable. |
-| `ANSIBLE_HOST_KEY_CHECKING`  | `False` (via cfg)  | Skips SSH host-key verification. Set `True` for persistent hosts.    |
-| `ANSIBLE_CONFIG`             | `/etc/ansible/ansible.cfg` | Point to a mounted config to override the baked-in defaults. |
-| `PIPX_HOME` / `PATH`         | `/pipx`            | Location of the Ansible virtualenv. Do not change.                  |
+| Variable                    | Default                    | Purpose                                                               |
+| --------------------------- | -------------------------- | --------------------------------------------------------------------- |
+| `ANSIBLE_FORCE_COLOR`       | `True`                     | Colored output even when stdout is not a TTY. Set `False` to disable. |
+| `ANSIBLE_HOST_KEY_CHECKING` | `False` (via cfg)          | Skips SSH host-key verification. Set `True` for persistent hosts.     |
+| `ANSIBLE_CONFIG`            | `/etc/ansible/ansible.cfg` | Point to a mounted config to override the baked-in defaults.          |
+| `PIPX_HOME` / `PATH`        | `/pipx`                    | Location of the Ansible virtualenv. Do not change.                    |
 
 Common run-time inputs are passed by mounting, not env vars:
 

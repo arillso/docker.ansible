@@ -5,7 +5,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 <!-- markdownlint-disable MD024 -->
 
-
 ## [2026-06-20]
 
 ### Changed
@@ -16,10 +15,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   - `mitogen` from `0.3.49` to `0.3.50`
   - `cryptography` from `48.0.1` to `49.0.0`
   - `boto3` from `1.43.30` to `1.43.34`
-  - `botocore` from `1.43.30` to `1.43.34` 
+  - `botocore` from `1.43.30` to `1.43.34`
 
 - Added configuration to `/etc/ansible/ansible.cfg` to disable host key checking, targeting ephemeral CI/automation runs.
-
 
 ## [Unreleased]
 
@@ -40,15 +38,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Document in the generated `ansible.cfg` why `host_key_checking` is disabled
   (ephemeral CI hosts) and how to re-enable it for persistent hosts.
 
-
 ## [2026-06-19]
 
 ### Changed
 
-- Updated Python dependencies:  
-  - boto3 1.43.29 → 1.43.30  
-  - botocore 1.43.29 → 1.43.30  
-  - google-auth 2.54.0 → 2.55.0  
+- Updated Python dependencies:
+  - boto3 1.43.29 → 1.43.30
+  - botocore 1.43.29 → 1.43.30
+  - google-auth 2.54.0 → 2.55.0
 
 ### Removed
 
@@ -62,7 +59,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - No security updates.
 
-
 ## [2026-06-16]
 
 ### Changed
@@ -71,7 +67,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   - boto3 1.43.28 → 1.43.29
   - botocore 1.43.28 → 1.43.29
   - google-auth 2.53.0 → 2.54.0
-
 
 ## [2026-06-15]
 
@@ -106,31 +101,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Updated Python dependencies: boto3 1.19.23 → 1.19.24, botocore 1.22.23 → 1.22.24
 - Removed unused dependency: requests 2.26.0
 
-
 ## [2026-06-02]
 
 ### Changed
 
 - Updated Kubernetes integration: kubernetes 35.0.0 → 36.0.0
 
-
 ## [2026-05-19]
 
 ### Changed
 
-- Updated Python dependencies:  
-  - boto3 1.43.8 → 1.43.9  
-  - botocore 1.43.8 → 1.43.9  
-  - google-auth 2.52.0 → 2.53.0  
+- Updated Python dependencies:
+  - boto3 1.43.8 → 1.43.9
+  - botocore 1.43.8 → 1.43.9
+  - google-auth 2.52.0 → 2.53.0
 
 ### Fixed
 
-- No fixes applied.  
+- No fixes applied.
 
 ### Security
 
 - No security updates.
-
 
 ## [2026-05-18]
 
@@ -142,7 +134,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   - boto3 1.43.7 → 1.43.8
   - botocore 1.43.7 → 1.43.8
 
-
 ## [2026-05-17]
 
 ### Changed
@@ -153,7 +144,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   - boto3 1.43.6 → 1.43.7
   - botocore 1.43.6 → 1.43.7
 
-
 ## [2026-05-16]
 
 ### Changed
@@ -161,11 +151,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Updated Python dependencies:
   - idna 3.14 → 3.15
   - pyvmomi 9.0.0.0 → 9.1.0.0
-  
+
 ### Security
 
 - Updated `idna` to version 3.15 to include security fixes.
-
 
 ## [2026-05-15]
 
@@ -179,7 +168,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Updated requirements for specific libraries as part of maintenance.
 
-
 ## [2026-05-14]
 
 ### Changed
@@ -189,7 +177,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Fixed
 
 - Updated Ansible version to 2.20.5
-
 
 ## [2026-05-11]
 
@@ -205,19 +192,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Updated urllib3 to version 2.7.0 to address security vulnerabilities.
 
-
 ## [2026-05-10]
 
 ### Changed
 
-- Updated Python dependencies:  
-  - boto3 1.43.4 → 1.43.5  
-  - botocore 1.43.4 → 1.43.5  
+- Updated Python dependencies:
+  - boto3 1.43.4 → 1.43.5
+  - botocore 1.43.4 → 1.43.5
 
 ### Fixed
 
 - Maintenance release
-
 
 ## [2026-05-09]
 
@@ -229,19 +214,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   - boto3 1.43.2 → 1.43.4
   - botocore 1.43.2 → 1.43.4
 
-
 ## [2026-05-05]
 
 ### Changed
 
-- Updated Python dependencies:  
-  - boto3 1.43.1 → 1.43.2  
-  - botocore 1.43.1 → 1.43.2  
+- Updated Python dependencies:
+  - boto3 1.43.1 → 1.43.2
+  - botocore 1.43.1 → 1.43.2
 
 ### Fixed
 
 - Fixed compatibility issues with updated boto3 and botocore versions.
-
 
 ## [2026-05-01]
 
@@ -278,7 +261,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Updated cryptography from version 46.0.6 to 46.0.7
 
-
 ## [2026-04-06]
 
 ### Changed
@@ -287,77 +269,70 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Updated boto3 from 1.42.81 to 1.42.82
 - Updated botocore from 1.42.81 to 1.42.82
 
-
 ## [2026-04-05]
 
 ### Changed
 
-- Updated Python dependencies:  
-  - boto3 1.42.80 → 1.42.81  
-  - botocore 1.42.80 → 1.42.81  
+- Updated Python dependencies:
+  - boto3 1.42.80 → 1.42.81
+  - botocore 1.42.80 → 1.42.81
 
 ### Fixed
 
 - Ansible version remains at 2.20.4.
-
 
 ## [2026-04-04]
 
 ### Changed
 
 - Updated Ansible version: 2.20.4
-- Updated Python dependencies:  
-  - boto3 1.42.79 → 1.42.80  
-  - botocore 1.42.79 → 1.42.80  
+- Updated Python dependencies:
+  - boto3 1.42.79 → 1.42.80
+  - botocore 1.42.79 → 1.42.80
   - pandas 3.0.1 → 3.0.2
-
 
 ## [2026-04-03]
 
 ### Changed
 
-- Updated Python dependencies:  
-  - boto3 1.42.78 → 1.42.79  
-  - botocore 1.42.78 → 1.42.79  
-  - google-cloud-compute 1.46.0 → 1.47.0  
-
+- Updated Python dependencies:
+  - boto3 1.42.78 → 1.42.79
+  - botocore 1.42.78 → 1.42.79
+  - google-cloud-compute 1.46.0 → 1.47.0
 
 ## [2026-04-02]
 
 ### Changed
 
-- Updated Python dependencies: 
+- Updated Python dependencies:
   - requests 2.33.0 → 2.33.1
   - mitogen 0.3.44 → 0.3.45
-  
+
 ### Fixed
 
 - Updated pytz version to 2026.1.post1.
-
 
 ## [2026-03-31]
 
 ### Changed
 
-- Updated Python dependencies:  
-  - boto3 1.42.77 → 1.42.78  
-  - botocore 1.42.77 → 1.42.78  
-  - python-gitlab 8.1.0 → 8.2.0  
+- Updated Python dependencies:
+  - boto3 1.42.77 → 1.42.78
+  - botocore 1.42.77 → 1.42.78
+  - python-gitlab 8.1.0 → 8.2.0
 - Ansible version updated to 2.20.4
-
 
 ## [2026-03-30]
 
 ### Changed
 
-- Updated Python dependencies:  
-  - boto3 1.42.76 → 1.42.77  
-  - botocore 1.42.76 → 1.42.77  
+- Updated Python dependencies:
+  - boto3 1.42.76 → 1.42.77
+  - botocore 1.42.76 → 1.42.77
 
 ### Fixed
 
 - Updated Ansible Core version from 2.20.4 to 2.20.4 (no changes to the version, included for completeness).
-
 
 ## [2026-03-29]
 
@@ -379,7 +354,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Updated Python dependencies: requests 2.32.5 → 2.33.0
 - Current Ansible version: 2.20.4
-
 
 ## [2026-03-25]
 
@@ -415,7 +389,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   - opentelemetry-exporter-otlp 1.39.1 → 1.40.0
 - Updated urllib3 version: 2.3.0 → 2.6.3
 
-
 ## [2026-03-02]
 
 ### Changed
@@ -425,7 +398,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   - mitogen 0.3.41 → 0.3.42
   - boto3 1.42.53 → 1.42.58
   - botocore 1.42.53 → 1.42.58
-
 
 ## [2026-02-23]
 
@@ -440,7 +412,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - No fixed issues reported.
 
-
 ## [2026-02-16]
 
 ### Changed
@@ -453,7 +424,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   - botocore 1.42.43 → 1.42.48
   - azure-identity 1.25.1 → 1.25.2
 
-
 ## [2026-02-11]
 
 ### Changed
@@ -464,16 +434,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Updated cryptography to version 46.0.5 to address security vulnerabilities.
 
-
 ## [2026-02-09]
 
 ### Changed
 
-- Updated Python dependencies: 
+- Updated Python dependencies:
   - boto3 1.42.42 → 1.42.43
   - botocore 1.42.42 → 1.42.43
 - Updated pip version: 26.0 → 26.0.1
-
 
 ## [2026-02-04]
 
@@ -506,20 +474,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   - botocore 1.42.29 → 1.42.33
 - Updated wheel from version 0.46.2 to 0.46.3.
 
-
 ## [2026-01-22]
 
 ### Changed
 
 - Updated `wheel` from version `0.45.1` to `0.46.2`
 
-
 ## [2026-01-19]
 
 ### Changed
 
-- Updated Python dependencies: 
-  - boto3 1.42.25 → 1.42.29 
+- Updated Python dependencies:
+  - boto3 1.42.25 → 1.42.29
   - botocore 1.42.25 → 1.42.29
 
 ## [2026-01-11]
