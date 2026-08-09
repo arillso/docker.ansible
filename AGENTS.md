@@ -16,7 +16,7 @@ tests/               # Unit, integration, security, performance tests
 
 ## Conventions
 
-- Alpine packages use `>=` lower-bound pins (`pkg>=version-rN`), resolved through the pkg.arillso.io caching proxy and bumped by Renovate (a customManager auto-detects every `apk add` pin via the repology datasource — no per-package markers). Lower bounds tolerate Alpine's -rN rotation: the proxy is a pull-through cache, not an archive, so exact pins break on rebuild once an old -rN drops from dl-cdn
+- Alpine packages use `>=` lower-bound pins (`pkg>=version-rN`), resolved through the pkg.arillso.io caching proxy and bumped by Renovate (the shared `renovate-alpine` preset detects every `apk add` pin via repology — no per-package markers). Lower bounds tolerate Alpine's -rN rotation: the proxy is a pull-through cache, not an archive, so exact pins break on rebuild once an old -rN drops from dl-cdn
 - Non-root user `ansible` (UID/GID 1000)
 - Mitogen enabled by default for performance
 - Multi-platform builds (amd64, arm64)
