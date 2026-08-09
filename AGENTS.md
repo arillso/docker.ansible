@@ -16,7 +16,7 @@ tests/               # Unit, integration, security, performance tests
 
 ## Conventions
 
-- Alpine packages use `>=` lower-bound pins (`pkg>=version-rN`), resolved through the pkg.arillso.io caching proxy and bumped by Renovate (a customManager auto-detects every `apk add` pin via the repology datasource — no per-package markers). Lower bounds tolerate Alpine's -rN rotation: the proxy is a pull-through cache, not an archive, so exact pins break on rebuild once an old -rN drops from dl-cdn
+- Alpine packages use `>=` lower-bound pins (`pkg>=version-rN`), resolved through the pkg.arillso.io caching proxy and bumped by Renovate (the shared `renovate-alpine` preset detects every `apk add` pin via repology — no per-package markers). Lower bounds tolerate Alpine's -rN rotation: the proxy is a pull-through cache, not an archive, so exact pins break on rebuild once an old -rN drops from dl-cdn
 - Non-root user `ansible` (UID/GID 1000)
 - Mitogen enabled by default for performance
 - Multi-platform builds (amd64, arm64)
@@ -32,7 +32,7 @@ make release-check       # Pre-release validation
 
 ## Do Not
 
-- Use unpinned Alpine packages, or pin to a registry other than pkg.arillso.io (the renovate.json customManager keeps the lower bounds current)
+- Use unpinned Alpine packages, or pin to a registry other than pkg.arillso.io (the shared `renovate-alpine` preset keeps the lower bounds current)
 - Replace the `>=` lower bounds with exact `=` pins, or drop the lower bound entirely — `>=` is deliberate so Alpine's -rN rotation cannot break the build
 - Add an upper bound to the Alpine pins — the earlier upper-bound experiment (py3-pip, python3-dev) just recreated the drift pain from the other direction
 - Run as root in production
