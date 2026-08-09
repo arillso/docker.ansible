@@ -60,8 +60,8 @@ redis==8.1.0
 pyvmomi==9.1.0.0
 
 # AWS Integration
-boto3==1.43.64
-botocore==1.43.64
+boto3==1.43.65
+botocore==1.43.65
 
 # Azure Integration
 azure-identity==1.25.3
