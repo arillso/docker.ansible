@@ -46,8 +46,11 @@ COPY requirements.txt /requirements.txt
 # pull-through cache, not an archive, so once Alpine rotates an old -rN out of
 # dl-cdn an exact pin breaks on rebuild. `>=` lets apk take the current -rN and
 # tolerates that rotation, while Renovate still lifts the lower bound and the
-# text change invalidates the cache. The customManager in .github/renovate.json
-# auto-detects every pin (no per-package markers).
+# text change invalidates the cache. The shared renovate-alpine preset (see
+# .github/renovate.json) auto-detects every pin (no per-package markers). The
+# preset hardcodes the Alpine series it resolves against, so bumping the FROM
+# above to a new Alpine minor also means re-pointing that preset ref to a tag
+# whose series matches.
 RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	printf 'https://pkg.arillso.io/alpine/%s/main\nhttps://pkg.arillso.io/alpine/%s/community\n' \
 		"$alpine_minor" "$alpine_minor" > /etc/apk/repositories && \

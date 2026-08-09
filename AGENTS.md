@@ -32,7 +32,7 @@ make release-check       # Pre-release validation
 
 ## Do Not
 
-- Use unpinned Alpine packages, or pin to a registry other than pkg.arillso.io (the renovate.json customManager keeps the lower bounds current)
+- Use unpinned Alpine packages, or pin to a registry other than pkg.arillso.io (the shared `renovate-alpine` preset keeps the lower bounds current)
 - Replace the `>=` lower bounds with exact `=` pins, or drop the lower bound entirely — `>=` is deliberate so Alpine's -rN rotation cannot break the build
 - Add an upper bound to the Alpine pins — the earlier upper-bound experiment (py3-pip, python3-dev) just recreated the drift pain from the other direction
 - Run as root in production
