@@ -336,7 +336,7 @@ jobs:
             # next to that image. Docker Hub receives the same digest, so the
             # ghcr attestation verifies it as well.
             - name: Generate artifact attestation
-              uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4
+              uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4
               with:
                   subject-name: ghcr.io/arillso/ansible
                   subject-digest: ${{ steps.build.outputs.digest }}
