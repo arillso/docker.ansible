@@ -370,6 +370,7 @@ jobs:
         needs:
             - changes
             - lint
+            - dockerfile-lint
             - prepare
             - build
             - structure-test
@@ -408,6 +409,7 @@ jobs:
               run: |
                   ./tests/scripts/container-test-summary.sh \
                     "Lint=${{ needs.lint.result }}" \
+                    "Dockerfile Lint=${{ needs.dockerfile-lint.result }}" \
                     "Build=${{ needs.build.result }}" \
                     "Structure Tests=${{ needs.structure-test.result }}" \
                     "Security Tests=${{ needs.security-test.result }}" \
