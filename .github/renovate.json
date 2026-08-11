@@ -6,12 +6,9 @@
     ],
     "packageRules": [
         {
+            "description": "Trivy is intentionally not digest-pinned; the action resolves its scanner version from the tag.",
             "matchManagers": ["github-actions"],
-            "matchPackageNames": [
-                "hadolint/hadolint-action",
-                "ludeeus/action-shellcheck",
-                "aquasecurity/trivy-action"
-            ],
+            "matchPackageNames": ["aquasecurity/trivy-action"],
             "pinDigests": false
         }
     ]
