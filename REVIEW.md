@@ -13,7 +13,7 @@ In scope:
 
 Out of scope:
 
-- `test-results/` and `megalinter-reports/` — generated artifacts
+- `test-results/` — generated artifacts
 - Renovate dependency-only PRs (patch/minor with automerge enabled)
 - Generated changelog entries from release automation
 
