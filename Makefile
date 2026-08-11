@@ -19,12 +19,13 @@ format-code: ## Format code files using Prettier via Docker.
 format-all: format-code ## Run both format-code and format-eclint.
 	@echo "Formatting completed."
 
-lint: ## Run all linters via lefthook (skipped when lefthook is missing; CI is the gate)
+lint: ## Run all linters and a full-tree secret scan via lefthook (skipped when lefthook is missing; CI is the gate)
 	@if ! command -v lefthook >/dev/null 2>&1; then \
 		echo "SKIP: lefthook not installed"; \
 	else \
 		echo "Running linters..."; \
 		lefthook run pre-commit --all-files --force; \
+		lefthook run pre-push --force; \
 	fi
 
 build: ansible-build ## Build the Ansible Docker image (alias for ansible-build)
