@@ -13,7 +13,6 @@ __pycache__/
 
 # Build outputs
 test-results/
-megalinter-reports/
 output/
 artifacts/
 

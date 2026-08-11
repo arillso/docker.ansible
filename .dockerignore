@@ -28,7 +28,6 @@ Makefile
 # Tests and generated artifacts
 tests/
 test-results/
-megalinter-reports/
 output/
 artifacts/
 

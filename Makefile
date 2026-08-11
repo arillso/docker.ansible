@@ -11,7 +11,7 @@ endif
 
 .DEFAULT_GOAL := help
 
-.PHONY: format-code format-all run-megalinter ansible-build test-local test-quick validate-docker validate-renovate validate-renovate-deps tests help structure-test security-test performance-test integration-test unit-test upgrade-test comprehensive-test clean clean-all release-check debug-container
+.PHONY: format-code format-all lint build ansible-build test-local test-quick validate-docker validate-renovate validate-renovate-deps tests help structure-test security-test performance-test integration-test unit-test upgrade-test comprehensive-test clean clean-all release-check debug-container
 
 format-code: ## Format code files using Prettier via Docker.
 	@docker run --rm --name prettier -v $(PROJECT_DIR):$(PROJECT_DIR) -w /$(PROJECT_DIR) node:24-alpine3.20 npx prettier . --write
@@ -19,9 +19,16 @@ format-code: ## Format code files using Prettier via Docker.
 format-all: format-code ## Run both format-code and format-eclint.
 	@echo "Formatting completed."
 
-run-megalinter: ## Run Megalinter locally.
-	@docker run --rm --name megalint -v $(PROJECT_DIR):/tmp/lint busybox:1.37.0 rm -rf /tmp/lint/megalinter-reports
-	@docker run --rm --name megalint -v $(PROJECT_DIR):/tmp/lint oxsecurity/megalinter:v9.3.0
+lint: ## Run all linters and a full-tree secret scan via lefthook (skipped when lefthook is missing; CI is the gate)
+	@if ! command -v lefthook >/dev/null 2>&1; then \
+		echo "SKIP: lefthook not installed"; \
+	else \
+		echo "Running linters..."; \
+		lefthook run pre-commit --all-files --force; \
+		lefthook run pre-push --force; \
+	fi
+
+build: ansible-build ## Build the Ansible Docker image (alias for ansible-build)
 
 ansible-build: ## Build the Ansible Docker image with optimizations
 	@echo "Building Ansible container..."
