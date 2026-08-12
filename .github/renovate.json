@@ -1,8 +1,8 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
-        "github>arillso/.github:renovate-base#2026-08-09",
-        "github>arillso/.github:renovate-alpine#2026-08-09"
+        "github>arillso/.github:renovate-base#2026-08-11",
+        "github>arillso/.github:renovate-alpine#2026-08-11"
     ],
     "packageRules": [
         {
