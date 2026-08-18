@@ -34,7 +34,7 @@ jobs:
         # reason. Without this, merge.yml would still push CodeQL results on
         # every merge to main despite passing upload-sarif: false.
         if: ${{ !(github.event_name == 'workflow_call' && inputs.upload-sarif == false) }}
-        uses: arillso/.github/.github/workflows/security-codeql.yml@2026-08-14
+        uses: arillso/.github/.github/workflows/security-codeql.yml@2026-08-15
         with:
             language: python
 
@@ -71,7 +71,7 @@ jobs:
                   exit-code: "0"
 
             - name: Upload Trivy scan results
-              uses: github/codeql-action/upload-sarif@5595ccaf912efad79be6eef63a5619ff05969be3 # v4
+              uses: github/codeql-action/upload-sarif@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd # v4
               # Upload unless a caller explicitly opts out. On schedule /
               # workflow_dispatch there is no `inputs` context, so the bare
               # `inputs.upload-sarif != false` evaluated false and silently
