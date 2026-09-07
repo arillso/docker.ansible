@@ -34,7 +34,7 @@ jobs:
         # reason. Without this, merge.yml would still push CodeQL results on
         # every merge to main despite passing upload-sarif: false.
         if: ${{ !(github.event_name == 'workflow_call' && inputs.upload-sarif == false) }}
-        uses: arillso/.github/.github/workflows/security-codeql.yml@2026-08-31
+        uses: arillso/.github/.github/workflows/security-codeql.yml@2026-09-06
         with:
             language: python
 
@@ -105,7 +105,7 @@ jobs:
                   fetch-depth: 0
 
             - name: TruffleHog scan
-              uses: trufflesecurity/trufflehog@cc1fe982afc515d2991365ce8d4d0dd07170fcad # v3.97.2
+              uses: trufflesecurity/trufflehog@363923b901c911a9164f50b6c423f47c15372b1c # v3.97.4
               with:
                   path: ./
                   base: ${{ github.event.pull_request.base.sha || 'HEAD~1' }}
