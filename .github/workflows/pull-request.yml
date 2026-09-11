@@ -31,13 +31,13 @@ permissions:
 
 jobs:
     security-secrets:
-        uses: arillso/.github/.github/workflows/security-secrets.yml@2026-09-08
+        uses: arillso/.github/.github/workflows/security-secrets.yml@2026-09-09
 
     security-deps:
-        uses: arillso/.github/.github/workflows/security-deps.yml@2026-09-08
+        uses: arillso/.github/.github/workflows/security-deps.yml@2026-09-09
 
     claude-review:
-        uses: arillso/.github/.github/workflows/ai-claude-review.yml@2026-09-08
+        uses: arillso/.github/.github/workflows/ai-claude-review.yml@2026-09-09
         if: github.event_name == 'pull_request'
         secrets:
             CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -60,7 +60,7 @@ jobs:
                         - '!(**/*.md|LICENSE)'
 
     lint:
-        uses: arillso/.github/.github/workflows/ci-lint.yml@2026-09-08
+        uses: arillso/.github/.github/workflows/ci-lint.yml@2026-09-09
         needs: changes
         if: ${{ needs.changes.outputs.code == 'true' }}
         with:
