@@ -31,13 +31,13 @@ permissions:
 
 jobs:
     security-secrets:
-        uses: arillso/.github/.github/workflows/security-secrets.yml@2026-09-08
+        uses: arillso/.github/.github/workflows/security-secrets.yml@2026-09-16
 
     security-deps:
-        uses: arillso/.github/.github/workflows/security-deps.yml@2026-09-08
+        uses: arillso/.github/.github/workflows/security-deps.yml@2026-09-16
 
     claude-review:
-        uses: arillso/.github/.github/workflows/ai-claude-review.yml@2026-09-08
+        uses: arillso/.github/.github/workflows/ai-claude-review.yml@2026-09-16
         if: github.event_name == 'pull_request'
         secrets:
             CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -60,7 +60,7 @@ jobs:
                         - '!(**/*.md|LICENSE)'
 
     lint:
-        uses: arillso/.github/.github/workflows/ci-lint.yml@2026-09-08
+        uses: arillso/.github/.github/workflows/ci-lint.yml@2026-09-16
         needs: changes
         if: ${{ needs.changes.outputs.code == 'true' }}
         with:
@@ -112,10 +112,10 @@ jobs:
               uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
             - name: Set up Docker Buildx
-              uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4
+              uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
 
             - name: Build and export
-              uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7
+              uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7
               with:
                   context: .
                   build-args: ANSIBLE_VERSION=${{ needs.prepare.outputs.ansible_version }}
