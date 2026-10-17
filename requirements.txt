@@ -73,7 +73,7 @@ google-cloud-compute==1.54.0
 google-auth==2.58.0
 
 # Kubernetes Integration
-kubernetes==36.0.3
+kubernetes==37.0.1
 
 # GitLab Integration
 python-gitlab==8.5.0
