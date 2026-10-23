@@ -276,7 +276,7 @@ fileContentTests:
           # Must match the Alpine version of the FROM base in the Dockerfile.
           # Renovate keeps it in sync via the marker below; bump both together.
           # renovate: datasource=docker depName=alpine
-          - "3.24.1"
+          - "3.24.2"
 
     - name: "Check SSH Client Configuration"
       path: "/etc/ssh/ssh_config"
