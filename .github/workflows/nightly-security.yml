@@ -37,7 +37,7 @@ jobs:
         # reason. Without this, merge.yml would still push CodeQL results on
         # every merge to main despite passing upload-sarif: false.
         if: ${{ !(github.event_name == 'workflow_call' && inputs.upload-sarif == false) }}
-        uses: arillso/.github/.github/workflows/security-codeql.yml@2026-10-23
+        uses: arillso/.github/.github/workflows/security-codeql.yml@2026-10-24
         with:
             language: python
 
