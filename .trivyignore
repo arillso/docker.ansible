@@ -18,3 +18,11 @@
 # Revisit when pip drops the setuptools entry from its SBOM, or when a finding
 # appears that names an actual file in the image.
 CVE-2025-47273
+
+# CVE-2026-59890 — setuptools MANIFEST.in exclusion bypass in sdist.
+#
+# Same stale credit as above. The advisory targets FileList (egg_info and
+# _distutils/filelist.py), which only runs when building an sdist; the vendored
+# pkg_resources has no FileList, global_exclude or translate_pattern. Same
+# revisit condition.
+CVE-2026-59890
