@@ -17,8 +17,9 @@
 # takes the version from the SBOM, whose findings carry a BOMRef and no file
 # path. Nothing in pip reads either file at runtime.
 #
-# The other finding Trivy reports against this tree, CVE-2025-47273 against
-# setuptools, is a stale SBOM credit rather than code — see .trivyignore.
+# The setuptools findings Trivy reports against this tree (CVE-2025-47273,
+# CVE-2026-59890) come from a stale SBOM credit, not from vendored code that
+# contains the bug — see .trivyignore.
 set -eu
 
 venv="${1:?usage: vendorfix.sh <venv-dir> <package> <requirement>}"
