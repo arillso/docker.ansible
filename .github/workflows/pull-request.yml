@@ -18,7 +18,10 @@ run-name: |
                 default: true
 
 concurrency:
-    group: ${{ github.workflow }}-${{ github.ref }}
+    # Fixed name, not github.workflow: when merge.yml calls this workflow,
+    # github.workflow resolves to the caller's name, so both called workflows
+    # shared one group and cancelled each other.
+    group: pull-request-${{ github.ref }}
     cancel-in-progress: true
 
 permissions:
