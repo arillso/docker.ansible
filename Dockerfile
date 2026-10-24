@@ -57,7 +57,7 @@ RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	apk add --no-cache \
 	"py3-pip>=26.1.2-r0" \
 	"pipx>=1.14.0-r0" \
-	"ca-certificates>=20260611-r0" \
+	"ca-certificates>=20261020-r0" \
 	"git>=2.54.0-r0" \
 	"gcc>=15.2.0-r5" \
 	"libffi-dev>=3.5.2-r1" \
