@@ -74,7 +74,7 @@ jobs:
                   exit-code: "0"
 
             - name: Upload Trivy scan results
-              uses: github/codeql-action/upload-sarif@1c5b675653bb5c22dbe9b12b556ec555138e09fd # v4
+              uses: github/codeql-action/upload-sarif@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4
               # Upload unless a caller explicitly opts out. On schedule /
               # workflow_dispatch there is no `inputs` context, so the bare
               # `inputs.upload-sarif != false` evaluated false and silently
@@ -108,7 +108,7 @@ jobs:
                   fetch-depth: 0
 
             - name: TruffleHog scan
-              uses: trufflesecurity/trufflehog@e63326d6545de8f425d93ce24078c6e68d83f70e # v3.99.3
+              uses: trufflesecurity/trufflehog@c85580b712841eda4c53bc28fc6ace6100e8c16c # v3.99.4
               with:
                   path: ./
                   base: ${{ github.event.pull_request.base.sha || 'HEAD~1' }}
