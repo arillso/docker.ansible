@@ -61,14 +61,14 @@ RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	"git>=2.54.0-r0" \
 	"gcc>=15.2.0-r5" \
 	"libffi-dev>=3.5.2-r1" \
-	"python3-dev>=3.14.5-r0" \
+	"python3-dev>=3.14.8-r0" \
 	"make>=4.4.1-r4" \
-	"musl-dev>=1.2.6-r2" \
+	"musl-dev>=1.2.6-r3" \
 	"build-base>=0.5-r4" \
-	"openssh-client-common>=10.3_p1-r0" \
-	"openssh-client-default>=10.3_p1-r0" \
-	"rsync>=3.4.3-r1" \
-	"curl>=8.21.0-r0"
+	"openssh-client-common>=10.3_p1-r1" \
+	"openssh-client-default>=10.3_p1-r1" \
+	"rsync>=3.5.0-r0" \
+	"curl>=8.22.0-r0"
 
 # Create virtual environment and install dependencies
 RUN	python3 -m venv /pipx/venvs/ansible && \
@@ -127,21 +127,21 @@ RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	printf 'https://pkg.arillso.io/alpine/%s/main\nhttps://pkg.arillso.io/alpine/%s/community\n' \
 		"$alpine_minor" "$alpine_minor" > /etc/apk/repositories && \
 	apk add --no-cache \
-	"python3>=3.14.5-r0" \
+	"python3>=3.14.8-r0" \
 	"bash>=5.3.9-r1" \
 	"git>=2.54.0-r0" \
-	"curl>=8.21.0-r0" \
-	"openssh-client-common>=10.3_p1-r0" \
-	"openssh-client-default>=10.3_p1-r0" \
-	"openssh-keygen>=10.3_p1-r0" \
+	"curl>=8.22.0-r0" \
+	"openssh-client-common>=10.3_p1-r1" \
+	"openssh-client-default>=10.3_p1-r1" \
+	"openssh-keygen>=10.3_p1-r1" \
 	"sshpass>=1.10-r0" \
-	"rsync>=3.4.3-r1" \
-	"kubectl>=1.36.1-r0" \
-	"helm>=3.19.0-r7" \
-	"kustomize>=5.8.1-r2" \
-	"jq>=1.8.1-r0" \
+	"rsync>=3.5.0-r0" \
+	"kubectl>=1.36.1-r2" \
+	"helm>=3.19.0-r9" \
+	"kustomize>=5.8.1-r4" \
+	"jq>=1.8.2-r0" \
 	"gnupg>=2.4.9-r1" \
-	"openssl>=3.5.7-r0" \
+	"openssl>=3.5.9-r0" \
 	"tini>=0.19.0-r3" && \
 	# Reset to the public Alpine mirrors so the SHIPPED image does not depend
 	# on the private build-time proxy — downstream `apk add` uses dl-cdn.
