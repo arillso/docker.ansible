@@ -253,10 +253,10 @@ jobs:
                     echo ""
                     echo '```bash'
                     echo "# Use specific Ansible version"
-                    echo "docker run --rm -v \$(pwd):/workspace arillso/ansible:${ansible_version} ansible-playbook playbook.yml"
+                    echo "docker run --rm -v \$(pwd):/workspace -w /workspace arillso/ansible:${ansible_version} ansible-playbook playbook.yml"
                     echo ""
                     echo "# Use latest version"
-                    echo "docker run --rm -v \$(pwd):/workspace arillso/ansible:latest ansible-playbook playbook.yml"
+                    echo "docker run --rm -v \$(pwd):/workspace -w /workspace arillso/ansible:latest ansible-playbook playbook.yml"
                     echo '```'
                     echo ""
                     echo "## Documentation"
