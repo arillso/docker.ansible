@@ -81,11 +81,13 @@ RUN	python3 -m venv /pipx/venvs/ansible && \
 	# Cleanup
 	rm -rf /var/cache/apk/* /tmp/*
 
-# Replace the msgpack copy pip vendors (GHSA-6v7p-g79w-8964). The script carries
-# the reasoning; it runs in the builder stage, so it never ships.
-COPY build/vendorfix-msgpack.sh /tmp/vendorfix-msgpack.sh
-RUN sh /tmp/vendorfix-msgpack.sh /pipx/venvs/ansible && \
-	rm -f /tmp/vendorfix-msgpack.sh
+# Replace the msgpack and urllib3 copies pip vendors (GHSA-6v7p-g79w-8964,
+# CVE-2026-97687, CVE-2026-97689). The script carries the reasoning; it runs in
+# the builder stage, so it never ships.
+COPY build/vendorfix.sh /tmp/vendorfix.sh
+RUN sh /tmp/vendorfix.sh /pipx/venvs/ansible msgpack "msgpack>=1.2.1" && \
+	sh /tmp/vendorfix.sh /pipx/venvs/ansible urllib3 "urllib3>=2.8.0" && \
+	rm -f /tmp/vendorfix.sh
 
 ##############################################
 # Production Stage
