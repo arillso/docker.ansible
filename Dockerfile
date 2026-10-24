@@ -1,9 +1,9 @@
-# syntax=docker/dockerfile:1@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
+# syntax=docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
 
 ##############################################
 # Base Stage: Common configuration
 ##############################################
-FROM alpine:3.24.1@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b AS base
+FROM alpine:3.24.2@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6 AS base
 
 # Define OCI labels for all stages
 ARG BUILD_DATE
@@ -81,11 +81,13 @@ RUN	python3 -m venv /pipx/venvs/ansible && \
 	# Cleanup
 	rm -rf /var/cache/apk/* /tmp/*
 
-# Replace the msgpack copy pip vendors (GHSA-6v7p-g79w-8964). The script carries
-# the reasoning; it runs in the builder stage, so it never ships.
-COPY build/vendorfix-msgpack.sh /tmp/vendorfix-msgpack.sh
-RUN sh /tmp/vendorfix-msgpack.sh /pipx/venvs/ansible && \
-	rm -f /tmp/vendorfix-msgpack.sh
+# Replace the msgpack and urllib3 copies pip vendors (GHSA-6v7p-g79w-8964,
+# CVE-2026-97687, CVE-2026-97689). The script carries the reasoning; it runs in
+# the builder stage, so it never ships.
+COPY build/vendorfix.sh /tmp/vendorfix.sh
+RUN sh /tmp/vendorfix.sh /pipx/venvs/ansible msgpack "msgpack>=1.2.1" && \
+	sh /tmp/vendorfix.sh /pipx/venvs/ansible urllib3 "urllib3>=2.8.0" && \
+	rm -f /tmp/vendorfix.sh
 
 ##############################################
 # Production Stage
