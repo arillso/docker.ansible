@@ -18,7 +18,7 @@ tests/               # Unit, integration, security, performance tests
 
 - Alpine packages use `>=` lower-bound pins (`pkg>=version-rN`), resolved through the pkg.arillso.io caching proxy and bumped by Renovate (the shared `renovate-alpine` preset detects every `apk add` pin via repology — no per-package markers). Lower bounds tolerate Alpine's -rN rotation: the proxy is a pull-through cache, not an archive, so exact pins break on rebuild once an old -rN drops from dl-cdn
 - Non-root user `ansible` (UID/GID 1000)
-- Mitogen enabled by default for performance
+- Mitogen installed and registered, opt-in via `ANSIBLE_STRATEGY=mitogen_linear` (not the default: ansible-core deprecates third-party strategy plugins)
 - Multi-platform builds (amd64, arm64)
 
 ## Commands
@@ -36,5 +36,5 @@ make release-check       # Pre-release validation
 - Replace the `>=` lower bounds with exact `=` pins, or drop the lower bound entirely — `>=` is deliberate so Alpine's -rN rotation cannot break the build
 - Add an upper bound to the Alpine pins — the earlier upper-bound experiment (py3-pip, python3-dev) just recreated the drift pain from the other direction
 - Run as root in production
-- Disable Mitogen without reason
+- Make `mitogen_linear` the default strategy again while ansible-core deprecates third-party strategy plugins
 - Skip security scans before release

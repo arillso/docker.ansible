@@ -21,6 +21,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed (breaking)
+
+- Mitogen is no longer the default strategy. ansible-core deprecates
+  third-party strategy plugins and printed a deprecation warning on every run.
+  Mitogen stays installed and registered; opt in with
+  `ANSIBLE_STRATEGY=mitogen_linear`.
+
 ### Added
 
 - Document the image's environment variables (`ANSIBLE_FORCE_COLOR`,

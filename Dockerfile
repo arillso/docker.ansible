@@ -173,8 +173,11 @@ RUN mkdir -p /etc/ansible && \
 	# the first connection. Override at runtime (ANSIBLE_HOST_KEY_CHECKING=True
 	# or a mounted ansible.cfg) when connecting to persistent, trusted hosts.
 	echo 'host_key_checking = False' >> /etc/ansible/ansible.cfg && \
+	# Mitogen is installed and its strategy path registered, but not set as
+	# the default strategy: ansible-core deprecates third-party strategy
+	# plugins and warns on every run. Opt in at runtime with
+	# ANSIBLE_STRATEGY=mitogen_linear.
 	echo "strategy_plugins = $(/pipx/venvs/ansible/bin/python3 -c 'import os, ansible_mitogen.plugins.strategy as s; print(os.path.dirname(s.__file__))')" >> /etc/ansible/ansible.cfg && \
-	echo 'strategy = mitogen_linear' >> /etc/ansible/ansible.cfg && \
 	echo 'stdout_callback = default' >> /etc/ansible/ansible.cfg && \
 	echo 'pipelining = True' >> /etc/ansible/ansible.cfg && \
 	rm -rf /tmp/*

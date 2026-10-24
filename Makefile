@@ -61,7 +61,7 @@ test-local: ansible-build ## Run comprehensive local container tests
 	@echo ""
 	@echo "3. Mitogen integration..."
 	@docker run --rm ansible:latest /pipx/venvs/ansible/bin/python3 -c "import ansible_mitogen; print('Mitogen successfully imported')"
-	@docker run --rm ansible:latest grep "strategy = mitogen_linear" /etc/ansible/ansible.cfg && echo "Mitogen strategy configured"
+	@docker run --rm ansible:latest grep -q "strategy_plugins" /etc/ansible/ansible.cfg && echo "Mitogen strategy available (opt-in via ANSIBLE_STRATEGY=mitogen_linear)"
 	@echo ""
 	@echo "4. Container health check..."
 	@docker run --rm ansible:latest ansible --version > /dev/null && echo "Healthcheck command successful"

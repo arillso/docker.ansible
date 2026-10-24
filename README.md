@@ -24,6 +24,7 @@ in; override them with `-e NAME=value` when needed.
 | --------------------------- | -------------------------- | --------------------------------------------------------------------- |
 | `ANSIBLE_FORCE_COLOR`       | `True`                     | Colored output even when stdout is not a TTY. Set `False` to disable. |
 | `ANSIBLE_HOST_KEY_CHECKING` | `False` (via cfg)          | Skips SSH host-key verification. Set `True` for persistent hosts.     |
+| `ANSIBLE_STRATEGY`          | `linear`                   | Set `mitogen_linear` to enable Mitogen.                               |
 | `ANSIBLE_CONFIG`            | `/etc/ansible/ansible.cfg` | Point to a mounted config to override the baked-in defaults.          |
 | `PIPX_HOME` / `PATH`        | `/pipx`                    | Location of the Ansible virtualenv. Do not change.                    |
 
@@ -46,7 +47,7 @@ docker run --rm \
 
 ## Features
 
-- Mitogen enabled by default (2-7x faster execution)
+- Mitogen installed, opt-in via `ANSIBLE_STRATEGY=mitogen_linear` (2-7x faster execution)
 - Kubernetes tools (kubectl, helm, kustomize)
 - Multi-platform (amd64, arm64)
 - Non-root user

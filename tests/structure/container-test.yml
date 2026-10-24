@@ -152,11 +152,11 @@ commandTests:
           - ["rm", "-rf", "/tmp/helm-test"]
 
     # Mitogen Configuration Tests
-    - name: "Check Mitogen Strategy in ansible.cfg"
-      command: "grep"
-      args: ["strategy = mitogen_linear", "/etc/ansible/ansible.cfg"]
+    - name: "Check Mitogen Strategy is opt-in, not the default"
+      command: "sh"
+      args: ["-c", "grep -q '^strategy =' /etc/ansible/ansible.cfg && echo 'default strategy set' || echo 'no default strategy'"]
       expectedOutput:
-          - "strategy = mitogen_linear"
+          - "no default strategy"
 
     - name: "Check Mitogen Strategy Plugins Path"
       command: "grep"
