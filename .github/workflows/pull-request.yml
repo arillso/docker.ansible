@@ -198,10 +198,12 @@ jobs:
                   exit-code: "0"
 
             - name: Upload Trivy scan results
-              # Skip only when a workflow_call caller (merge.yml) passes
-              # upload-sarif: false. On pull_request / schedule there is no
-              # inputs context, so the bare check skipped the upload.
-              if: ${{ always() && !(github.event_name == 'workflow_call' && inputs.upload-sarif == false) }}
+              # Skip only when a caller (merge.yml) passes upload-sarif: false.
+              # pull_request runs have no inputs context and read null, which
+              # toJSON keeps apart from false (null == false is true in Actions
+              # expressions); github.event_name is the caller's event, never
+              # workflow_call.
+              if: ${{ always() && toJSON(inputs.upload-sarif) != 'false' }}
               uses: github/codeql-action/upload-sarif@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4
               with:
                   sarif_file: "trivy-results.sarif"

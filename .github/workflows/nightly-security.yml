@@ -36,7 +36,12 @@ jobs:
         # the trivy job below suppresses only its upload step for the same
         # reason. Without this, merge.yml would still push CodeQL results on
         # every merge to main despite passing upload-sarif: false.
-        if: ${{ !(github.event_name == 'workflow_call' && inputs.upload-sarif == false) }}
+        #
+        # toJSON keeps schedule / workflow_dispatch runs uploading: they have no
+        # inputs context, the input reads as null, and null == false is true in
+        # Actions expressions. github.event_name cannot tell the cases apart — in
+        # a called workflow it is the caller's event (push), never workflow_call.
+        if: ${{ toJSON(inputs.upload-sarif) != 'false' }}
         uses: arillso/.github/.github/workflows/security-codeql.yml@2026-10-24
         with:
             language: python
@@ -75,12 +80,9 @@ jobs:
 
             - name: Upload Trivy scan results
               uses: github/codeql-action/upload-sarif@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4
-              # Upload unless a caller explicitly opts out. On schedule /
-              # workflow_dispatch there is no `inputs` context, so the bare
-              # `inputs.upload-sarif != false` evaluated false and silently
-              # skipped the upload — leaving Code Scanning stale. Skip only
-              # when a workflow_call caller passes upload-sarif: false.
-              if: ${{ always() && !(github.event_name == 'workflow_call' && inputs.upload-sarif == false) }}
+              # Upload unless a caller passes upload-sarif: false; see the
+              # codeql job for why the check goes through toJSON.
+              if: ${{ always() && toJSON(inputs.upload-sarif) != 'false' }}
               with:
                   sarif_file: "trivy-results.sarif"
 
