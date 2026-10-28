@@ -90,7 +90,7 @@ MarkupSafe==3.0.4
 
 # JSON & Data Processing
 jsonschema==4.26.0
-jsonpatch==1.36
+jsonpatch==1.37
 
 # Monitoring & Logging
 opentelemetry-exporter-otlp==1.45.1
