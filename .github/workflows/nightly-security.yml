@@ -42,7 +42,7 @@ jobs:
         # Actions expressions. github.event_name cannot tell the cases apart — in
         # a called workflow it is the caller's event (push), never workflow_call.
         if: ${{ toJSON(inputs.upload-sarif) != 'false' }}
-        uses: arillso/.github/.github/workflows/security-codeql.yml@2026-10-24
+        uses: arillso/.github/.github/workflows/security-codeql.yml@2026-11-01
         with:
             language: python
 
