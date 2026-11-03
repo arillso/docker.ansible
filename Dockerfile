@@ -142,6 +142,7 @@ RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	"jq>=1.8.2-r0" \
 	"gnupg>=2.4.9-r1" \
 	"openssl>=3.5.9-r0" \
+	"libexpat>=2.10.0-r0" \
 	"tini>=0.19.0-r3" && \
 	# Reset to the public Alpine mirrors so the SHIPPED image does not depend
 	# on the private build-time proxy — downstream `apk add` uses dl-cdn.
