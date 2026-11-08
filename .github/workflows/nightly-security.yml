@@ -79,7 +79,7 @@ jobs:
                   exit-code: "0"
 
             - name: Upload Trivy scan results
-              uses: github/codeql-action/upload-sarif@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4
+              uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4
               # Upload unless a caller passes upload-sarif: false; see the
               # codeql job for why the check goes through toJSON.
               if: ${{ always() && toJSON(inputs.upload-sarif) != 'false' }}
@@ -110,7 +110,7 @@ jobs:
                   fetch-depth: 0
 
             - name: TruffleHog scan
-              uses: trufflesecurity/trufflehog@31ce31ee1abbcc7dc8eee5764c17121c3044c8b2 # v3.99.7
+              uses: trufflesecurity/trufflehog@ea68ca03c865c5f324e86e849ced20ed3cf9dbbb # v3.99.8
               with:
                   path: ./
                   base: ${{ github.event.pull_request.base.sha || 'HEAD~1' }}
