@@ -61,14 +61,14 @@ RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	"git>=2.54.0-r0" \
 	"gcc>=15.2.0-r5" \
 	"libffi-dev>=3.5.2-r1" \
-	"python3-dev>=3.14.8-r0" \
+	"python3-dev>=3.14.10-r1" \
 	"make>=4.4.1-r4" \
 	"musl-dev>=1.2.6-r3" \
 	"build-base>=0.5-r4" \
-	"openssh-client-common>=10.3_p1-r1" \
-	"openssh-client-default>=10.3_p1-r1" \
-	"rsync>=3.5.0-r0" \
-	"curl>=8.22.0-r0"
+	"openssh-client-common>=10.3_p1-r2" \
+	"openssh-client-default>=10.3_p1-r2" \
+	"rsync>=3.5.2-r1" \
+	"curl>=8.23.0-r0"
 
 # Create virtual environment and install dependencies
 RUN	python3 -m venv /pipx/venvs/ansible && \
@@ -127,15 +127,15 @@ RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	printf 'https://pkg.arillso.io/alpine/%s/main\nhttps://pkg.arillso.io/alpine/%s/community\n' \
 		"$alpine_minor" "$alpine_minor" > /etc/apk/repositories && \
 	apk add --no-cache \
-	"python3>=3.14.8-r0" \
+	"python3>=3.14.10-r1" \
 	"bash>=5.3.9-r1" \
 	"git>=2.54.0-r0" \
-	"curl>=8.22.0-r0" \
-	"openssh-client-common>=10.3_p1-r1" \
-	"openssh-client-default>=10.3_p1-r1" \
-	"openssh-keygen>=10.3_p1-r1" \
+	"curl>=8.23.0-r0" \
+	"openssh-client-common>=10.3_p1-r2" \
+	"openssh-client-default>=10.3_p1-r2" \
+	"openssh-keygen>=10.3_p1-r2" \
 	"sshpass>=1.10-r0" \
-	"rsync>=3.5.0-r0" \
+	"rsync>=3.5.2-r1" \
 	"kubectl>=1.36.1-r2" \
 	"helm>=3.19.0-r9" \
 	"kustomize>=5.8.1-r4" \
