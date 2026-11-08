@@ -128,7 +128,7 @@ integration-test: ansible-build ## Run integration tests with other Docker servi
 unit-test: ansible-build ## Run unit tests with Python
 	@echo "Starting Python unit tests..."
 	@python3 -m pip install pytest pytest-cov
-	@ANSIBLE_IMAGE=ansible:latest python3 -m pytest tests/unit/test_ansible_container.py -v
+	@ANSIBLE_IMAGE=ansible:latest python3 -m pytest tests/unit/ -v
 
 upgrade-test: ansible-build ## Test the container's ability to upgrade
 	@echo "Testing upgrade capability..."

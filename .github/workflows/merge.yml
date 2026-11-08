@@ -202,7 +202,11 @@ jobs:
 
                   # Extract versions from Dockerfile
                   alpine_version=$(grep '^FROM alpine:' Dockerfile | head -1 | sed -E 's/.*alpine:([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
-                  python_version=$(grep -oE '"?python3>?=[0-9]+\.[0-9]+' Dockerfile | head -1 | grep -oE '[0-9]+\.[0-9]+')
+                  python_version=$(sed -nE 's/^[[:space:]]*"?python3>?=([0-9]+\.[0-9]+).*/\1/p' Dockerfile | head -1)
+                  if [ -z "$python_version" ]; then
+                    echo "::error::Could not extract Python version from Dockerfile (expected python3>=X.Y or python3=X.Y)" >&2
+                    exit 1
+                  fi
 
                   # Extract mitogen version from requirements.txt
                   mitogen_version=$(grep '^mitogen==' requirements.txt | cut -d'=' -f3)
@@ -220,7 +224,7 @@ jobs:
                     echo "- **Ansible Core Version:** ${ansible_version}"
                     echo "- **Base Image:** Alpine Linux ${alpine_version}"
                     echo "- **Python Version:** ${python_version}"
-                    echo "- **Performance:** Mitogen ${mitogen_version} for up to 2-7x faster execution (opt-in via ANSIBLE_STRATEGY=mitogen_linear)"
+                    echo "- **Performance:** Mitogen ${mitogen_version} for 2-7x faster execution (opt-in via ANSIBLE_STRATEGY=mitogen_linear)"
                     echo "- **Architecture:** Multi-platform (linux/amd64, linux/arm64)"
                     echo ""
                     echo "**Included Tools & Integrations:**"
