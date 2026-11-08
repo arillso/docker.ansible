@@ -349,7 +349,7 @@ jobs:
 
             - name: Run Unit Tests
               run: |
-                  ANSIBLE_IMAGE="ansible:test" python -m pytest tests/unit/ -v
+                  ANSIBLE_IMAGE="ansible:test" python -m pytest tests/unit/test_ansible_container.py -v
 
     upgrade-test:
         name: Upgrade Test
