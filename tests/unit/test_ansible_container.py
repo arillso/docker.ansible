@@ -5,8 +5,12 @@ These tests validate the functionality and integrity of the Ansible container.
 """
 
 import os
+from pathlib import Path
+import re
 import shutil
 import subprocess  # nosec B404 - Required for container tests
+import tempfile
+import textwrap
 import unittest
 
 
@@ -313,3 +317,48 @@ except ImportError as e:
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def _workflow_python_version_script():
+    root = Path(__file__).resolve().parents[2]
+    lines = (root / ".github/workflows/merge.yml").read_text().splitlines()
+    start = next(
+        i for i, line in enumerate(lines)
+        if line.strip().startswith("python_version=$(")
+    )
+    end = next(
+        i for i in range(start + 1, len(lines))
+        if lines[i].strip().startswith("# Extract mitogen version")
+    )
+    return textwrap.dedent("\n".join(lines[start:end])).strip()
+
+
+def _run_workflow_python_version(dockerfile):
+    with tempfile.TemporaryDirectory() as directory:
+        Path(directory, "Dockerfile").write_text(dockerfile)
+        script = _workflow_python_version_script() + '\nprintf "%s" "$python_version"'
+        return subprocess.run(  # nosec B603 - Executes the checked-in workflow script.
+            ["bash", "-eo", "pipefail", "-c", script],
+            cwd=directory,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+
+
+def test_release_notes_python_version_from_current_dockerfile():
+    root = Path(__file__).resolve().parents[2]
+    result = _run_workflow_python_version((root / "Dockerfile").read_text())
+    assert result.returncode == 0, result.stderr
+    assert re.fullmatch(r"[0-9]+\.[0-9]+", result.stdout)
+
+
+def test_release_notes_python_version_supports_ge_and_exact_pins():
+    cases = (
+        ('"python3>=3.14.10-r1" \\\n', "3.14"),
+        ("python3=3.15.2-r0\n", "3.15"),
+    )
+    for pin, expected in cases:
+        result = _run_workflow_python_version(pin)
+        assert result.returncode == 0, result.stderr
+        assert result.stdout == expected
