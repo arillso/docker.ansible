@@ -10,6 +10,19 @@
             "matchManagers": ["github-actions"],
             "matchPackageNames": ["aquasecurity/trivy-action"],
             "pinDigests": false
+        },
+        {
+            "description": "botocore requires python-dateutil<3.0.0, but kubernetes 37.0.2 requires python-dateutil>=3.0.0, so pip cannot resolve both. Hold kubernetes below 37.0.2 until botocore allows python-dateutil>=3.",
+            "matchManagers": ["pip_requirements"],
+            "matchPackageNames": ["kubernetes"],
+            "allowedVersions": "<37.0.2"
+        },
+        {
+            "description": "botocore requires python-dateutil<3.0.0. Ignore python-dateutil majors until botocore allows python-dateutil>=3.",
+            "matchManagers": ["pip_requirements"],
+            "matchPackageNames": ["python-dateutil"],
+            "matchUpdateTypes": ["major"],
+            "enabled": false
         }
     ]
 }
