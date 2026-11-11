@@ -58,7 +58,7 @@ RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	"py3-pip>=26.1.2-r0" \
 	"pipx>=1.14.0-r0" \
 	"ca-certificates>=20261020-r0" \
-	"git>=2.54.0-r0" \
+	"git>=2.54.1-r0" \
 	"gcc>=15.2.0-r5" \
 	"libffi-dev>=3.5.2-r1" \
 	"python3-dev>=3.14.10-r1" \
@@ -129,7 +129,7 @@ RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	apk add --no-cache \
 	"python3>=3.14.10-r1" \
 	"bash>=5.3.9-r1" \
-	"git>=2.54.0-r0" \
+	"git>=2.54.1-r0" \
 	"curl>=8.23.0-r0" \
 	"openssh-client-common>=10.3_p1-r2" \
 	"openssh-client-default>=10.3_p1-r2" \
