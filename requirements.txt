@@ -53,7 +53,7 @@ idna==3.20
 
 # Database Connectivity
 psycopg2-binary==2.9.13
-PyMySQL==1.2.3
+PyMySQL==1.2.4
 redis==8.1.0
 
 # VMware Integration
@@ -61,7 +61,7 @@ pyvmomi==9.1.1.0
 
 # AWS Integration
 boto3==1.43.124
-botocore==1.43.124
+botocore==1.43.126
 
 # Azure Integration
 azure-identity==1.27.0
@@ -69,7 +69,7 @@ azure-mgmt-compute==39.0.0
 azure-mgmt-network==33.1.0
 
 # Google Cloud Integration
-google-cloud-compute==1.56.0
+google-cloud-compute==1.57.0
 google-auth==2.62.1
 
 # Kubernetes Integration
@@ -90,7 +90,7 @@ MarkupSafe==3.0.4
 
 # JSON & Data Processing
 jsonschema==4.26.0
-jsonpatch==1.42
+jsonpatch==1.45
 
 # Monitoring & Logging
 opentelemetry-exporter-otlp==1.45.2
