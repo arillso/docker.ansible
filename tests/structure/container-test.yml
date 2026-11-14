@@ -154,7 +154,9 @@ commandTests:
     # Mitogen Configuration Tests
     - name: "Check Mitogen Strategy is opt-in, not the default"
       command: "sh"
-      args: ["-c", "grep -q '^strategy =' /etc/ansible/ansible.cfg && echo 'default strategy set' || echo 'no default strategy'"]
+      args:
+          - "-c"
+          - "grep -q '^strategy =' /etc/ansible/ansible.cfg && echo 'default strategy set' || echo 'no default strategy'"
       expectedOutput:
           - "no default strategy"
 
