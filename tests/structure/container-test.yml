@@ -13,17 +13,15 @@ commandTests:
       command: "helm"
       args: ["version", "--short"]
       expectedOutput:
-          # container-structure-test matches this as an unanchored substring of
-          # `helm version --short` ("v3.19.0+g...").
-          # Major-prefix only: under `>=` apk installs the current patch, so an
-          # exact patch substring breaks on drift. A helm 4 jump still fails "3.".
+          # `expectedOutput` is an unanchored regex checked against `helm version --short`.
+          # `>=` allows patch updates; the existing pattern is retained.
           - "3."
 
     - name: "Check kustomize Version"
       command: "kustomize"
       args: ["version"]
       expectedOutput:
-          # Major-prefix only: `>=` installs the current patch (see helm above).
+          # `expectedOutput` is an unanchored regex; `>=` allows patch updates.
           - "5."
 
     # Shell Tools & Utilities
@@ -37,8 +35,8 @@ commandTests:
       command: "jq"
       args: ["--version"]
       expectedOutput:
-          # `jq --version` prints "jq-1.8.1"; CST matches the substring.
-          # Major-prefix only: `>=` installs the current patch (see helm above).
+          # `expectedOutput` is an unanchored regex checked against `jq --version`.
+          # `>=` allows patch updates; the existing pattern is retained.
           - "1."
 
     - name: "Check sshpass Availability"
@@ -51,8 +49,8 @@ commandTests:
       command: "openssl"
       args: ["version"]
       expectedOutput:
-          # `openssl version` prints "OpenSSL 3.5.7 ..."; CST matches the substring.
-          # Major-prefix only: `>=` installs the current patch (see helm above).
+          # `expectedOutput` is an unanchored regex checked against `openssl version`.
+          # `>=` allows patch updates; the existing pattern is retained.
           - "3."
 
     - name: "Check Git Version"
