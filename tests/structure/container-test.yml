@@ -13,11 +13,8 @@ commandTests:
       command: "helm"
       args: ["version", "--short"]
       expectedOutput:
-          # Bare version so Renovate's currentValue capture works (its regex
-          # stops at whitespace/quote). container-structure-test matches it as
-          # an unanchored substring of `helm version --short` ("v3.19.0+g...").
-          # extractVersion strips the v prefix from the helm/helm tags.
-          # renovate: datasource=github-releases depName=helm/helm extractVersion=^v(?<version>.*)$
+          # container-structure-test matches this as an unanchored substring of
+          # `helm version --short` ("v3.19.0+g...").
           # Major-prefix only: under `>=` apk installs the current patch, so an
           # exact patch substring breaks on drift. A helm 4 jump still fails "3.".
           - "3."
@@ -26,7 +23,6 @@ commandTests:
       command: "kustomize"
       args: ["version"]
       expectedOutput:
-          # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize extractVersion=^kustomize/v(?<version>.*)$
           # Major-prefix only: `>=` installs the current patch (see helm above).
           - "5."
 
@@ -41,10 +37,7 @@ commandTests:
       command: "jq"
       args: ["--version"]
       expectedOutput:
-          # Bare version; `jq --version` prints "jq-1.8.1" and CST matches the
-          # substring. extractVersion strips the jq- prefix from jqlang/jq tags
-          # so Renovate compares plain semver.
-          # renovate: datasource=github-releases depName=jqlang/jq extractVersion=^jq-(?<version>.*)$
+          # `jq --version` prints "jq-1.8.1"; CST matches the substring.
           # Major-prefix only: `>=` installs the current patch (see helm above).
           - "1."
 
@@ -58,11 +51,7 @@ commandTests:
       command: "openssl"
       args: ["version"]
       expectedOutput:
-          # Bare version — the old "OpenSSL 3.5.7" broke Renovate: its
-          # currentValue capture stops at the space, so it saw "OpenSSL" and
-          # never updated. `openssl version` prints "OpenSSL 3.5.7 ..." and CST
-          # matches the bare version as a substring.
-          # renovate: datasource=repology depName=openssl versioning=loose
+          # `openssl version` prints "OpenSSL 3.5.7 ..."; CST matches the substring.
           # Major-prefix only: `>=` installs the current patch (see helm above).
           - "3."
 
