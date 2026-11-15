@@ -13,21 +13,15 @@ commandTests:
       command: "helm"
       args: ["version", "--short"]
       expectedOutput:
-          # Bare version so Renovate's currentValue capture works (its regex
-          # stops at whitespace/quote). container-structure-test matches it as
-          # an unanchored substring of `helm version --short` ("v3.19.0+g...").
-          # extractVersion strips the v prefix from the helm/helm tags.
-          # renovate: datasource=github-releases depName=helm/helm extractVersion=^v(?<version>.*)$
-          # Major-prefix only: under `>=` apk installs the current patch, so an
-          # exact patch substring breaks on drift. A helm 4 jump still fails "3.".
+          # `expectedOutput` is an unanchored regex checked against `helm version --short`.
+          # `>=` allows patch updates; the existing pattern is retained.
           - "3."
 
     - name: "Check kustomize Version"
       command: "kustomize"
       args: ["version"]
       expectedOutput:
-          # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize extractVersion=^kustomize/v(?<version>.*)$
-          # Major-prefix only: `>=` installs the current patch (see helm above).
+          # `expectedOutput` is an unanchored regex; `>=` allows patch updates.
           - "5."
 
     # Shell Tools & Utilities
@@ -41,11 +35,8 @@ commandTests:
       command: "jq"
       args: ["--version"]
       expectedOutput:
-          # Bare version; `jq --version` prints "jq-1.8.1" and CST matches the
-          # substring. extractVersion strips the jq- prefix from jqlang/jq tags
-          # so Renovate compares plain semver.
-          # renovate: datasource=github-releases depName=jqlang/jq extractVersion=^jq-(?<version>.*)$
-          # Major-prefix only: `>=` installs the current patch (see helm above).
+          # `expectedOutput` is an unanchored regex checked against `jq --version`.
+          # `>=` allows patch updates; the existing pattern is retained.
           - "1."
 
     - name: "Check sshpass Availability"
@@ -58,12 +49,8 @@ commandTests:
       command: "openssl"
       args: ["version"]
       expectedOutput:
-          # Bare version — the old "OpenSSL 3.5.7" broke Renovate: its
-          # currentValue capture stops at the space, so it saw "OpenSSL" and
-          # never updated. `openssl version` prints "OpenSSL 3.5.7 ..." and CST
-          # matches the bare version as a substring.
-          # renovate: datasource=repology depName=openssl versioning=loose
-          # Major-prefix only: `>=` installs the current patch (see helm above).
+          # `expectedOutput` is an unanchored regex checked against `openssl version`.
+          # `>=` allows patch updates; the existing pattern is retained.
           - "3."
 
     - name: "Check Git Version"
