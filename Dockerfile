@@ -55,7 +55,7 @@ RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	printf 'https://pkg.arillso.io/alpine/%s/main\nhttps://pkg.arillso.io/alpine/%s/community\n' \
 		"$alpine_minor" "$alpine_minor" > /etc/apk/repositories && \
 	apk add --no-cache \
-	"py3-pip>=26.1.2-r0" \
+	"py3-pip>=26.1.2-r1" \
 	"pipx>=1.14.0-r0" \
 	"ca-certificates>=20261020-r0" \
 	"git>=2.54.1-r0" \
@@ -141,7 +141,7 @@ RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	"kustomize>=5.8.1-r4" \
 	"jq>=1.8.2-r0" \
 	"gnupg>=2.4.9-r1" \
-	"openssl>=3.5.9-r0" \
+	"openssl>=3.5.9-r1" \
 	"libexpat>=2.10.0-r0" \
 	"tini>=0.19.0-r3" && \
 	# Reset to the public Alpine mirrors so the SHIPPED image does not depend
