@@ -60,8 +60,8 @@ RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	"ca-certificates>=20261020-r0" \
 	"git>=2.54.1-r0" \
 	"gcc>=15.2.0-r5" \
-	"libffi-dev>=3.5.2-r1" \
-	"python3-dev>=3.14.10-r1" \
+	"libffi-dev>=3.8.1-r0" \
+	"python3-dev>=3.14.10-r2" \
 	"make>=4.4.1-r4" \
 	"musl-dev>=1.2.6-r3" \
 	"build-base>=0.5-r4" \
@@ -127,7 +127,7 @@ RUN alpine_minor="v$(cut -d'.' -f1-2 /etc/alpine-release)" && \
 	printf 'https://pkg.arillso.io/alpine/%s/main\nhttps://pkg.arillso.io/alpine/%s/community\n' \
 		"$alpine_minor" "$alpine_minor" > /etc/apk/repositories && \
 	apk add --no-cache \
-	"python3>=3.14.10-r1" \
+	"python3>=3.14.10-r2" \
 	"bash>=5.3.9-r1" \
 	"git>=2.54.1-r0" \
 	"curl>=8.23.0-r0" \
