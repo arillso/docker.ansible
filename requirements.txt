@@ -108,7 +108,7 @@ statsd==4.0.1
 invoke==3.0.3
 
 # Time & Scheduling
-croniter==6.2.4
+croniter==7.0.0
 apscheduler==3.11.3
 
 # File Processing
